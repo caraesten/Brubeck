@@ -10,18 +10,24 @@ There are only two form fields with special meanings, and both are optional:
 import mimetools
 
 # Imports from Django
+from django import forms
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.views import redirect_to_login
+from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
 # from django.core.mail import send_mail
 from django.core.mail import EmailMessage, SMTPConnection
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import Context, loader, RequestContext
+from django.utils.html import strip_tags
 
 # Imports from maneater
-from maneater.core.decorators import is_editor
-from maneater.emailing.forms import *
+from brubeck.articles.models import Article
+from brubeck.blogs.models import Entry
+from brubeck.core.decorators import is_editor
+from brubeck.core.emailing.forms import *
 
 def render_email_and_send(context=None, message_template='', subject='', recipients=None, sender=None):
     """
@@ -133,3 +139,76 @@ def restricted_email(request, form=None, form_template='', message_template='', 
     else:
         # Make the user log in first.
         redirect_to_login(next=request.META['PATH_INFO'])
+
+def email_content(request, content_type=None, content_id=None):
+    """
+    Allows users to e-mail content to other people.
+    """
+    site = Site.objects.get_current()
+                
+    if request.method == 'POST':
+        form = ContentEmailForm(request.POST)
+    else:
+        form = ContentEmailForm({
+            'content_type': content_type,
+            'content_id': content_id,
+            'sender_email': 'from@email.com',
+            'recipient_email': 'to@email.com'
+        })
+    if form.is_valid():
+        try:
+            if form.cleaned_data['content_type'] == 'article':
+                object = Article.get_published.filter(section__publication__site=site).get(id=form.cleaned_data['content_id']) 
+            elif form.cleaned_data['content_type'] == 'blog_entry':
+                object = Entry.get_published.filter(blog__section__publication__site=site).get(id=form.cleaned_data['content_id'])
+            else:
+                raise Http404
+        except ObjectDoesNotExist:
+            raise Http404
+
+    if request.method == 'POST':
+        # Check to make sure they filled in addresses instead of using our
+        # placeholders.
+        if form.cleaned_data['sender_email'] == 'from@email.com':
+            # Return the form with everything still filled in except
+            # sender_email. This will cause an error message to show up next to
+            # that field asking for a valid address.
+            form = ContentEmailForm({
+                'sender_name': form.cleaned_data['sender_name'],
+                'recipient_name': form.cleaned_data['recipient_name'],
+                'recipient_email': form.cleaned_data['recipient_email'],
+                'note': form.cleaned_data['note'],
+                'content_type': form.cleaned_data['content_type'],
+                'content_id': form.cleaned_data['content_id']
+            })
+        elif form.cleaned_data['recipient_email'] == 'to@email.com':
+            # Return the form with everything still filled in except
+            # recipient_email. This will cause an error message to show up next
+            # to that field asking for a valid address.
+            form = ContentEmailForm({
+                'sender_name': form.cleaned_data['sender_name'],
+                'sender_email': form.cleaned_data['sender_email'],
+                'recipient_name': form.cleaned_data['recipient_name'],
+                'note': form.cleaned_data['note'], 
+                'content_type': form.cleaned_data['content_type'],
+                'content_id': form.cleaned_data['content_id']
+            })
+        else:
+            email_context = {
+                'sender_name': form.cleaned_data['sender_name'],
+                'sender_email': form.cleaned_data['sender_email'],
+                'recipient_name': form.cleaned_data['recipient_name'],
+                'recipient_email': form.cleaned_data['recipient_email'],
+                'note': form.cleaned_data['note'],
+                'object': object
+            }
+            render_email_and_send(context=email_context, message_template='core/email_content.txt', subject='%s: E-mail from themaneater.com' % strip_tags(object.title), recipients=[email_context['recipient_email']], sender=email_context['sender_email'])
+            return HttpResponseRedirect('/thanks/')
+            
+    page = {
+        'form': form,
+        'object': object
+    }
+
+    return render_to_response('core/email_content.html', page, context_instance=RequestContext(request))
+
