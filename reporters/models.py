@@ -3,7 +3,7 @@ from django.db import models
 
 # Imports from Brubeck
 from brubeck.core.models import Category
-from maneater.core import imaging
+from brubeck.core import imaging
 
 class SourceType(Category):
     """

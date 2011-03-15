@@ -11,7 +11,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 
 # Imports from Brubeck
-from brubeck.publication.models import Section
+from brubeck.core.models import Content
+from brubeck.publishing.models import Section
 from brubeck.common.geography.models import Place
 from brubeck.common.geography.fields import CoordinatesField
 

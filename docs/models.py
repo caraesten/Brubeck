@@ -3,12 +3,12 @@ from django.contrib.sites.models import Site
 from django.db import models
 
 # Imports from other dependencies. For now, Grappelli's 'PositionField.'
-from positions.fields import PositionField
+# from positions.fields import PositionField
 
 # Imports from Brubeck.
 from brubeck.core.models import Category, ContentChannel, Content
 from brubeck.personnel.models import Staffer
-from brubeck.publication.models import Publication, Volume
+from brubeck.publishing.models import Publication, Volume
 from brubeck.tagging.models import Tag
 
 # Create your models here.

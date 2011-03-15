@@ -21,11 +21,12 @@ from django.contrib.gis.db import models
 
 # Imports from Brubeck
 from brubeck.core.models import Content
-from brubeck.publication.models import Issue, Section
+from brubeck.publishing.models import Issue, Section
 from brubeck.events.models import Calendar, Event
+from brubeck.articles.models import PublishedManager
 
 # Imports from other sources
-from positions.fields import PositionField
+# from positions.fields import PositionField
 from pyPdf import PdfFileReader, PdfFileWriter
 
 # This is a hippopotamus.

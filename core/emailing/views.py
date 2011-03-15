@@ -23,7 +23,7 @@ from django.shortcuts import render_to_response
 from django.template import Context, loader, RequestContext
 from django.utils.html import strip_tags
 
-# Imports from maneater
+# Imports from brubeck
 from brubeck.articles.models import Article
 from brubeck.blogs.models import Entry
 from brubeck.core.decorators import is_editor

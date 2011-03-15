@@ -2,7 +2,7 @@
 from datetime import date
 
 # Imports from Django
-from django.db import models
+from django.contrib.gis.db import models
 from django.utils.dateformat import format
 
 # Imports from Brubeck
