@@ -190,7 +190,7 @@ class Video(Content):
         ordering = ['-pub_date']
         
 from brubeck.core.moderation import AkismetModerator
-# from brubeck.core.emailing.views import render_email_and_send
+from brubeck.core.emailing.views import render_email_and_send
 from django.conf import settings
 from django.contrib.comments.moderation import moderator
 
@@ -210,7 +210,7 @@ class VideoModerator(AkismetModerator):
         moderators.append(online_assistant)        
         context = {'comment': comment, 'content_object': content_object}
         subject = 'New comment awaiting moderation on "%s"' % content_object
-#        render_email_and_send(context=context, message_template='multimedia/video_comment_notification_email.txt', subject=subject, recipients=moderators)
+        render_email_and_send(context=context, message_template='multimedia/video_comment_notification_email.txt', subject=subject, recipients=moderators)
     def moderate(self, comment, content_object, request):
         return True      
 
