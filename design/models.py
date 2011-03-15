@@ -21,12 +21,13 @@ from django.contrib.gis.db import models
 
 # Imports from Brubeck
 from brubeck.core import imaging
+from brubeck.core.models import Content
 from brubeck.publishing.models import Issue, Section
 from brubeck.articles.models import Article
 from brubeck.photography.models import Photo
 
 # Imports from other sources
-from positions.fields import PositionField
+# from positions.fields import PositionField
 from pyPdf import PdfFileReader, PdfFileWriter
 
 class Graphic(Content):

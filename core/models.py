@@ -38,4 +38,4 @@ class Content(models.Model):
     objects = models.GeoManager()
 
     class Meta:
-        abstract = True
+        abstract = False

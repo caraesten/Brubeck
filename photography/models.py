@@ -23,7 +23,6 @@ from django.contrib.gis.db import models
 from brubeck.core.models import Content
 
 # Imports from other sources
-from positions.fields import PositionField
 from pyPdf import PdfFileReader, PdfFileWriter
 
 class Photo(Content):

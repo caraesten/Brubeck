@@ -25,7 +25,7 @@ from brubeck.common.people.models import Person
 # Imports from other sources
 from pyPdf import PdfFileReader, PdfFileWriter
 
-class Staffer(person):
+class Staffer(Person):
     """Provides support for staffers' bylines.
     
     Some fields in this model might be marked as deprecated. These will be 

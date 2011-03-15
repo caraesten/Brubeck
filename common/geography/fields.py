@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.safestring import mark_safe
 
-class Coordinates():
+class Coordinates:
     def __init__(self, lat, lng):
         self.lat = float(lat)
         self.lng = float(lng)

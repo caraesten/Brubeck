@@ -64,7 +64,7 @@ class Blog(ContentChannel):
     """
     section = models.ForeignKey(Section, db_index=True)
     # Change these in the database.
-    editorial_moderators = models.ManyToManyField(EditorPosition, db_index=True, blank=True, null=True, help_text="Select the positions of editors who will moderate comments for this blog.")
+    editorial_moderators = models.ManyToManyField(Position, db_index=True, blank=True, null=True, help_text="Select the positions of editors who will moderate comments for this blog.")
     staff_moderators = models.ManyToManyField(Staffer, db_index=True, blank=True, null=True, limit_choices_to={'is_active': True}, help_text="Select any additional Maneater staffers who will moderate comments for this blog.")
     moderators = models.CharField(max_length=150, blank=True, help_text="Enter the e-mail addresses of anyone else who will moderate comments for this blog. Separate them with commas.")
     is_live_blog = models.BooleanField('is live blog?', default=False, db_index=True, help_text="Is this blog going to be used for a short period of time to cover a specific event? <strong>Note:</strong> This setting does not determine whether a blog is still active, so archived live blogs should still have this box checked.")
