@@ -1,0 +1,103 @@
+{% extends "tournaments/bracket_base.html" %}
+
+{% block head_extras %}
+{{ block.super }}
+<style>
+ul.first_round,
+ul.second_round,
+ul.third_round,
+ul.fourth_round,
+ul.fifth_round {
+    font-size: 10px;
+    width: 160px;
+}
+ul.second_round {
+    margin-top: 17px;
+}
+ul.third_round {
+    margin-top: 45px;
+}
+ul.fourth_round {
+    margin-top: 101px;
+}
+ul.fifth_round {
+    margin-top: 101px;
+}
+ul.right {
+    float: left;
+}
+li.game {
+    padding: 2px 0px 2px 2px;
+}
+li.odd {
+    border-top: 1px solid #000000;
+    margin-top: 20px;
+}
+li.even {
+    border-bottom: 1px solid #000000;
+}
+ul.left li {
+    border-right: 1px solid #000000;
+}
+ul.right li {
+    border-left: 1px solid #000000;
+}
+ul.second_round li.odd {
+
+}
+ul.second_round li.even {
+    margin-bottom: 55px;
+    padding-top: 23px;
+}
+ul.third_round li.even {
+    margin-bottom: 111px;
+    padding-top: 79px;
+}
+ul.fourth_round li.even {
+    margin-bottom: 111px;
+    padding-top: 179px;
+}
+ul.fifth_round li.odd {
+    border-top: 1px solid #000;
+    border-right: 0;
+    border-bottom: 0;
+    margin-bottom: 0px;
+    margin-top: 37px;
+    padding-top: 5px;
+}
+</style>
+{% endblock head_extras %}
+
+{% block heading %}Make your predictions: National finals{% endblock heading %}
+
+{% block bracket %}
+<ul class="third_round left">
+{% with national_semifinal_games.0 as game %}
+    <li class="game odd">{% ifequal game.0.ranking 17 %}16 UAPB/Winthrop{% else %}{{ game.0.ranking }} {{ game.0.team.get_school_abbrev }}{% endifequal %}</li>
+    <li class="game even">{% ifequal game.1.ranking 17 %}16 UAPB/Winthrop{% else %}{{ game.1.ranking }} {{ game.1.team.get_school_abbrev }}{% endifequal %}</li>
+{% endwith %}
+</ul>
+<ul class="fourth_round left">
+{% with national_final_game.0 as team %}
+    <li class="game odd">{% ifequal team.ranking 17 %}16 UAPB/Winthrop{% else %}{{ team.ranking }} {{ team.team.get_school_abbrev }}{% endifequal %}</li>
+{% endwith %}
+</ul>
+<ul class="fifth_round left">
+    <li class="game odd">{{ form.game_one_winner }}</li>
+</ul>
+<ul class="fourth_round right">
+{% with national_final_game.1 as team %}
+    <li class="game odd">{% ifequal team.ranking 17 %}16 UAPB/Winthrop{% else %}{{ team.ranking }} {{ team.team.get_school_abbrev }}{% endifequal %}</li>
+{% endwith %}
+</ul>
+<ul class="third_round right">
+{% with national_semifinal_games.1 as game %}
+    <li class="game odd">{% ifequal game.0.ranking 17 %}16 UAPB/Winthrop{% else %}{{ game.0.ranking }} {{ game.0.team.get_school_abbrev }}{% endifequal %}</li>
+    <li class="game even">{% ifequal game.1.ranking 17 %}16 UAPB/Winthrop{% else %}{{ game.1.ranking }} {{ game.1.team.get_school_abbrev }}{% endifequal %}</li>
+{% endwith %}
+</ul>
+{% endblock bracket %}
+{% block submit %}
+{{ block.super }}
+<input class="submit-button" type="submit" value="Save predictions">
+{% endblock submit %}

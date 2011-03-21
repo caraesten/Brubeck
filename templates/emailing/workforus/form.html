@@ -1,0 +1,34 @@
+{% extends "emailing/form_base.html" %}
+
+{% load core %}
+
+{% block title %}{{ block.super }} &ndash; Work for Us{% endblock title %}
+
+{% block content %}
+{% render_flatpage '/workforus/' %}
+{% comment %}
+<h1>Contact us</h1>
+<div class="object_list">
+    <h2 class="header">Our offices</h2>
+    <div class="item">
+        <p>The Maneater Student Newspaper<br />
+        N223 Memorial Union<br />
+        Columbia, Mo. 65211</p>
+        <p>Our office is on the second floor of the north wing of Memorial Union on the University of Missouri-Columbia campus (<a href="http://map.missouri.edu/memorial-union-north.htm">Map</a>). Newsmeeting/workshop locations vary; check house ads in the print version of The Maneater for locations.</p>
+    </div>
+    <h2 class="header">Phone and fax</h2>
+    <div class="item">
+        <p>Main: (573) 882-5500<br />
+        Accountant: (573) 882-6288<br />
+        Advertising: (573) 882-8357<br />
+        Fax: (573) 882-5550</p>
+    </div>
+    <h2 class="header">E-mail</h2>
+</div>
+{% endcomment %}
+<div class="item">
+    <p>Fill out the form, and we'll direct you to the appropriate editor.</p>
+    {{ block.super }}
+</div>
+
+{% endblock content %}

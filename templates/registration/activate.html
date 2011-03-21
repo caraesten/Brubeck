@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; {% if account %}Account activated{% else %}Activation failed{% endif %}{% endblock title %}
+
+{% block content %}
+<h1>{% if account %}Account activated{% else %}Activation failed{% endif %}</h1>
+<p>{% if account %}Thanks for activating your account!{% else %}We're sorry, but for some reason, we couldn't activate your account.{% endif %}</p>
+<p class="fp_section_refer"><a href="/">Back</a></p>
+{% endblock content %}

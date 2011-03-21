@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &mdash; Campus Guide &ndash; Calendar &ndash; {{ event }}{% endblock title %}
+
+{% block content %}
+<h1>{{ event }}</h1>
+<ul id="fp_calendar">
+    <li class="calendar_date">
+        <h3>{{ event.start|date:"N j" }}{% if event.end %}{% ifnotequal event.start.date event.end.date %}{% if not event.all_day %} &ndash; {{ event.end|date:"N j" }}{% endif %}{% endifnotequal %}{% endif %}</h3>
+        <ul>
+            <li class="calendar_event">
+                <p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }}{% if event.end %} &ndash; {{ event.end|date:"g:i a, N j" }}{% endif %}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                <p class="calendar_description">{{ event.description|markdown }}</p>
+                <p class="calendar_description">Listed in {% for calendar in event.calendars.all %}{% if not forloop.first %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}<a href="{{ calendar.get_absolute_url }}">{{ calendar }}</a>{% endfor %}</p>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock content %}

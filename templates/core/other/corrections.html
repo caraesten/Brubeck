@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Accuracy{% endblock title %}
+
+{% block content %}
+<h1>Accuracy</h1>
+<p>The Maneater is dedicated to accurate reporting. All of our reporters are required to double-check quotes with their sources prior to publication. If you were quoted in a Maneater report and weren't contacted for a quote check, or if you notice an inaccuracy, please contact the editor-in-chief at <a href="editor@themaneater.com">editor@themaneater.com</a>.</p>
+{% if corrections %}
+<h2>Corrections</h2>
+<p>Following are the corrections published online or in print in The Maneater in the past two weeks:</p>
+<ul>
+    {% for correction in corrections %}
+    <li><strong>{{ correction.date_corrected|date:"P, F j, Y" }}: <a href="{{ correction.article.get_absolute_url }}">{{ correction.article|markdown }}</a></strong><br />{{ correction.correction|markdown }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}

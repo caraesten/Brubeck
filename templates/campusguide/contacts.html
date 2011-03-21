@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Campus Guide &ndash; Contacts{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript">
+$(function() {
+    $('.object_list .item').hide();
+    $('.object_list h2').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Contacts</h1>
+{% for list in lists %}
+<div class="object_list">
+    <h2 class="header"><a href="javascript:void(0)">{{ list }}</a></h2>
+    <ul class="item">
+        {% for contact in list.contact_set.all %}
+        <li><strong>{{ contact.office }}:</strong> {{ contact.contact_info|safe }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock content %}

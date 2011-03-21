@@ -1,0 +1,12 @@
+Somebody submitted something to the site.
+
+Name: {{ name|safe }}
+E-mail address: {{ self_email|safe }}
+{% if about %}
+About this person: {{ about|safe }}{% endif %}
+
+Submission:
+{{ submission|safe }}
+
+Sincerely,
+themaneater.com

@@ -1,0 +1,17 @@
+Slug: {{ slug|safe }}
+Editor: {{ editor_name|safe }}
+Event: {{ event|safe }}
+{% if event_when %}When: {{ event_when|safe }}{% endif %}
+{% if event_location %}Where: {{ event_location|safe }}{% endif %}
+
+{% if writer_name %}Writer: {{ writer_name|safe }}{% endif %}
+{% if writer_phone %}Writer phone: {{ writer_phone|safe }}{% endif %}
+{% if writer_email %}Writer e-mail: {{ writer_email|safe }}{% endif %}
+
+Deadline: {{ deadline|safe }}
+
+{% if comments %}Comments:
+{{ comments|safe }}
+
+{% endif %}
+Sincerely, themaneater.com

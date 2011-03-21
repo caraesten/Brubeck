@@ -1,0 +1,7 @@
+{{ object.cutline }}
+{% for tag in object.tags.all %}
+{{ tag.title }}
+{% endfor %}
+{{ object.section.name }}
+{{ object.byline }}
+{{ object.static_byline }}

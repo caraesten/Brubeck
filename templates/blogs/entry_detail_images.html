@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load markup %}{% load core %}{% load scoreboard %}
+
+{% block title %}{{ block.super }} &ndash; Blogs &ndash; {{ blog }} &ndash; {{ entry }} ({{ entry.pub_date|date:"N j, Y" }}) &ndash; Images{% endblock title %}
+
+{% block head_extras %}
+{% gallery_setup "gallery" %}
+<link rel="alternate" type="application/rss+xml" title="{{ blog }} RSS Feed" href="/feeds/blogs/{{ blog.slug }}/" />
+{% endblock head_extras %}
+
+{% block content %}
+<h1 class="headline"><a href="{{ entry.get_absolute_url }}">{{ entry|markdown }}</a></h1>
+<p class="byline">Posted to <a href="{{ blog.get_absolute_url }}">{{ blog }}</a>{% if entry.byline %} by <a href="{{ entry.byline.get_absolute_url }}">{{ entry.byline }}</a>{% else %}{% if entry.static_byline %}{{ entry.static_byline }}{% endif %}{% endif %} at {{ entry.pub_date|date:"g:i a, N j, Y" }}</p>
+{% if entry.photos.all %}
+<div id="gallery">
+    <ul>
+        {% for photo in entry.photos.all %}
+            <li class="photo_container">
+                <img class="photo" alt="{{ entry }}" src="{{ photo.image.url }}" />
+                <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                {{ photo.cutline|markdown }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block sidebar %}
+{% ifequal blog.slug "sports" %}{% show_scores_sidebar %}{% endifequal %}
+{% show_related_blog_posts entry %}
+{% show_related_articles entry %}
+{% endblock %}

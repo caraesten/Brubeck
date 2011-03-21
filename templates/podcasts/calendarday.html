@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% load markup %} {% load comparison %} {% block title %}{{ block.super }} &ndash; {% if channel %}{{ channel }} &ndash;{% else %}All podcast episodes from{% endif %} {{ month_name }} {{ year }}
+{% endblock title %}
+{% block head_extras %}
+{% ifequal site.id 1 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/maneatercalendar.css" />{% endifequal %}
+{% ifequal site.id 2 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/movecalendar.css" />{% endifequal %}
+{% endblock head_extras %}
+{% block content %}
+
+<h1>{% if channel %}{{ channel }} &mdash;{% else %}All podcast episodes from{% endif %} {{ month_name }} {{ day }}, {{ year }}{% ifequal this_year year %}{% ifequal this_month month %}{% ifequal day today %} &ndash; today{% endifequal %}{% endifequal %}{% endifequal %}
+</h1>
+
+{% if episode_list %}
+
+{% for episode in episode_list %}
+
+        <div class="item">
+            <h3><a href="{{ episode.get_absolute_url }}">{{ episode.pub_date|date:"N j, Y" }}{% if episode.name %}: {{ episode.name|markdown }}{% endif %}</a></h3>
+            <p class="cdeck">{{ episode.description|markdown }}</p>
+        </div>
+
+{% endfor %}
+
+{% else %}
+
+There are no episodes published {% if channel %}in this channel {% endif %}on this date.
+
+{% endif %}
+
+{% endblock content %}
+
+
+{% block sidebar %}
+<div class="calsidebar">
+{% if channel_list %}
+<h2 class="header">{% if channel %}Other{% else %}Current{% endif %} channels:</h2>
+<p>Check out these {% if channel %}other {% else %}ongoing {% endif %}podcast series from The Maneater.</p>
+{% if channel %}
+{% for channelname in channel_list %}
+{% ifequal channelname.title channel.title %}
+<!--<h3>{{ channelname.title }}</h3>-->
+{% else %}
+<h3><a href="/podcasts/{{ channelname.slug }}/">{{ channelname.title }}</a></h3>
+{% endifequal %}
+{% endfor %}
+{% else %}
+{% for channelname in channel_list %}
+<h3><a href="/podcasts/{{ channelname.slug }}/">{{ channelname.title }}</a></h3>
+{% endfor %}
+{% endif %}
+<p />
+<p>Or, see <a href="/podcasts/">all recent podcasts</a>.</p>
+{% else %}
+<div class="debugging">There are currently no podcast channels to display here.</div>
+{% endif %}
+
+</div>
+{% endblock sidebar %}

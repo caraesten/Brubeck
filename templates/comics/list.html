@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Comics{% endblock title %}
+
+{% block content %}
+<h1>Comics</h1>
+{% if current_strips %}
+<div class="object_list">
+    <h2 class="header">Current strips</h2>
+    <ul>
+        {% for strip in current_strips %}
+        <li><a href="{{ strip.get_absolute_url }}">{{ strip }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if old_strips %}
+<div class="object_list">
+    <h2 class="header">Past strips</h2>
+    <ul>
+        {% for strip in old_strips %}
+        <li><a href="{{ strip.get_absolute_url }}">{{ strip }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block title %}{{ block.super }}{%ifnotequal page_title "Podcasts" %} &ndash; Podcasts{% endifnotequal %} &ndash; {{ page_title }}{% endblock title %}
+
+{% block content %}
+<h1>{{ page_title|markdown }}</h1>
+{% if object_list %}
+<div class="object_list">
+      {% for episode in object_list %}
+        {% ifchanged episode.pub_date.month %}
+            {% if not forloop.first %}
+            </div>
+            <div class="object_list">
+            {% endif %}
+            <h2 class="header"><div class="month">{{ episode.pub_date|date:"F Y" }}</div>
+            <div class="calendar_link"><a href="/podcasts/calendar/{{ episode.pub_date|date:"Y" }}/{{ episode.pub_date|date:"n" }}/">(calendar)</a></div><div class="float_clearer" /></h2>
+        {% endifchanged %}
+        <div class="item">
+            <h3><a href="{{ episode.get_absolute_url }}">{{ episode.channel.title }}: {{ episode.pub_date|date:"N j, Y" }}{% if episode.name %} &ndash; {{ episode.name|markdown }}{% endif %}</a></h3>
+            <p class="cdeck">{{ episode.description|markdown|truncatewords:50 }}</p>
+        </div>
+      {% endfor %}
+</div>
+{% else %}
+<p>For some reason, there aren't any channels to display here.</p>
+{% endif %}
+<p><a href="/podcasts/{% ifnotequal page_title "Archived channels" %}archived/{% endifnotequal %}">View {% ifequal page_title "Archived channels" %}current{% else %}archived{% endifequal %} channels?</a></p>
+{% endblock content %}
+
+{% block sidebar %}
+{% if sidebar %}
+<h2 class="header">Current channels:</h2>
+<p>Check out these ongoing podcast series from The Maneater.</p>
+{% for entry in sidebar %}
+<h3><a href="{{ entry.get_absolute_url }}">{{ entry.title|markdown }}</a></h3>
+<p> {{ entry.description|markdown }} </p>
+{% endfor %}
+{% endif %}
+{% endblock sidebar %}

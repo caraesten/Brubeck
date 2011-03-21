@@ -1,0 +1,2 @@
+{% load markup %}{% for article in articles %}					{% spaceless %}<li><a href="{{ article.get_absolute_url }}">{{ article|markdown }}</a></li>{% endspaceless %}
+{% endfor %}

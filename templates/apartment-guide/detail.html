@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; Apartment Guide &ndash; {{ listing.apartment_name }} ({{ listing.number_of_bedrooms }} bedrooms, {{ listing.number_of_bathrooms }} bathrooms){% endblock title %}
+
+{% block head_extras %}
+<meta name="robots" content="noindex, nofollow" />
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript" src="/media/style/2009-07/js/jquery.easing.js"></script>
+<script type="text/javascript" src="/media/style/2009-07/js/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/js/fancybox.css" />
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/apartmentguide.css" />
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '238px',
+        'height': '400px',
+        'border': '1px solid #000'
+    }).insertBefore('div#incident_info');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'small',
+        map_type: false
+    });
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var incidentPoint = new LatLonPoint(latitude, longitude);
+        // Set center and zoom
+        mapstraction.setCenterAndZoom(incidentPoint, 15);
+        var marker = new Marker(incidentPoint);
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        var marker_icon = hcard.find('.note .marker_url').text();
+        marker.setIcon(marker_icon);
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() { /* This is basic - uses default settings */ $("a#single_image").fancybox(); /* Using custom settings */ $("a#inline").fancybox({ 'hideOnContentClick': true }); $("a.group").fancybox({ 'zoomSpeedIn': 300, 'zoomSpeedOut': 300, 'overlayShow': false }); }); 
+</script>
+<style>
+.marker_url {
+    display: none;
+}
+#map_box {
+    float: right;
+    /*margin-right: 10px;*/
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+{% if user.is_authenticated %}{% ifnotequal user.username "themaneater" %}
+<div id="devmode" class="grid-12">
+<div class="grid_2 omega" style="color:#555555;font-size:22px;font-weight:bold;">Page under construction<p class="ybw" style="color:#888888;font-size: 14px;font-weight:normal;margin-bottom:0px;margin-top:5px;">You've been warned.</p></div>
+<div class="grid_10 omega" style="border-left:1px solid #cccccc;margin-left:0px;padding-bottom:10px;padding-left:9px;"><p>Hi there. If you're viewing this, you are (hopefully) a registered user of <i>themaneater.com</i> and are (hopefully) logged in to your account.</p>
+<p>This page is currently under development, and so its contents are subject to change. Only logged in users can view it.</p>
+<p style="margin-bottom:0px;padding-bottom:0px;">If you have any questions or comments regarding this page please contact the online development editor at <a href="mailto:ajvestal@themaneater.com">this address</a>.</p>
+</div>
+</div>
+<div id="line" class="grid_12" style="background-color:#009830;height:4px;margin-bottom:10px;margin-top:10px;"></div>
+{% endifnotequal %}{% endif %}
+<div id="apt-title" class="grid-12">
+<h1 class="apt-name">{{ listing.apartment_name }} ({{ listing.number_of_bedrooms }} bedrooms, {{ listing.number_of_bathrooms }} bathrooms) {% if listing.is_listing_premium %}<span class="listingtype premium">premium listing</span>{% else %}<span class="listingtype basic">basic listing</span>{% endif %}</h1>
+</div>
+<div id="apt-info" class="grid_9 alpha">
+<div id="infocontainer">
+<div id="map" class="grid_3 alpha omega">
+<div id="incident_info" class="vcard">
+    <div class="info">
+        <div class="note">
+            <p><strong>{{ listing.number_of_bedrooms }} bedroom, {{ listing.number_of_bathrooms }} bath  {{ listing.get_property_type_display|lower }}</strong></p>
+            <p>{{ listing.apartment_location.address }}</p>
+            {% if listing.squarefootage %}<p>{{ listing.squarefootage }} square feet</p>{% endif %}
+            <p> </p>
+            <p><i>Landlord: {{ listing.landlord }}</i></p>
+        </div>
+        <p class="geo">Coordinates: <span class="latitude">{{ listing.apartment_location.coords.lat }}</span>, <span class="longitude">{{ listing.apartment_location.coords.lng }}</span></p>
+    </div>
+</div>
+</div>
+{% if listing.property_description %}<p><strong>Property description:</strong></p>
+<p class="description">
+<i>{{ listing.property_description }}</i>
+</p>{% endif %}
+<p>
+<strong>Rent:</strong> ${{ listing.rent_minimum }}/month{% if listing.rent_maximum %} &ndash; ${{ listing.rent_maximum }}/month{% endif %}
+</p>
+<p>
+<strong>Security Deposit:</strong> {% ifequal listing.security_deposit "O" %}${{ listing.security_deposit_amount }}{% else %}{{ listing.get_security_deposit_display }}{% endifequal %}
+</p>
+<p>
+<strong>Property type:</strong> {{ listing.get_property_type_display }}
+</p>
+<p>
+{% if listing.squarefootage %}<strong>Size:</strong> {{ listing.squarefootage }} square feet</p>{% endif %}
+<p>
+<strong>Furnishings: </strong>{{ listing.get_furnished_display }}</p>
+<p>
+<strong>Included appliances:</strong> 
+{% if listing.appliances %}
+	{% for appliance in listing.appliances.all %}
+		{% if forloop.first %}{% if appliance.escape %}{{ appliance|capfirst }}{% else %}{{ appliance|lower|capfirst }}{% endif %}{% else %}{% if appliance.escape %}{{ appliance }}{% else %}{{ appliance|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Heating and air conditioning:</strong> 
+{% if listing.hvac %}
+	{% for implement in listing.hvac.all %}
+		{% if forloop.first %}{% if implement.escape %}{{ implement|capfirst }}{% else %}{{ implement|lower|capfirst }}{% endif %}{% else %}{% if implement.escape %}{{ implement }}{% else %}{{ implement|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Paid utilities:</strong> 
+{% if listing.paid_utilities %}
+	{% for utility in listing.paid_utilities.all %}
+		{% if forloop.first %}{% if utility.escape %}{{ utility|capfirst }}{% else %}{{ utility|lower|capfirst }}{% endif %}{% else %}{% if utility.escape %}{{ utility }}{% else %}{{ utility|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Property Features:</strong> 
+{% if listing.other_services %}
+	{% for feature in listing.other_services.all %}
+		{% if forloop.first %}{% if feature.escape %}{{ feature|capfirst }}{% else %}{{ feature|lower|capfirst }}{% endif %}{% else %}{% if feature.escape %}{{ feature }}{% else %}{{ feature|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Amenities:</strong> 
+{% if listing.on_site_facilities %}
+	{% for facility in listing.on_site_facilities.all %}
+		{% if forloop.first %}{% if facility.escape %}{{ facility|capfirst }}{% else %}{{ facility|lower|capfirst }}{% endif %}{% else %}{% if facility.escape %}{{ facility }}{% else %}{{ facility|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Pet policies:</strong> 
+{% if listing.pets %}
+	{% for item in listing.pets.all %}
+		{% if forloop.first %}{% if item.escape %}{{ item|capfirst }}{% else %}{{ item|lower|capfirst }}{% endif %}{% else %}{% if item.escape %}{{ item }}{% else %}{{ item|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+<p>
+<strong>Transportation to campus:</strong> 
+{% if listing.transportation_to_campus %}
+	{% for mode in listing.transportation_to_campus.all %}
+		{% if forloop.first %}{% if mode.escape %}{{ mode|capfirst }}{% else %}{{ mode|lower|capfirst }}{% endif %}{% else %}{% if mode.escape %}{{ mode }}{% else %}{{ mode|lower }}{% endif %}{% endif %}{% if not forloop.last %}, {% endif %}
+	{% endfor %}
+{% else %}None
+{% endif %}
+</p>
+</div>
+</div>
+<div class="grid_3 omega" style="float: left; margin-right: 0px;">
+<div class="landlord">
+<p><span class="ctltitle">Contact the landlord</span></p>
+<p><span class="llname">{{ listing.landlord.landlord_name }}</span></p>
+<p>{% if listing.landlord.landlord_location %}{{ listing.landlord.landlord_location }}{% endif %}</p>
+<p>{% if listing.landlord.landlord_location.address %}{{ listing.landlord.landlord_location.address }}{% endif %}</p>
+<p>{% if listing.landlord.phone_number %}{{ listing.landlord.phone_number }}{% endif %}</p>
+<p>{% if listing.landlord.landlord_email %}<a href="mailto:{{ listing.landlord.landlord_email }}">E-mail</a>{% if listing.landlord.landlord_url %} | {% endif %}{% endif %}
+{% if listing.landlord.landlord_url %}<a href="{{ listing.landlord.landlord_url }}">Website</a>{% endif %}</p>
+</div>
+<div id="photoscontainer">
+    <p>
+	    {% if listing.photos.all.0.image %}
+		    {% if listing.floor_plans.all.0 %}
+			    <span class="ctltitle">Photos & Floorplans</span>
+		    {% else %}
+			    <span class="ctltitle">Photos</span>
+		    {% endif %}
+	    {% else %}
+		    {% if listing.floor_plans.all.0 %}
+			    <span class="ctltitle">Floorplans</span>
+		    {% else %}
+		    	No photos or floorplans for this listing.
+	    	{% endif %}
+    	{% endif %}
+    </p>
+</div>
+{% if listing.photos.all %}
+    {% for photo in listing.photos.all %}
+            <div id="imagecontainer">
+                <a class="group" title="{% if photo.description %}{{ photo.description|capfirst }}{% else %}{{ photo.title|capfirst }}{% endif %}" rel="group" href="{{ photo.image.url }}"><img src="{% thumbnail photo.image 90x70 crop %}" alt="" /></a>
+            </div>
+    {% endfor %}
+{% endif %}
+{% if listing.floor_plans.all %}
+    {% for floor_plan in listing.floor_plans.all %}
+        <div id="imagecontainer">
+	        <a class="group" title="Floor plan" rel="group" href="{{ listing.floor_plans.all.0.image.url }}"><img src="{% thumbnail listing.floor_plans.all.0.image 90x70 crop %}" alt="" /></a>
+	    </div>
+	{% endfor %}
+{% endif %}
+</div>
+<div id="underline" class="grid_12"></div>
+<div class="grid_12" style="height: 30px;"></div>
+{% endblock content_wide %}
+

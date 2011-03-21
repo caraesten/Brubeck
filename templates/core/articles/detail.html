@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% load core %}{% load advertising %}{% load markup %}{% load scoreboard %}{% load mapping %}{% load comments %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; {{ article|striptags }}{% endblock title %}
+
+{% block head_extras %}
+{% if article.id = 32170 %}<meta name="robots" content="noindex, nofollow" />{% endif %}
+{% gallery_setup "gallery" "small" %}
+<meta name="title" content="{{ article.title }}" />
+<meta name="description" content="{% if article.cdeck %}{{ article.cdeck }}{% else %}{{ article.body|striptags|truncatewords:"20" }}{% endif %}" />
+<link rel="alternate" type="application/rss+xml" title="{{ article.section.name }} RSS Feed" href="/feeds/sections/{{ article.section.slug }}/" />
+{% if map_data %}
+    {% comment %}Start mapping scripts{% endcomment %}
+    {% add_gmap_api %}
+    <script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // First create a div to host the map
+        var themap = $('<div id="map_box"></div>').css({
+            'width': '300px',
+            'height': '300px',
+            'border': '1px solid #000'
+        }).insertBefore('ul#place_list');
+        
+        // Now initialize the map
+        var mapstraction = new Mapstraction('map_box', 'google');
+        mapstraction.addControls({
+            zoom: 'small',
+            map_type: true
+        });
+        
+        bounds = new BoundingBox({{ map_data.extents.min_lat }}, {{ map_data.extents.min_lng }}, {{ map_data.extents.max_lat }}, {{ map_data.extents.max_lng }});
+        
+        // Set center and zoom
+        mapstraction.setBounds(bounds);
+        
+        // Extract the coordinates and add a marker
+        $('.vcard').each(function() {
+            var hcard = $(this);
+            var latitude = hcard.find('.geo .latitude').text();
+            var longitude = hcard.find('.geo .longitude').text();
+            var marker = new Marker(new LatLonPoint(latitude, longitude));
+            marker.setInfoBubble(
+                '<div class="bubble">' + hcard.html() + '</div>'
+            );
+            // marker.setIcon('url');
+            mapstraction.addMarker(marker);
+        });
+    });
+    </script>
+    <style>
+    #place_list {
+        display: none;
+    }
+    </style>
+{% endif %}
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{% ifnotequal article.type "story" %}{% ifnotequal article.type "online" %}{{ article.get_type_display }}: {% endifnotequal %}{% endifnotequal %}{{ article|markdown }}</h1>
+{% if article.cdeck %}<p class="cdeck"><i>{{ article.cdeck|markdown }}</i></p>{% endif %}
+{% ifnotequal article.type 'editorial' %}<p class="byline">By {% if article.byline.all %}{% render_byline article.byline %}{% else %}{% if article.static_byline %}{{ article.static_byline }}{% else %}{% ifequal article.section.publication.name "Move" %}the MOVE{% else %}The Maneater{% endifequal %} Staff{% endif %}{% endif %}</p>{% endifnotequal %}
+<p class="pub_date">Published {{ article.pub_date|date:"N j, Y" }}{% if article.updated %}, <span class="breaking">last updated {{ article.last_updated|date:"g:i a, N j, Y" }}</span>{% endif %}</p>
+<div class="tags">
+    <div class="tag_list">
+        {% if article.tags.all %}
+            <div class="tags-label">Tags:</div>
+            {% for tag in article.tags.all %}
+            <div class="tag" ><a href="{{ tag.get_absolute_url }}">{{ tag|markdown }}</a></div>
+            {% endfor %}
+        {% else %}
+            <div class="tags-label">No tags for this article.</div>
+        {% endif %}
+    </div>
+    <div class="social_media_list">
+        <script>function fbs_click(){u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a title="Share on Facebook" href="http://www.facebook.com/share.php?u=<url>" onclick="return fbs_click()" target="_blank" class="facebook_link fb_share_link"></a>
+       	<a class="twitter_link" target="_blank" title="Share on Twitter" href="http://twitter.com/share?url={{ article.get_absolute_url|urlencode }}"></a>
+       	<a class="e-mail_link" title="E-mail this article" href="/email/article/{{ article.id }}/"></a>
+       	<a class="comment_link" title="Comment on this article" href="#comments"></a>
+       	<a class="letter_link" title="Send a letter to the editor" href="http://www.themaneater.com/section/forum/send-letter/"></a>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+{% ifequal article.type "column" %}{% if article.byline.all.0.mugshot %}
+<div class="mugshot">
+    <img class="photo" src="{{ article.byline.all.0.mugshot.url }}" alt="{{ article.byline.all.0 }}" />
+</div>
+{% endif %}{% endifequal %}
+{% if multimedia %}
+    {% for item in multimedia %}
+        {% ifequal item.mediatype "video" %}
+            {% with item as video %}
+                {% autoescape off %}
+                <object width="688" height="419" style="margin-bottom: 10px;">
+                    <param name="movie" value="{{ video.swf }}"></param>
+                    <embed src="{{ video.swf }}" type="application/x-shockwave-flash" width="688" height="419" style="margin-bottom: 10px;"></embed>
+                </object>
+                {% endautoescape %}
+            {% endwith %}
+        {% endifequal %}
+    {% endfor %}
+{% endif %}
+{% if map_data %}
+<div id="gallery_wrapper" style="width: 320px;">
+    <h3><a href="{{ map_data.map.get_absolute_url }}">{{ map_data.map|markdown }}</a></h3>
+    <ul id="place_list">
+        {% for mpl in map_data.mpl_list %}
+        <li class="vcard">
+            <h3 class="fn org">{% if mpl.web_site %}<a href="{{ mpl.web_site }}">{% endif %}{{ mpl.place.name }}{% if mpl.web_site %}</a>{% endif %}</h3>
+            {% if mpl.place.address %}<p class="adr post-office-box">{{ mpl.place.address }}</p>{% endif %}
+            {% if mpl.additional_info %}<div class="note">{{ mpl.additional_info|markdown }}</div>{% endif %}
+            <p class="geo">Coordinates: <span class="latitude">{{ mpl.place.point.get_y }}</span>, <span class="longitude">{{ mpl.place.point.get_x }}</span></p>
+        </li>
+        {% endfor %}
+    </ul>
+    {{ map_data.map.description|markdown }}
+</div>
+{% endif %}
+{% if images %}
+<div id="gallery_wrapper">
+    <div id="gallery">
+        <ul>
+            {% for image in images %}
+            <li class="photo_container">
+                <a href="{{ image.get_absolute_url }}"><img class="photo" src="{% thumbnail image.image 200x200 %}" alt="Image" /></a>
+                <p class="byline">{% if image.illustration %}Photo illustration by {% endif %}{% ifequal image.mediatype 'editorialcartoon' %}Illustration by {% endifequal %}{% if image.byline %}<a href="{{ image.byline.get_absolute_url }}">{{ image.byline }}</a>{% ifnotequal image.mediatype 'editorialcartoon' %}/{% ifequal image.mediatype "photo" %}{{ image.byline.photographer_position }}{% else %}Graphic Designer{% endifequal %}{% endifnotequal %}</span>{% else %}{% if image.static_byline %}{{ image.static_byline }}{% endif %}{% endif %}</p>
+                {{ image.cutline|markdown }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <p><a href="images/">(View large image browser)</a></p>
+</div>
+{% endif %}
+{% if article.correction_set.all %}<p><strong>Correction appended</strong></p>{% endif %}
+{{ article.body|markdown }}
+{% if article.attached_audio %}
+<p><strong>Listen to attached audio:</strong></p>
+<embed src='http://webjay.org/flash/xspf_player' width='500' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+{% endif %}
+{% if article.correction_set.all %}
+<div id="corrections">
+    {% for correction in article.correction_set.all %}
+    <p><strong>Correction:</strong> {{ correction.correction|markdown }} (Added {{ correction.date_corrected|date:"P, F j, Y" }})</p>
+    {% endfor %}
+</div>
+{% endif %}
+{% get_comment_count for article as comment_count %}
+{% get_comment_list for article as comment_list %}
+<div class="object_list" id="comments">
+    <h2 class="header">Comments ({{ comment_count }})</h2>
+    {% for comment in comment_list %}
+    <div class="item comment">
+        <h3><a href="{{ comment.get_absolute_url }}">{{ comment.submit_date|date:"P, N j, Y" }}</a></h3>
+        <p>{{ comment.user_name }} said:</p>
+        <p>{{ comment.comment }}</p>
+    </div>
+    {% endfor %}
+</div>
+<div class="object_list">
+    <h2 class="header">Post a comment</h2>
+    {% if article.enable_comments %}
+    <div class="item">
+        {% render_comment_form for article %}
+    </div>
+    {% else %}
+    <p>Comments have been disabled for this article.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+    {% comment %}
+    <div class="related_sidebar">
+        <p><script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href="http://www.facebook.com/share.php?u=<url>" onclick="return fbs_click()" target="_blank" class="fb_share_link">Share on Facebook</a></p>
+        <p><a href="#comments">Comment on this article</a></p>
+        <p><a href="http://www.themaneater.com/section/forum/send-letter/">Send a letter to the editor</a></p>
+        <p><a href="/email/article/{{ article.id }}/">E-mail this article</a></p>
+    </div>
+    {% endcomment %}
+    {% if multimedia %}
+    <div class="related_sidebar" id="multimedia_list">
+        <h2>Multimedia</h2>
+        <ul>
+            {% for item in multimedia %}
+            <li style="list-style: none; font-size: 8pt;>
+                <div style="clear:both;" />
+       	       	{% ifequal item.mediatype "video" %}<h3>Video: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                {% comment %}<div style="float:left;margin-right:5px;">{% if item.preview_image %}<img class="photo" src="{% thumbnail item.preview_image 120x120 crop %}" alt="{{ item }}" />{% else %}<img class="photo" src="{{ item.thumbnail }}" alt="{{ item.description|markdown }}" />{% endif %}</div>{% endcomment %}{% endifequal %}
+                {% ifequal item.mediatype "podcast" %}<a href="{{ item.get_absolute_url }}">Listen to podcast...
+       	       	</a>{% endifequal %}
+                {% ifequal item.mediatype "audioclip" %}<h3><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                {% if item.image %}<div style="float:left;margin-right:5px;"><img class="right photo" src="{% thumbnail item.image 120x120 crop %}" alt="{{ item }}" /></div>{% endif %}{% endifequal %}
+                {% ifequal item.mediatype "slideshow" %}<h3>Slideshow: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                <div style="float:left;margin-right:5px;"<img src="{% thumbnail item.image 120x120  %}"></div>{% endifequal %}
+                {{ item.description|markdown }}
+                {% ifequal item.mediatype "audioclip" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+                <a href="{{ item.get_absolute_url }}">{% ifequal item.mediatype "audioclip" %}Listen to audio clip...{% endifequal %}{% ifequal item.mediatype "podcast" %}Listen to podcast...{% endifequal %}{% ifequal item.mediatype "slideshow" %}View slideshow...{% endifequal %}{% ifequal item.mediatype "video" %}View video...{% endifequal %}</a>
+                {% ifequal item.mediatype "podcast" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.sidebar %}
+    <div class="related_sidebar" id="article_sidebar">
+        {{ article.sidebar|markdown }}
+    </div>
+    {% endif %}
+    {% if article.calendar %}
+    <div id="fp_calendar">
+        <h2><a href="/calendar/">Calendar</a></h2>
+        <ul>
+            {% for event in article.calendar.event_set.all %}
+            {% ifchanged %}<li class="calendar_date">
+                <h3>{{ event.start|date:"N j" }}{% ifnotequal event.start.date event.end.date %} &ndash; {{ event.end|date:"N j" }}{% endifnotequal %}</h3>
+                <ul>{% endifchanged %}
+                    <li class="calendar_event">
+                        <h4><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+                        <p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }} &ndash; {{ event.end|date:"g:i a, N j" }}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                        <p class="calendar_description">{% if event.summary %}{{ event.summary|markdown }}{% endif %}</p>
+                    </li>
+                {% ifchanged event.start.date %}</ul>
+            </li>{% endifchanged %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.attached_files.all %}
+    <div class="related_sidebar" id="attached_files">
+        <h2>Attached files</h2>
+        <ul>
+            {% for file in article.attached_files.all %}
+            <li>
+                <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
+                {{ file.description|markdown }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.incident_set.all %}
+    <div class="related_sidebar">
+        <h2>Related blotter entr{{ article.incident_set.all.count|pluralize:"y,ies" }}</h2>
+        <ul>
+            {% for incident in article.incident_set.all %}
+            <li><a href="{{ incident.get_absolute_url }}">{{ incident }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% ifequal article.section.slug "sports" %}{% show_scores_sidebar %}{% endifequal %}
+    {% comment %}{% ifequal article.section.slug "outlook" %}{% show_cclips %}{% endifequal %}{% endcomment %}
+    {% ifequal article.section.slug "forum" %}{% show_disclaimer article %}{% endifequal %}
+    {% show_related_articles article %}
+    {% show_related_blog_posts article %}
+{% endblock sidebar %}

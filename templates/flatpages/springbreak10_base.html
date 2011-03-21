@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load markup %}{% load core %}{% load advertising %}
+{% block title %}{{ block.super }} &ndash; Spring Break 2010{% ifnotequal flatpage.title 'Spring Break 2010' %} &ndash; {{ flatpage.title }}{% endifnotequal %}{% endblock title %}
+
+{% block head_extras %}
+{% gallery_setup "gallery" "small" %}
+<style>
+body {
+    background-color: #B48153;
+}
+#ticker_and_search, #flag_bar, #nav_bar {
+    display: none;
+}
+#container {
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-topright: 15px;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    border: 2px solid #1A1717;
+    margin-left: 0;
+    margin-top: 35px;
+    padding-right: 23px;
+}
+#content_wide {
+    width: 963px;
+}
+#spring_break_flag_bar {
+    margin-left: 0;
+    margin-right: 0;
+    width: 963px;
+}
+#spring_break_flag_bar img#logo {
+    margin-left: -35px;
+    margin-top: -35px;
+    width: 280px;
+    position: absolute;
+}
+#text-logo {
+    margin: 35px 0 25px 210px;
+}
+#spring_break_flag_bar .nav {
+    background-color: #5B3D21;
+    border-bottom: 1px solid #1A1717;
+    border-top: 1px solid #1A1717;
+    color: #5B3D21;
+    height: 30px;
+    margin-bottom: 30px;
+    margin-left: 0;
+    /*margin-top: 125px;*/
+    padding: 0 10px 0 13px;
+}
+a {
+    color: #007DBC;
+}
+a:hover {
+    color: #009FEF;
+}
+span.left-align {
+    /*border-right: 1px dotted #5B3D21;*/
+    color: #FFFFFF;
+    float: left;
+    font-weight: bold;
+    padding: 8px 6px 5px;
+    text-transform: uppercase;
+}
+span.right-align {
+    /*border-left: 1px dotted #5B3D21;*/
+    color: #FFFFFF;
+    float: right;
+    padding: 8px 6px 5px;
+}
+#main_break_content {
+    /*border-top: 4px double #5B3D21;*/
+    padding-top: 10px;
+}
+#top {
+    border-bottom: 1px dotted #5B3D21;
+}
+#top_featured_content {
+    margin-right: 0;
+    padding-right: 9px;
+}
+#supplementary_top_content {
+    border-left: 1px dotted #5B3D21;
+    margin-left: 0;
+    padding-left: 10px;
+}
+.headline {
+    padding-top: 5px;
+}
+#first, #second, #third {
+    padding-top: 10px;
+}
+#second {
+    border-left: 1px dotted #5B3D21;
+    border-right: 1px dotted #5B3D21;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+.object_list .header {
+    background-color: #5B3D21;
+}
+.featured-story {
+    border-bottom: 1px dotted #5B3D21;
+    margin-bottom: 10px;
+}
+#sidebar {
+    border-left: 1px dotted #5B3D21;
+}
+#footer {
+    background-color: #1A1717;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="spring_break_flag_bar" class="grid_12">
+    <div class="grid_3 alpha"><a href="/special-sections/spring-break-2010/"><img id="logo" src="/media/style/2010-03/images/SBlogo.png" /></a></div>
+    <div id="text_logo"><img id="text-logo" src="/media/style/2010-03/images/EaterSB.jpg" /></div>
+    <div class="grid_12 omega nav"><span class="right-align">A special section of <a href="/">The Maneater</a></span><div style="clear: both;"></div></div>
+</div>
+<div id="main_break_content" class="grid_12">
+{% block content_across %}
+<div id="content" class="grid_9 alpha">
+{% block content %}
+<h1><p>Staying safe for spring break</p></h1>
+<p class="cdeck">Vacations are fun, but be aware of potential dangers.</p>
+<p class="byline">By <span class="byline"><a href="/staff/view/megan-donohue/">Megan Donohue</a></span></p>
+<p class="pub_date">Published March 21, 2010</p>
+<p>If you're going on spring break, there are a lot of safety tips to be aware of. Universities across the country, including MU, warn their students of potential dangers spring break could introduce. The Centers for Disease Control and Prevention also issues a spring break advice page. Here are some tips gathered from various sources:</p>
+<p><strong>Be aware of alcohol consumption</strong></p>
+<p>Even if you are planning to consume alcohol, be careful how much you consume and what you do while under the influence. Don't drink and drive, and be careful about going around a foreign city while intoxicated. You could get into trouble because you are unfamiliar with the laws, customs and language. Drinking on the street can get you arrested in some countries.</p>
+<p><strong>Don't set your drink down</strong></p>
+<p>Keep your eye on your drink so you can be sure no one slips drugs into it. These situations could be worse when you can't speak the local language and don't know where to go.</p>
+<p><strong>Police number</strong></p>
+<p>Know the local number for emergencies, as they are different in different countries. For example, Mexico's is 066, 060 or 080. Also, know the number for the local hospital, just in case.</p>
+<p><strong>Keep in touch</strong></p>
+<p>Never leave a bar or party alone or with a stranger. Update your parents or a friend at home, so if something does happen, they will have some information that they can give local law enforcement to help find you.</p>
+<p><strong>Avoid drug usage</strong></p>
+<p>Don't bring them with you, buy them or use them. You don't want to be imprisoned or tried in a court of law in a foreign legal system. Even if you are a minor, some countries will try you as an adult, and the penalties will not be worth the high.</p>
+<p><strong>Obey laws</strong></p>
+<p>Be aware of and follow the local laws. In emergencies, you could contact the U.S. Embassy for assistance, but they cannot arrange for your release from local custody.</p>
+<p><strong>Heed warning flags on beaches</strong></p>
+<p>If there's a red warning flag, don't enter the water, and if there are shark warnings, don't stay in the water if you cut yourself. Although it seems intuitive, many people drown each year because they don't pay attention to flags and get swept away by the current.</p>
+<p><strong>Be careful which taxi you enter</strong></p>
+<p>Only use licensed, regulated taxis. Some criminals operate illegal taxis and pick up unsuspecting victims. If you are unsure about a taxi, ask a restaurant or local business to call you one. Getting into a random cab on the street is a prime opportunity for abduction.</p>
+<p><strong>Don't carry any weapons</strong></p>
+<p>A pocketknife might be normal to have on you in the U.S., but it is not necessarily legal on foreign soil and can result in major weapons charges and penalties.</p>
+<p><strong>Don't carry cash in your hand</strong></p>
+<p>Whether you're just running to the store or coming from the ATM, be aware of who is around you, and put your money away immediately. If you are carrying cash in your hand, you are an easy target for theft. Be aware of how many valuables you have on you and how visible they are. You don't want to attract thieves or pickpockets.</p>
+<p><strong>Protection</strong></p>
+<p>Whether it's using sunscreen or a condom, know how to protect yourself if needed.</p>
+<p><strong>Crowds</strong></p>
+<p>Be extra careful in crowds, as you are especially susceptible to pickpockets. Especially in Mexico, be careful when you leave resorts or resort cities due to recent political turmoil and abductions. Ask your hotel consulate if there are any areas or people you should avoid.</p>
+<p><strong>Need more help?</strong></p>
+<p>Then check out these Web sites:</p>
+<ul>
+<li><p><a href="http://www.safespringbreak.org/safety-tips/">Safe Spring Break</a></p></li>
+<li><p><a href="http://studentsabroad.state.gov/html-site/SpringBreak.html">Students Abroad</a></p></li>
+<li><p><a href="http://www.cdc.gov/family/springbreak/">Centers for Disease Control and Prevention</a></p></li>
+<li><p><a href="http://gomexico.about.com/od/planningandinformation/a/safety.htm">Safety in Mexico</a></p></li>
+</ul>
+{% endblock content %}
+</div>
+<div id="sidebar" class="grid_3 omega">
+{% comment %}{{ flatpage.content|markdown }}{% endcomment %}
+{% render_banner_ad 'vertical' %}
+</div>
+{% endblock content_across %}
+</div>
+{% endblock content_wide %}

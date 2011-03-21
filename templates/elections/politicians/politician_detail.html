@@ -1,0 +1,10 @@
+{% extends "elections/elections_base_real.html" %}
+{% load markup %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &mdash; Candidates &mdash; {{ politician }}{% endblock title %}
+
+{% block content %}
+<h1>{{ politician }}</h1>
+<img src="{% thumbnail politician.photo 200x350 crop %}" alt="{{ politician }}" class="photo right" />
+{{ politician.print_description|markdown }}
+{% endblock content %}

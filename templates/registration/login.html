@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Log in{% endblock title %}
+
+{% block content %}
+<h1>Log in</h1>
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+<form method="POST" action="">
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="submit" value="Log in" />
+</form>
+{% endblock content %}

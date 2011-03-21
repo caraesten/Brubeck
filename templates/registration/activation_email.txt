@@ -1,0 +1,8 @@
+Thanks for registering for an account with {{ site.name }}. To activate your account, please visit the URL below. If your e-mail client has not turned it into a clickable link, copy and paste it into your Web browser's address bar.
+
+http://{{ site.domain }}/accounts/activate/{{ activation_key }}/
+
+If you have any questions, please let us know at online@themaneater.com.
+
+Thanks,
+{{ site.name }}

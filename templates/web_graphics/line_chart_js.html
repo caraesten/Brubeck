@@ -1,0 +1,60 @@
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/highcharts.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/excanvas.compiled.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function(){
+   var chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'chart-container',
+         defaultSeriesType: 'line'
+      },
+      title: {
+         text: '{{ linechart.title }}'
+      },
+      subtitle: {
+         text: '{{ linechart.subtitle }}<div class="chart_source"><em>Source: {{ linechart.source }}</em></div>'
+      },
+      xAxis: {
+         categories: [{% for label in x_axis_labels %}
+            '{{ label }}'{% if not forloop.last %},{% endif %}{% endfor %}
+         ],
+         title: {
+            enabled: true,
+            text: '{{ linechart.x_axis_title }}'
+         }
+      },
+      yAxis: {
+         min: {{ linechart.y_axis_min }},
+         title: {
+            text: '{{ linechart.y_axis_title }}{% if linechart.units %} ({{ linechart.units }}){% endif %}'
+         }
+      },
+      legend: {
+         layout: 'vertical',
+         backgroundColor: '#FFFFFF',
+         style: {
+            left: '100px',
+            top: '70px',                                                                
+            bottom: 'auto'
+         }
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.series.name +'</b><br/>'+ this.x +': '+ this.y +'{% if linechart.units %} {{ linechart.units }}{% endif %}';
+         }
+      },
+      plotOptions: {
+         column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+         }
+      },
+           series: [{% for series in linechart.series.all %}{% with series.get_cleaned_points as cleaned_points %}{
+         name: '{{ series.name }}',{% if series.color %}
+         color: '{{ series.color }}',{% endif %}
+         data: [{% for point in cleaned_points %}{{ point }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+      }{% if not forloop.last %}, {% endif %}{% endwith %}{% endfor %}]
+   });
+});
+</script>

@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load markup %}{% load web_graphics %}{% load core %}
+{% block title %}{{ block.super }} &ndash; Graphics &ndash; {{ graphic.title }}{% endblock title %}
+{% block head_extras %}
+{% ifequal graphic_type "columnchart" %}{% render_column_chart_js graphic.columnchart graphic_context.x_axis_labels %}{% endifequal %}
+{% ifequal graphic_type "linechart" %}{% render_line_chart_js graphic.linechart graphic_context.x_axis_labels %}{% endifequal %}
+{% ifequal graphic_type "piechart" %}{% render_pie_chart_js graphic.piechart graphic_context.slices_sum %}{% endifequal %}
+{% ifequal graphic_type "scatterplot" %}{% render_scatter_plot_js graphic.scatterplot %}{% endifequal %}
+{% ifequal graphic_type "timeline" %}
+{% comment %}
+<script type="text/javascript" src="/media/style/2009-01/js/easySlider.packed.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#chart-container').easySlider({
+        prevText: '&laquo; Previous',
+        nextText: 'Next &raquo;'
+    });
+});
+</script>
+{% endcomment %}
+<script type="text/javascript" src="/media/style/2010-10/js/jquery.tinyscrollbar.min.js"></script>
+<script type="text/javascript">
+<!--
+
+$(function () {
+    $('.bubble_info').each(function (counter, val) {
+        var distance = 10;
+        var time = 250;
+        var hideDelay = 300;
+
+        var hideDelayTimer = null;
+
+        var beingShown = false;
+        var shown = false;
+        var trigger = $('.trigger', this);
+        var info = $('.popup', this).css('opacity', 0);
+
+
+        $([trigger.get(0), info.get(0)]).mouseover(function () {
+            var info_height = info.height();
+            if (hideDelayTimer) clearTimeout(hideDelayTimer);
+            if (beingShown || shown) {
+                // don't trigger the animation again
+                return;
+            } else {
+                // reset position of info box
+                beingShown = true;
+                if (counter > 8) {
+                    info.css({
+                        top: (-1 * info_height) - 10,
+                        'margin-left': -290,
+                        display: 'block'
+                    }).animate({
+                        top: '-=' + distance + 'px',
+                        opacity: 1
+                    }, time, 'swing', function() {
+                        beingShown = false;
+                        shown = true;
+                    });
+                } else {
+                    info.css({
+                        top: 35,
+                        'margin-left': -10,
+                        display: 'block'
+                    }).animate({
+                        top: '-=' + distance + 'px',
+                        opacity: 1
+                    }, time, 'swing', function() {
+                        beingShown = false;
+                        shown = true;
+                    });
+                }
+            }
+
+            return false;
+        }).mouseout(function () {
+            if (hideDelayTimer) clearTimeout(hideDelayTimer);
+            hideDelayTimer = setTimeout(function () {
+                hideDelayTimer = null;
+                info.animate({
+                    top: '-=' + distance + 'px',
+                    opacity: 0
+                }, time, 'swing', function () {
+                    shown = false;
+                    info.css('display', 'none');
+                });
+
+            }, hideDelay);
+
+            return false;
+        });
+    });
+});
+
+//-->
+</script>
+<script type="text/javascript">
+$(function () {
+    $('#timeline-holder').tinyscrollbar({axis: 'x'});
+});
+</script>
+<style>
+#chart-container {
+    background-color: #EFEFEF;
+    border: 1px solid #DDDDDD;
+    height: 434px !important;
+    overflow: hidden;
+    width: 675px !important;
+}
+#timeline-holder {
+    border: 1px solid #777777;
+    clear: both;
+    margin: 20px 0 10px;
+    width: 685px;
+}
+.scrollbar {
+    clear: both;
+    height: 15px;
+    margin: 0 0 5px;
+    overflow: hidden;
+    position: relative;
+}
+.viewport {
+    height: 420px;
+    overflow: hidden;
+    position: relative;
+    width: 685px;
+}
+.overview {
+    left: 0;
+    list-style: none outside none;
+    margin: 0;
+    padding: 10px 20px;
+    position: absolute;
+    top: 0;
+    width: 1985px;
+}
+#timeline-holder .thumb .end,
+#timeline-holder .thumb {
+    background-color: #BBBBBB;
+}
+#timeline-holder .scrollbar {
+    border-top: 1px solid #CCCCCC;
+    clear: both;
+    height: 25px;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+#timeline-holder .track {
+    background-color: #DDDDDD;
+    height: 23px;
+    width: 100%;
+    position: relative;
+    padding: 1px 0;
+}
+#timeline-holder .thumb {
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    background-position: 100% -25px;
+    cursor: pointer;
+    height: 23px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 1px;
+}
+#timeline-holder .thumb .end {
+    background-color: transparent;
+    background-position: 0 -25px;
+    height: 23px;
+    overflow: hidden;
+    width: 5px;
+}
+#timeline-holder .disable{ display: none; }
+#content ul.timeline {
+    background-color: #EFEFEF;
+/*     border: 1px solid #DDDDDD; */
+    height: 420px;
+    margin-bottom: 0;
+    margin-left: 0;
+    /*padding: 10px 20px;*/
+    /*width: 2020px !important;*/
+}
+ul.timeline li.event {
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    background-color:#DDDDDD;
+    border: 1px solid #BBBBBB;
+    float: none !important;
+    font-weight: bold;
+    height: 15px;
+    list-style-type: none;
+    list-style-position: outside;
+    list-style-image: none;
+    margin-bottom: 8px;
+    position: relative;
+    text-align: center;
+    z-index: 3;
+}
+li.event a {
+    color: #DDDDDD;
+}
+ul.labels {
+    margin: 0;
+}
+li.label {
+    background-color: #777777;
+    border-right: 1px solid #AAAAAA;
+    color: #DDDDDD;
+    display: none;
+    font-weight: bold;
+    height: 22px;
+    list-style-type: none;
+    list-style-position: outside;
+    list-style-image: none;
+    padding-top: 5px;
+    text-align: center;
+}
+.bubble_info {
+    position: relative;
+}
+.trigger {
+    position: absolute;
+}
+.popup {
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    background-color: #000000;
+    color: #FFFFFF;
+    display: none;
+    margin-left: -15px;
+    padding: 5px 10px;
+    position: absolute;
+    width: 300px;
+    z-index: 50;
+}
+.popup a {
+    color: #BBBBBB;
+    text-decoration: underline;
+}
+.popup a:hover {
+    color: #FFFFFF;
+}
+span#prevBtn,
+span#nextBtn {
+    display: block;
+    float: left;
+    margin: 10px;
+}
+a.tooltip span {
+    display: none;
+    width: 200px;
+    z-index: 1000;
+}
+a.tooltip:hover span {
+
+    background-color: #777777;
+    border: 1px solid #333333;
+    color: #DDDDDD;
+    display: block;
+    font-weight: normal;
+    margin: 20px auto;
+    position: static;
+}
+.tipsy_top {
+    background: url("/media/style/2010-10/images/tipsy.gif") no-repeat scroll 0 0;
+    height: 9px;
+    margin-left: 5px;
+    margin-top: -10px;
+}
+.tipsy_bottom {
+    background: url("/media/style/2010-10/images/tipsy.gif") no-repeat scroll 0 0;
+    height: 9px;
+    margin-bottom: -10px;
+    margin-left: 285px;
+}
+</style>
+{% endifequal %}
+{% endblock head_extras %}
+{% block content %}
+<h1>{{ graphic.title|markdown }}</h1>
+{% if graphic.subtitle %}<em>{{ graphic.subtitle|markdown }}</em>{% endif %}
+<p class="byline">By {% if graphic.byline.all %}{% render_byline graphic.byline %}{% else %}{% if graphic.static_byline %}{{ graphic.static_byline }}{% else %}{% ifequal graphic.section.publication.name "Move" %}the MOVE{% else %}The Maneater{% endifequal %} Staff{% endif %}{% endif %}</p>
+<p class="pub_date">Published {{ graphic.pub_date|date:"N j, Y" }}</p>
+{% ifnotequal graphic_type "timeline" %}
+<div id="chart-container" class="highcharts-container" style="height: 360px; width: 690px; margin: 0; clear: both;">
+</div>
+{% else %}
+<div id="timeline-holder">
+    <ul class="timeline">
+        <div class="viewport">
+            <div class="overview">
+                {% for key, event in graphic_context.event_listing.items %}
+                <div class="bubble_info"><li class="event trigger" style="left:{{ event.from_start }}%;width:{{ event.duration }}%;"></li><div class="popup" style="left:{{ event.from_start }}%;">
+                
+                {% if forloop.counter0 < 9 %}<div class="tipsy_top"></div>{% endif %}
+                
+                <span><h2>{{ event.instance.title }}</h2>{{ event.instance.description|markdown }}</span>
+                
+                {% if forloop.counter0 > 8 %}<div class="tipsy_bottom"></div>{% endif %}
+                
+                </div></div>
+                {% endfor %}
+                <li class="label" style="margin-left: -7px;width:9%">2000</li>
+                <li class="label" style="width:9%">2001</li>
+                <li class="label" style="width:9%">2002</li>
+                <li class="label" style="width:9%">2003</li>
+                <li class="label" style="width:9%">2004</li>
+                <li class="label" style="width:9%">2005</li>
+                <li class="label" style="width:9%">2006</li>
+                <li class="label" style="width:9%">2007</li>
+                <li class="label" style="width:9%">2008</li>
+                <li class="label" style="width:9%">2009</li>
+                <li class="label" style="width:198px;">2010</li>
+            </div>
+        </div>
+    </ul>
+    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+</div>
+{% endifnotequal %}
+{% endblock content %}

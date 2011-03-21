@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; For reporters &ndash; Info pages &ndash; {{ object }}{% endblock title %}
+
+{% block content %}
+<h1>{{ object }}</h1>
+{{ object.description|markdown }}
+{{ object.body|markdown }}
+<p class="back"><a href="/reporters/info_pages/">Back to list of info pages</a></p>
+{% endblock content %}

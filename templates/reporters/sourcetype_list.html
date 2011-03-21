@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; For reporters &ndash; Sources{% endblock title %}
+
+{% block content %}
+<h1>Sources</h1>
+<ul>
+    {% for type in object_list %}
+    <li><a href="{{ type.get_absolute_url }}">{{ type }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

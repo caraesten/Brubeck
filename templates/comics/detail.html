@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Comics &ndash; {{ episode }}{% endblock title %}
+
+{% block content %}
+<h1>{{ episode }}</h1>
+{% if episode.byline %}<p>By <a href="{{ episode.byline.get_absolute_url }}">{{ episode.byline }}</a></p>{% else %}{% if episode.static_byline %}<p>By {{ episode.static_byline }}</p>{% else %}{% endif %}{% endif %}
+<div class="wide_photo_container">
+    <img class="photo" alt="{{ episode }}" src="{{ episode.get_thumbnail600_url }}" />
+</div>
+<div class="page_navigation">
+    {% if previous %}<a href="{{ previous.get_absolute_url }}">&laquo; Previous</a>{% endif %}{% if previous and next %} | {% endif %}{% if next %}<a href="{{ next.get_absolute_url }}">Next &raquo;</a>{% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,3 @@
+{% load thumbnail %}{% load markup %}
+<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{% thumbnail object.image 200x350 %}" /></a>
+<p class="cdeck">{{ object.cutline|safe|markdown }}</p>

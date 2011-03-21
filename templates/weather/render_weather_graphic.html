@@ -1,0 +1,2 @@
+{% if weather %}					<img id="weather_image" src="/media/style/2009-09/weather/{{ weather.condition }}.png" class="right" />
+					<h4>{{ weather.temperature_fahrenheit }}&deg;F ({{ weather.temperature_celsius }}&deg;C)<br />Wind: {{ weather.wind_speed }} mph {{ weather.wind_dir }}</h4>{% endif %}

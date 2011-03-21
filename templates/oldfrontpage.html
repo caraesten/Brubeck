@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load core %}{% load markup %}{% load advertising %}
+{% block head_extras %}
+<meta name="verify-v1" content="EZiNYvseL8CrSl0vxUayKdd3z6oChY+tefqretEMLt4=" >
+{% endblock head_extras %}
+{% block content_wide %}
+{% if election %}{{ election }}{% endif %}
+{{ election }}
+<div id="top_stories" class="grid_12 fp_row">
+    <div id="top_story" class="grid_4 alpha">
+    {% if not featured_multimedia %}
+        {% if centerpiece.photos.all %}<a href="{{ centerpiece.get_absolute_url }}"><img id="top_story_photo" src="{% if centerpiece.photos.all.0.is_vertical %}{{ centerpiece.photos.all.0.get_thumbnail140_url }}{% else %}{{ centerpiece.photos.all.0.get_thumbnail300_url }}{% endif %}" alt="Photo" class="photo {% if centerpiece.photos.all.0.is_vertical %}big_vert{% else %}big_horiz{% endif %}" /></a>{% endif %}
+        <h1><a href="{{ centerpiece.get_absolute_url }}">{{ centerpiece.title|markdown }}</a></h1>
+        <p>{% if centerpiece.blurb %}{{ centerpiece.blurb|markdown }}{% else %}{% if centerpiece.cdeck %}{{ centerpiece.cdeck|markdown }}{% else %}{{ centerpiece.body|markdown|truncatewords_html:"40" }}{% endif %}{% endif %}</p>
+        {% if centerpiece.updated %}<p class="breaking">(Last updated {{ centerpiece.last_updated|date:"g:i a, N j, Y" }})</p>{% endif %}
+    {% else %}
+        {% ifequal featured_multimedia.mediatype "custom" %}
+            {% if featured_multimedia.get_absolute_url %}<a href="{{ featured_multimedia.get_absolute_url }}">{% endif %}<img id="top_story_photo" src="{% if featured_multimedia.photo.is_vertical %}{{ featured_multimedia.photo.get_thumbnail140_url }}{% else %}{{ featured_multimedia.photo.get_thumbnail300_url }}{% endif %}" alt="Photo" class="photo {% if featured_multimedia.photo.is_vertical %}big_vert{% else %}big_horiz{% endif %}" />{% if featured_multimedia.get_absolute_url %}</a>{% endif %}
+        {% else %}
+            {% ifequal featured_multimedia.mediatype "video" %}
+                <object width="420" height="383">
+                    <param name="movie" value="{{ featured_multimedia.swf }}"></param>
+                    <embed src="{{ featured_multimedia.swf }}" type="application/x-shockwave-flash" width="300" height="274"></embed>
+                </object>
+            {% else %}  {% comment %}Assume we're dealing with a slideshow.{% endcomment %}
+                <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="300" height="274" id="soundslider" align="middle"><param name="allowScriptAccess" value="always" /><param name="movie" value="{{ featured_multimedia.swf }}?size=0&format=xml" /><param name="quality" value="high" /><param name="menu" value="false" /><param name="bgcolor" value="#000000" /><embed src="{{ featured_multimedia.swf }}?size=0&format=xml" quality="high" bgcolor="#000000" width="300" height="274" name="soundslider" align="middle" menu="false" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+            {% endifequal %}
+        {% endifequal %}
+        <h1>{% if featured_multimedia.get_absolute_url %}<a href="{{ featured_multimedia.get_absolute_url }}">{% endif %}{{ featured_multimedia.title|markdown }}{% if featured_multimedia.get_absolute_url %}</a>{% endif %}</h1>
+        {{ featured_multimedia.description|markdown }}
+    {% endif %}
+    </div>
+    <div id="top_other" class="grid_8 omega">
+        {% if news_bursts %}
+        <div id="news_bursts" class="grid_8">
+            <ul>
+                {% for burst in news_bursts %}
+                <li>
+                    <h1>{% if burst.link %}<a href="{{ burst.link }}">{% endif %}{{ burst.title }}{% if burst.link %}</a>{% endif %}</h1>
+                    <p>{{ burst.body|markdown }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% if other_info %}
+        <div id="other_info" class="grid_8">
+            {{ other_info }}
+        </div>
+        {% endif %}
+        
+        {% for row in top_articles|columns:"2" %}
+        <div id="top_other_row{% if not forloop.last %}1{% else %}2{% endif %}" class="grid_8">
+            {% for article in row %}
+            <div class="top_article grid_{% cycle '4 alpha' '4 omega' %}">
+                <h2>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h2>
+                {% if article.photos.all %}<img src="{% if article.photos.all.0.is_vertical %}{{ article.photos.all.0.get_thumbnail200_url }}{% else %}{{ article.photos.all.0.get_thumbnail300_url }}{% endif %}" alt="Photo" class="photo {% if article.photos.all.0.is_vertical %}small_vert{% else %}small_horiz{% endif %}" />{% endif %}
+                <p>{% if article.blurb %}{{ article.blurb|markdown }}{% else %}{% if article.cdeck %}{{ article.cdeck|markdown }}{% else %}{{ article.body|markdown|truncatewords_html:"40" }}{% endif %}{% endif %}</p>
+                <p>(in <a href="{{ article.section.get_absolute_url }}">{{ article.section.name }}</a>{% if article.updated %}, <span class="breaking">last updated {{ article.last_updated|date:"g:i a, N j, Y" }}</span>{% endif %})</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div id="fp_online_content" class="grid_12 fp_row">
+    {% if latest_online_exclusives %}
+    <div id="fp_online_articles" class="grid_3 alpha">
+        <h2>Latest online-only articles</h2>
+        <ul>
+            {% for article in latest_online_exclusives %}
+            <li>
+                <h3><a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3>
+                {% if article.cdeck %}{{ article.cdeck|markdown }}{% else %}{{ article.body|markdown|truncatewords_html:"20" }}{% endif %}
+                {% if article.updated %}<p class="breaking">last updated {{ article.last_updated|date:"g:i a, N j, Y" }}</p>{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div id="fp_latest_mm" class="grid_3{% if not latest_online_exclusives %} alpha{% endif %}">
+        <h2>Latest multimedia</h2>
+        <img src="{% ifequal latest_multimedia.mediatype 'video' %}{{ latest_multimedia.thumbnail }}{% else %}{{ latest_multimedia.get_thumbnail200_url }}{% endifequal %}" alt="Link to {% ifequal latest_multimedia.mediatype 'video' %}video{% else %}slideshow{% endifequal %}" class="right photo" />
+        <p>{{ latest_multimedia.description|markdown|truncate_paragraphs:"1" }} (<a href="{{ latest_multimedia.get_absolute_url }}">{% ifequal latest_multimedia.mediatype "audioclip" %}Listen to audio clip{% else %}View {{ latest_multimedia.mediatype }}{% endifequal %}</a>{% if latest_multimedia.article_set.all %} or <a href="{{ latest_multimedia.article_set.all.0.get_absolute_url }}">read the article</a>{% endif %})</p>
+        <div id="fp_mam_ad">
+            <div><img src="/media/style/2009-01/style/ad_header.png" alt="Advertisement" /></div>
+            <a href="http://www.myapartmentmap.com/"><p>Find off-campus apartments at <br />My Apartment Map</p>
+            <img src="/media/2009/0115/mam-mini-logo.png" alt="My Apartment Map" /></a>
+        </div>
+    </div>
+    <div id="fp_latest_podcasts" class="grid_2">
+        <h2>Latest podcasts</h2>
+        <ul>
+            {% for episode in latest_podcast_episodes %}
+            <li><h3><a href="{{ episode.get_absolute_url }}">{{ episode }}</a></h3></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="fp_latest_blog_posts" class="{% if latest_online_exclusives %}grid_4{% else %}grid_7{% endif %} omega">
+        <h2>Latest blog posts</h2>
+        {% if latest_blog_posts %}
+        <ul>
+            {% for post in latest_blog_posts %}
+            <li>
+                <h3><a href="{{ post.get_absolute_url }}">{{ post|markdown }}</a></h3>
+                {{ post.body|markdown|truncatewords_html:"20" }}
+                <p>(from <a href="{{ post.blog.get_absolute_url }}">{{ post.blog }}</a>)
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+                <p>There are currently no blog posts to display.</p>
+        {% endif %}
+    </div>
+</div>
+<div id="ad_bar" class="grid_12 fp_row">
+    <span class="right">{% render_adsense 'banner' %}</span>{% render_banner_ad 'banner' %}
+</div>
+<div id="fp_articles_calendar" class="grid_12 fp_row">
+    <div id="fp_section_articles" class="grid_9 alpha">
+        {% for row in all_sections|columns:"3" %}
+        <div id="fp_section_articles_row{% if not forloop.last %}1{% else %}2{% endif %}" class="grid_9">
+            {% for item in row %}
+            {% comment %}Sections have slugs, but issues don't.{% endcomment %}
+            <div id="fp_section" class="grid_3 alpha">
+                {% if item.slug %}
+                <h2>{{ item.name }}</h2>
+                <ul>
+                    {% for article in item.articles %}
+                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="{{ item.get_absolute_url }}">See more articles in {{ item.name }}...</a></p>
+                {% else %}
+                <h2>In print</h2>
+                <ul>
+                    {% if issue_front %}<li class="issue_front_thumb"><a href="{{ issue_front.get_absolute_url }}"><img class="photo left" src="{{ issue_front.get_thumbnail200_url }}" alt="View the front page" /></a></li>{% endif %}
+                    {% if item.comicepisode_set.all %}<li><h3><a href="/comics/latest/">Comics</a></h3></li>{% endif %}
+                    <li><h3><a href="/games/">Games</a></h3></li>
+                    {% for special_section in item.specialsection_set.all %}
+                    <li><h3><a href="{{ special_section.get_absolute_url }}">{{ special_section }}</a></h3></li>
+                    {% endfor %}
+                    {% for layout in issue_other_layouts %}
+                    <li><a href="{{ layout.get_absolute_url }}">{% if not layout.last_page %}Page {{ layout.first_page }}{% else %}Pages {{ layout.first_page }}&ndash;{{ layout.last_page }}{% endif %}</a></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer" style="clear: both;"><a href="{{ item.get_absolute_url }}">See more from this issue...</a></p>
+                {% comment %}{% if blotter_entries %}
+                <h2>Latest blotter entries</h2>
+                <ul>
+                    {% for incident in blotter_entries %}
+                    <li><a href="{{ incident.get_absolute_url }}">{{ incident.incident_date|date:"P, N j, Y" }}</a></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="/blotter/">See more blotter entries...</a></p>
+                {% endif %}{% endcomment %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <div id="fp_calendar" class="grid_3 omega">
+        <h2><a href="/calendar/">Calendar</a></h2>
+        <ul>
+            {% for event in events %}
+            {% ifchanged %}<li class="calendar_date">
+                <h3>{{ event.start|date:"N j" }}{% if event.end %}{% ifnotequal event.start.date event.end.date %}{% if not event.all_day %} &ndash; {{ event.end|date:"N j" }}{% endif %}{% endifnotequal %}{% endif %}</h3>
+                <ul>{% endifchanged %}
+                    <li class="calendar_event">
+                        <h4><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+                        <p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }}{% if event.end %} &ndash; {{ event.end|date:"g:i a, N j" }}{% endif %}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                        <p class="calendar_description">{% if event.summary %}{{ event.summary|markdown }}{% endif %}</p>
+                    </li>
+                {% ifchanged event.start.date %}</ul>
+            </li>{% endifchanged %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock content_wide %}

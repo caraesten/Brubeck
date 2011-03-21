@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load markup %}{% load core %}{% load scoreboard %}{% load comments %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; Blogs &ndash; {{ blog }} &ndash; {{ entry }} ({{ entry.pub_date|date:"N j, Y" }}){% endblock title %}
+
+{% block head_extras %}
+<meta name="title" content="{{ entry }}" />
+<meta name="description" content="{{ entry.body|striptags|truncatewords:"20" }}" />
+<link rel="alternate" type="application/rss+xml" title="{{ blog }} RSS Feed" href="/feeds/blogs/{{ blog.slug }}/" />
+{% endblock head_extras %}
+
+{% block content %}
+<h1 class="headline"><a href="{{ entry.get_absolute_url }}">{{ entry|markdown }}</a></h1>
+<p class="byline" style="margin-bottom: 10px;">Posted to <a href="{{ blog.get_absolute_url }}">{{ blog }}</a>{% if entry.byline %} by <a href="{{ entry.byline.get_absolute_url }}">{{ entry.byline }}</a>{% else %}{% if entry.static_byline %} by {{ entry.static_byline }}{% endif %}{% endif %} at {{ entry.pub_date|date:"g:i a, N j, Y" }}</p>
+<div class="tags"> 
+    <div class="tag_list">
+        {% if entry.tags.all %}
+            <div class="tags-label">Tags:</div>
+            {% for tag in entry.tags.all %}
+            <div class="tag" ><a href="{{ tag.get_absolute_url }}">{{ tag|markdown }}</a></div>
+            {% endfor %}
+        {% else %}
+            <div class="tags-label">No tags for this entry.</div>
+        {% endif %}
+    </div>
+    <div class="social_media_list">
+        <script>function fbs_click(){u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a title="Share on Facebook" href="http://www.facebook.com/share.php?u=<url>" onclick="return fbs_click()" target="_blank" class="facebook_link fb_share_link"></a>
+        <a class="twitter_link" title="Share on Twitter" href="http://twitter.com/share?url={{ entry.get_absolute_url|urlencode }}" target="_blank"></a>
+        <a class="e-mail_link" title="E-mail this entry" href="/email/blog_entry/{{ entry.id }}/"></a>
+        <a class="comment_link" title="Comment on this entry" href="#comments"></a>
+        <a class="letter_link" title="Send a letter to the editor" href="http://www.themaneater.com/section/forum/send-letter/"></a>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+{% if multimedia %}
+    {% for item in multimedia %}
+        {% ifequal item.mediatype "video" %}
+            {% with item as video %}
+                {% autoescape off %}
+                <object width="688" height="419" style="margin-bottom: 10px;">
+                    <param name="movie" value="{{ video.swf }}"></param>
+                    <embed src="{{ video.swf }}" type="application/x-shockwave-flash" width="688" height="419" style="margin-bottom: 10px;"></embed>
+                </object>
+                {% endautoescape %}
+            {% endwith %}
+        {% endifequal %}
+    {% endfor %}
+{% endif %}
+{% if entry.photos.all %}
+    {% with entry.photos.all.0 as photo %}
+    {% if not photo.mugshot %}
+    <div class="wide_photo_container">
+        <img class="photo" alt="{{ entry }}" src="{% thumbnail photo.image 590x400 %}" />
+        <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+        {{ photo.cutline|markdown }}
+    </div>
+    {% endif %}
+    {% endwith %}
+{% endif %}
+{% for photo in entry.photos.all %}
+    {% if photo.mugshot %}
+    <div class="mugshot">
+        <img class="photo" src="{{ photo.get_thumbnail100_url }}" alt="Mugshot" />
+        <p><b>{{ photo.cutline }}</b></p>
+    </div>
+    {% endif %}
+{% endfor %}
+<p class="cdeck">{{ entry.body|safe|markdown }}</p>
+{% if entry.photos.all %}
+{% ifnotequal entry.photos.all.count 1 %}<p><a href="images/">(View large image browser)</a></p>{% endifnotequal %}
+{% for photo in entry.photos.all %}
+    {% if not forloop.first %}
+    {% if not photo.mugshot %}
+    <div class="wide_photo_container">
+        <img class="photo" alt="{{ entry }}" src="{% thumbnail photo.image 590x400 %}" />
+        <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+        {{ photo.cutline|markdown }}
+    </div>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+
+{% get_comment_count for entry as comment_count %}
+{% get_comment_list for entry as comment_list %}
+<div class="object_list" id="comments">
+    <h2 class="header">Comments ({{ comment_count }})</h2>
+    {% for comment in comment_list %}
+    <div class="item comment">
+        <h3><a href="{{ comment.get_absolute_url }}">{{ comment.submit_date|date:"P, N j, Y" }}</a></h3>
+        <p>{{ comment.user_name }} said:</p>
+        <p>{{ comment.comment }}</p>
+    </div>
+    {% endfor %}
+</div>
+<div class="object_list">
+    <h2 class="header">Post a comment</h2>
+    {% if entry.enable_comments %}
+    <div class="item">
+        {% render_comment_form for entry %}
+    </div>
+    {% else %}
+    <p>Comments have been disabled for this entry.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+{% comment %}
+<div class="related_sidebar">
+    <p><script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><a href="http://www.facebook.com/share.php?u=<url>" onclick="return fbs_click()" target="_blank" class="fb_share_link">Share on Facebook</a></p>
+    <p><a href="#comments">Comment on this entry</a></p>
+    <p><a href="/section/forum/send-letter/">Send a letter to the editor</a></p>
+    <p><a href="/email/blog_entry/{{ entry.id }}/">E-mail this entry</a></p>
+</div>
+{% endcomment %}
+    {% if multimedia %}
+    <div class="related_sidebar" id="multimedia_list">
+        <h2>Multimedia</h2>
+        <ul>
+            {% for item in multimedia %}
+            <li style="list-style: none; font-size: 8pt;>
+                <div style="clear:both;" />
+                {% ifequal item.mediatype "video" %}<h3>Video: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                {% comment %}<div style="float:left;margin-right:5px;">{% if item.preview_image %}<img class="photo" src="{% thumbnail item.preview_image 120x120 crop %}" alt="{{ item }}" />{% else %}<img class="photo" src="{{ item.thumbnail }}" alt="{{ item.description|markdown }}" />{% endif %}</div>{% endcomment %}{% endifequal %}
+                {% ifequal item.mediatype "podcast" %}<a href="{{ item.get_absolute_url }}">Listen to podcast...
+                </a>{% endifequal %}
+                {% ifequal item.mediatype "audioclip" %}<h3><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                {% if item.image %}<div style="float:left;margin-right:5px;"><img class="right photo" src="{% thumbnail item.image 120x120 crop %}" alt="{{ item }}" /></div>{% endif %}{% endifequal %}
+                {% ifequal item.mediatype "slideshow" %}<h3>Slideshow: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
+                <div style="float:left;margin-right:5px;"<img src="{% thumbnail item.image 120x120  %}"></div>{% endifequal %}
+                {{ item.description|markdown }}
+                {% ifequal item.mediatype "audioclip" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+                <a href="{{ item.get_absolute_url }}">{% ifequal item.mediatype "audioclip" %}Listen to audio clip...{% endifequal %}{% ifequal item.mediatype "podcast" %}Listen to podcast...{% endifequal %}{% ifequal item.mediatype "slideshow" %}View slideshow...{% endifequal %}{% ifequal item.mediatype "video" %}View video...{% endifequal %}</a>
+                {% ifequal item.mediatype "podcast" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% ifequal blog.slug "sports" %}{% show_scores_sidebar %}{% endifequal %}
+{% show_related_blog_posts entry %}
+{% show_related_articles entry %}
+    {% if entry.attached_files.all %}
+    <div class="related_sidebar" id="attached_files">
+        <h2>Attached files</h2>
+        <ul>
+            {% for file in entry.attached_files.all %}
+            <li>
+                <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
+                {{ file.description|markdown }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Elections &ndash; {{ candidate }} ({{ race.election.date|date:"N j, Y" }}) - Donations {% endblock %}
+
+{% block content %}
+<h1>Donations to {{ candidate }}</h1>
+{% for category in categories %}
+	{% if category.donations %}
+	<h2>{{ category }}</h2>
+	<table class="elections_table">
+		<thead>
+			<tr>
+				<td>Amount</td>
+				<td>Donor</td>
+			</tr>
+		</thead>
+		<tfoot></tfoot>
+		<tbody>
+			{% for donation in category.donations %}
+			<tr>
+				<td>${{ donation.amount }}</td>
+				<td><a href="{{ donation.donor.get_absolute_url }}">{{ donation.donor }}</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+{% endfor %}
+{% endblock content %}

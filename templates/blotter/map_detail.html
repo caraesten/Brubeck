@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Maps &ndash; Police Blotter{% if charge %} &ndash; {{ charge }}{% else %}{% ifequal charge_types.count 1 %} &ndash; {{ charge_types.0 }}{% endifequal %}{% endif %}{% endblock title %}
+
+{% block head_extras %}
+<meta name="robots" content="noindex, nofollow" />
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '650px',
+        'height': '650px',
+        'border': '1px solid #000'
+    }).insertBefore('ul#place_list');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents.min_lat }}, {{ extents.min_lng }}, {{ extents.max_lat }}, {{ extents.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        var marker_icon = hcard.find('.note .marker_url').text();
+        marker.setIcon(marker_icon);
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+<style>
+.marker_url {
+    display: none;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    $('.vcard .info').hide();
+    $('.vcard h3').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{% if charge %}{{ charge }}{% else %}{% ifequal charge_types.count 1 %}{{ charge_types.0 }}{% else %}Police Blotter{% endifequal %}{% endif %}</h1>
+<p>Currently showing incidents from the past 30 days.</p>
+<ul id="place_list" class="grid_4 alpha">
+    <li><h2 class="header">Incident list</h2></li>
+    {% for incident in incidents %}
+    <li class="vcard charge_{{ charge_type.id }}">
+        <h3><a href="javascript:void(0);">{{ incident.incident_date|date:"P, N j, Y" }}</a></h3>
+        <div class="info">
+            <p><span class="fn org">{{ incident.location.name }}</span> {% if incident.location.address %}{% ifnotequal incident.location.address incident.location.name %}<p class="adr post-office-box">{{ incident.location.address }}</p>{% endifnotequal %}{% endif %}</p>
+            <div class="note">
+                <p>{% if incident.last_name %}<strong>Suspect:</strong> {{ incident.first_name }} {% if incident.middle_initial %}{{ incident.middle_initial }}. {% endif %}{{ incident.last_name }}<br />{% endif %}
+                {% if incident.birth_date %}<strong>Date of birth:</strong> {{ incident.birth_date|date:"N j, Y" }}<br />{% endif %}
+                {% if incident.age %}<strong>Age:</strong> {{ incident.age }}<br />{% endif %}
+                {% if incident.home_address %}<strong>Home address:</strong> {{ incident.home_address }}<br />{% endif %}
+                {% if incident.arrest_date %}<strong>Arrested:</strong> {{ incident.arrest_date|date:"P, N j, Y" }}<br />{% endif %}</p>
+                
+                <p><strong>Charges:</strong>
+                <ul style="list-style: disc inside;">
+                    {% for charge in incident.charges.all %}
+                    <li><a href="{{ charge.get_absolute_url }}">{{ charge }}</a> ({{ charge.incident_type }})</li>
+                    {% endfor %}
+                </ul></p>
+                
+                <p><strong>Police department:</strong> {{ incident.get_police_department_display }}<br />
+                <strong>Case number:</strong> {{ incident.case_number }}</p>
+                
+                <p class="marker_url">{% ifequal charge_types.count 1 %}{{ charge_types.0.marker.url }}{% else %}{% if charge %}{{ charge.incident_type.marker.url }}{% else %}{{ incident.charges.all.0.incident_type.marker.url }}{% endif %}{% endifequal %}</p>
+            </div>
+            <p class="geo">Coordinates: <span class="latitude">{{ incident.location.point.get_y }}</span>, <span class="longitude">{{ incident.location.point.get_x }}</span></p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<ul id="charge_type_list" class="grid_4 omega">
+    <li><h2 class="header">Incident types</h2></li>
+    {% for charge_type in charge_types %}
+    <li><a href="{{ charge_type.get_absolute_url }}"><img src="{{ charge_type.marker.url }}" alt="{{ charge_type }}" />{{ charge_type }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

@@ -1,0 +1,11 @@
+Somebody is interested in working for the paper.
+
+Name: {{ name|safe }}
+Class: {{ class_title|safe }}
+E-mail address: {{ self_email|safe }}
+Area of interest: {{ area_of_interest|safe }}
+{% if previous_experience %}
+Previous experience: {{ previous_experience|safe }} {% endif %}
+
+Sincerely,
+themaneater.com

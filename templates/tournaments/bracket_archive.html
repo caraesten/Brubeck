@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load advertising %}
+
+{% block title %}{{ block.super }} &ndash; Maneater Madness 2010 &ndash; {{ bracket_type }} brackets{% endblock title %}
+
+{% block head_extras %}
+<style>
+.item {
+    margin-bottom: 10px;
+}
+.bracket-username {
+    display: inline;
+}
+.bracket-points {
+    display: inline;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="content" class="grid_9 alpha">
+<h1>{{ bracket_type }} brackets</h1>
+<div class="object_list">
+    {% for bracket in archive_page.object_list %}
+    <div class="item">
+        <h3 class="bracket-username"><a href="/maneater-madness/view-bracket/{{ bracket.user.username }}/">{{ bracket.user.username }}</a></h3>
+        <p class="bracket-points">({{ bracket.correct_predictions }} points)</p>
+    </div>
+    {% endfor %}
+    <div class="page_navigation">
+        {% if archive_page.has_previous %}<a href="{{ current_page }}{{ archive_page.previous_page_number }}/">&laquo; Previous</a> | {% endif %}Page {{ archive_page.number }} of {{ archive_page.paginator.num_pages }} {% if archive_page.has_next %} | <a href="{{ current_page }}{{ archive_page.next_page_number }}/">Next &raquo;</a>{% endif %}
+    </div>
+</div>
+</div>
+<div id="sidebar" class="grid_3 omega">
+{% render_special_banner_ad 'shortvert' 1 %}
+</div>
+{% endblock content_wide %}

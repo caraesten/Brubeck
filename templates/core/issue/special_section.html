@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load core %}{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Special Sections &ndash; {{ section }}{% endblock title %}
+
+{% block content %}
+<h1>{{ section }}</h1>
+<p>Published {{ section.pub_date|date:"N j, Y" }}</p>
+{% if section.designers.all %}<p>Designed by {% render_byline section.designers %}</p>{% endif %}
+{{ section.description|markdown }}
+<div class="object_list">
+{% if section.articles.all %}    
+    <h2 class="header">Articles</h2>
+    {% for article in section.articles.all %}
+    <div class="item">
+        {% if article.photos.all %}<a href="{{ article.get_absolute_url }}"><img class="photo left" alt="{{ article }}" src="{{ article.photos.all.0.get_thumbnail100_url }}" /></a>{% endif %}
+        <h3 class="headline"><a href="{{ article.get_absolute_url }}">{{ article|markdown }}</a></h3>
+        <p class="cdeck">{% if article.cdeck %}{{ article.cdeck }}{% else %}{{ article.body|safe|markdown|truncatewords_html:"10" }}{% endif %}</p>
+    </div>
+    {% endfor %}
+{% endif %}
+{% if section.photos.all %}
+    <h2 class="header">Photos</h2>
+    {% for image in section.photos.all %}
+    <div class="item">
+        {% if image.is_horizontal %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail200_url }}" /></a>{% else %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail100_url }}" /></a>{% endif %}
+        {{ image.cutline|markdown }}
+    </div>
+    {% endfor %}
+{% endif %}
+{% if section.graphics.all %}
+    <h2 class="header">Graphics</h2>
+    {% for image in section.graphics.all %}
+    <div class="item">
+        {% if image.is_horizontal %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail200_url }}" /></a>{% else %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail100_url }}" /></a>{% endif %}
+        {{ image.cutline|markdown }}
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load markup %}{% load core %}{% load comments %}
+{% block head_extras %}
+<script src="/media/style/2009-09/js/jPlayer/jplayer.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+    $("#jPlayer").jPlayer( {
+        ready: function () {
+            $(this).setFile("{{ object.file.url }}");
+        },
+        swfPath: "/media/style/2009-09/js/jPlayer",
+    });
+    $("#jPlayer").jPlayerId("play", "play")
+    $("#jPlayer").jPlayerId("pause", "pause")
+    $("#jPlayer").jPlayerId("stop", "stop")
+	$("#jPlayer").jPlayerId("loadBar", "progress_load_bar")
+	$("#jPlayer").jPlayerId("playBar", "progress_play_bar")
+	$("#jPlayer").jPlayerId("volumeMin", "volume_min")
+	$("#jPlayer").jPlayerId("volumeMax", "volume_max")
+	$("#jPlayer").jPlayerId("volumeBar", "volume_bar")
+	$("#jPlayer").jPlayerId("volumeBarValue", "volume_bar_value")
+	.onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+		var myPlayedTime = new Date(playedTime);
+		var ptMin = (myPlayedTime.getUTCMinutes() < 10) ? "0" + myPlayedTime.getUTCMinutes() : myPlayedTime.getUTCMinutes();
+		var ptSec = (myPlayedTime.getUTCSeconds() < 10) ? "0" + myPlayedTime.getUTCSeconds() : myPlayedTime.getUTCSeconds();
+		$("#play_time").text(ptMin+":"+ptSec);
+
+		var myTotalTime = new Date(totalTime);
+		var ttMin = (myTotalTime.getUTCMinutes() < 10) ? "0" + myTotalTime.getUTCMinutes() : myTotalTime.getUTCMinutes();
+		var ttSec = (myTotalTime.getUTCSeconds() < 10) ? "0" + myTotalTime.getUTCSeconds() : myTotalTime.getUTCSeconds();
+		$("#total_time").text(ttMin+":"+ttSec);
+	});
+    $("#jPlayer").onSoundComplete( function() {
+		$(this).play();
+	});
+});
+</script>
+{% endblock %}
+{% block title %}{{ block.super }} &ndash; Podcasts &ndash; {{ object.channel }} &ndash; {{ object.pub_date|date:"N j, Y" }}{% if object.name %}: {{ object.name }}{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{{ object.channel }} &ndash; {{ object.pub_date|date:"N j, Y" }}{% if object.name %}: {{ object.name }}{% endif %}</h1>
+{% if object.producers.all %}<p>Produced by: {% render_byline object.producers %}</p>{% endif %}
+{% if object.writers.all %}<p>Written and edited by: {% render_byline object.writers %}</p>{% endif %}
+{% if object.reporters.all %}<p>Reporting: {% render_byline object.reporters %}</p>{% endif %}
+<div class="object_list">
+    <div class="item">
+        <p class="cdeck">{{ object.description|markdown }}</p>
+    </div>
+</div>
+<div class="object_list">
+    <div class="item">
+        <h2 class="header">Listen</h2>
+        {% comment %}{% endcomment %}
+        <div id="jPlayer"></div>
+        <div id="titlebar" style="margin-bottom:10px;">
+            <h3 id="song_title" style="display:inline;">{{ object.channel }} &ndash; {{ object.pub_date|date:"N j, Y" }}{% if object.name %}: {{ object.name }}{% endif %}</h3>
+            <div id="time_amounts" style="display:inline;font-style:italic;">(<div id="play_time" style="display:inline;"></div> / <div id="total_time" style="display:inline;"></div>)</div>
+        </div>
+        <ul id="player-controls" style="float:left;">
+            <li id="play" style="background:transparent url(/media/style/2009-09/images/play.png) no-repeat scroll 0 -12px;float:left;height:62px;margin-right:5px;width:60px;"></li>
+            <li id="pause" style="background:transparent url(/media/style/2009-09/images/pause.png) no-repeat scroll 0 -12px;float:left;height:62px;margin-right:5px;width:60px;"></li>
+            <li id="stop" style="background:transparent url(/media/style/2009-09/images/stop.png) no-repeat;float:left;height:50px;margin-right:10px;width:40px;"></li>
+        </ul>
+		<div id="progress" style="float:left;margin-right:10px;margin-top:17px;width:250px;">
+			<div id="progress_load_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;height:15px;">
+				<div id="progress_play_bar" style="-moz-border-radius: 5px;-webkit-border-radius:5px;background-color:#336633;height:15px;"></div>
+			</div>
+		</div>
+		<div id="volume_bar" style="float:left;">
+            <div id="volume_min" style="-moz-border-radius:5px;-webkit-border-radius:5px;background:transparent url(/media/style/2009-09/images/mute.png) no-repeat;float:left;height:50px;width:40px;"></div>
+		    <div id="volume_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;float:left;height:5px;margin-top:21px;width:100px;">
+			    <div id="volume_bar_value" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#336633;height:5px;"></div>
+    		</div>
+			<div id="volume_max" style="background:transparent url(/media/style/2009-09/images/max.png) no-repeat;float:left;height:50px;width:40px;"></div>
+    	</div>
+        <p style="clear:both;"><a href="{{ object.file.url }}">Download episode</a> ({{ object.file.size|filesizeformat }})</p>
+		{% comment %}{% endcomment %}
+        {% comment %}<embed src= "http://www.odeo.com/flash/audio_player_standard_gray.swf" quality="high" width="300" height="52" allowScriptAccess="always" wmode="transparent"  type="application/x-shockwave-flash" flashvars= "valid_sample_rate=true&external_url={{ object.file.url }}" pluginspage="http://www.macromedia.com/go/getflashplayer"> </embed>
+        <embed src='http://webjay.org/flash/xspf_player' width='500' height='40' wmode='transparent' flashVars='playlist_url={{ episode.get_absolute_url }}&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>{% endcomment %}
+    </div>
+</div>
+
+{% get_comment_count for object as comment_count %}
+{% get_comment_list for object as comment_list %}
+<div class="object_list" id="comments">
+    <h2 class="header">Comments ({{ comment_count }})</h2>
+    {% for comment in comment_list %}
+    <div class="item comment">
+        <h3><a href="{{ comment.get_absolute_url }}">{{ comment.submit_date|date:"P, N j, Y" }}</a></h3>
+        <p>{{ comment.user_name }} said:</p>
+        <p>{{ comment.comment }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="object_list">
+    <h2 class="header">Post a comment</h2>
+    {% if object.enable_comments %}
+    <div class="item">
+        {% render_comment_form for object %}
+    </div>
+    {% else %}
+    <p>Comments have been disabled for this podcast.</p>
+    {% endif %}
+</div>
+{% endblock %}

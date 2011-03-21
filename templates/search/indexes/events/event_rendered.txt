@@ -1,0 +1,5 @@
+{% load markup %}
+<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object }}</a></h3>
+<p class="calendar_time_place">{% if not object.all_day %}{% ifequal object.start.date object.end.date %}{{ object.start|time:"g:i a" }} &ndash; {{ object.end|time:"g:i a" }}{% else %}{{ object.start|date:"g:i a, N j" }}{% if object.end %} &ndash; {{ object.end|date:"g:i a, N j" }}{% endif %}{% endifequal %}, {% endif %}{{ object.location }}</p>
+<p class="calendar_description">{% if object.summary %}{{ object.summary|markdown }}{% endif %}</p>
+<p class="calendar_description">Listed in {% for calendar in object.calendars.all %}{% if not forloop.first %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}<a href="{{ calendar.get_absolute_url }}">{{ calendar }}</a>{% endfor %}</p>

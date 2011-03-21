@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Games &ndash; {{ object }}{% endblock title %}
+
+{% block content %}
+<h1>{{ object.type }}, {{ object.issue }}</h1>
+<div class="wide_photo_container">
+    <img class="photo" src="{{ object.get_thumbnail_url }}" alt="{{ object.type }}" />
+</div>
+{% endblock content %}

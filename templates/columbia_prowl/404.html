@@ -1,0 +1,15 @@
+{% extends "prowl-base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Not Found{% endblock title %}
+
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2009-12/style/housing-guide.css" />
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="landlord_info">
+<h1>Not Found</h1>
+<p>Whoops!  The page you're looking for doesn't exist.</p>
+<ul><li>You can <a href="/">go to the home page</a></li><li>Or try <a href="/search/">searching for the material you were looking for</a></li></ul>
+</div>
+{% endblock content_wide %}

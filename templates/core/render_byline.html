@@ -1,0 +1,5 @@
+<span class="byline">
+{% if byline %}
+    {% for staffer in byline.all %}{% if not forloop.first %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}<a href="{{ staffer.get_absolute_url }}">{{ staffer }}</a>{% endfor %}
+{% endif %}
+</span>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load advertising %}
+
+{% block title %}{{ block.super }} &ndash; Maneater Madness 2010 &ndash; Upcoming games{% endblock title %}
+
+{% block head_extras %}
+<style>
+.calendar .game {
+    padding-bottom: 5px; 
+}
+.calendar .game p {
+    font-size: 11px;   
+    font-style: italic;
+    margin-bottom: 5px;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="content" class="grid_9 alpha">
+<h1>Upcoming games</h1>
+<div class="object_list calendar">
+    {% for game in calendar_page.object_list %}
+    <div class="item game">
+        <h3 class="headline">{% ifequal game.opponent_set.all.0.team.ranking 17 %}16{% else %}{{ game.opponent_set.all.0.team.ranking }}{% endifequal %} {{ game.opponent_set.all.0.team.team.school_name }} vs. {% if not game.opponent_set.all.1 %}Opening round game winner{% else %}{% ifequal game.opponent_set.all.1.team.ranking 17 %}16{% else %}{{ game.opponent_set.all.1.team.ranking }}{% endifequal %} {{ game.opponent_set.all.1.team.team.school_name }}{% endif %}</h3>
+        <p>{{ game.location.get_round_display }}{% ifnotequal game.location.round 'f' %} ({{ game.location.get_region_display }} region){% endifnotequal %}</p>
+        <p>{{ game.location.name }}</p>
+        <p>{{ game.time|date:"N j" }} at {{ game.time|date:"g:i a" }}</p>
+    </div>
+    {% endfor %}
+    <div class="page_navigation">
+        {% if calendar_page.has_previous %}<a href="/maneater-madness/calendar/{{ calendar_page.previous_page_number }}/">&laquo; Previous</a> | {% endif %}Page {{ calendar_page.number }} of {{ calendar_page.paginator.num_pages }} {% if calendar_page.has_next %} | <a href="/maneater-madness/calendar/{{ calendar_page.next_page_number }}/">Next &raquo;</a>{% endif %}
+    </div>
+</div>
+</div>
+<div id="sidebar" class="grid_3 omega">
+{% render_special_banner_ad 'shortvert' 1 %}
+</div>
+{% endblock content_wide %}

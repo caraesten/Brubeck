@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% load markup %} {% load comparison %} {% load comments %} {% block title %}{{ block.super }} &ndash; {% if blog %}{{ blog }} &ndash;{% else %}All blog entries from{% endif %} {{ month_name }} {{ year }}
+{% endblock title %}
+{% block head_extras %}
+{% ifequal site.id 1 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/maneatercalendar.css" />{% endifequal %}
+{% ifequal site.id 2 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/movecalendar.css" />{% endifequal %}
+{% endblock head_extras %}
+{% block content %}
+
+<h1>{% if blog %}{{ blog }} &mdash;{% else %}All blog entries from{% endif %} {{ month_name }} {{ day }}, {{ year }}{% ifequal this_year year %}{% ifequal this_month month %}{% ifequal day today %} &ndash; today{% endifequal %}{% endifequal %}{% endifequal %}
+</h1>
+
+{% if entry_list %}
+
+{% for object in entry_list %}
+
+{% with entry.blog.calendar_key_color as blog_color %}
+
+        <div class="item">
+            <h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></h3>
+            <p class="byline">Posted to <a href="{{ object.blog.get_absolute_url }}">{{ object.blog }}</a>{% if object.byline %} by <a href="{{ object.byline.get_absolute_url }}">{{ object.byline }}</a>{% else %}{% if object.static_byline %} by {{ object.static_byline }}{% endif %}{% endif %} at {{ object.pub_date|date:"g:i a, N j, Y" }}</p>
+            {% if object.photos.all %}
+                {% with object.photos.all.0 as photo %}
+                {% if not photo.mugshot %}
+                <div class="wide_photo_container">
+                    <img class="photo" alt="{{ object }}" src="{{ photo.image.url }}" />
+                    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                    {{ photo.cutline|markdown }}
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% endif %}
+            {% for photo in object.photos.all %}
+                {% if photo.mugshot %}
+                <div class="mugshot">
+                    <img class="photo" src="{{ photo.get_thumbnail100_url }}" alt="Mugshot" />
+                    <p><b>{{ photo.cutline }}</b></p>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <p class="cdeck">{{ object.body|safe|markdown }}</p>
+            {% if object.photos.all %}
+            {% for photo in object.photos.all %}
+                {% if not forloop.first %}
+                {% if not photo.mugshot %}
+                <div class="wide_photo_container">
+                    <img class="photo" alt="{{ object }}" src="{{ photo.image.url }}" />
+                    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                    {{ photo.cutline|markdown }}
+                </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% get_comment_count for object as comment_count %}
+            <p><a href="{{ object.get_absolute_url }}#comments">{{ comment_count }} comments</a></p>
+        </div>
+
+{% endwith %}
+
+{% endfor %}
+
+
+{% else %}
+
+There are no entries posted {% if blog %}in this blog {% endif %}on this date.
+
+{% endif %}
+
+{% endblock content %}
+{%  block sidebar %}
+<div class="calsidebar">
+{% if blog_list %}
+
+{% if blog %}
+<h2 class="header">Other blogs:</h2>
+<p>Check out these other blogs compiled by The Maneater.</p>
+{% for blogname in blog_list %}
+{% ifequal blogname.title blog.title %}
+<!--<h3>{{ blogname.title }}</h3>-->
+{% else %}
+<h3><a href="/blogs/{{ blogname.slug }}/">{{ blogname.title }}</a></h3>
+{% endifequal %}
+{% endfor %}
+{% else %}
+<h2 class="header">Current blogs:</h2>
+<p>Check out these blogs compiled by The Maneater.</p>
+{% for blogname in blog_list %}
+<h3><a href="/blogs/{{ blogname.slug }}/">{{ blogname.title }}</a></h3>
+{% endfor %}
+{% endif %}
+<p />
+<p>Or, see <a href="/blogs/">all recent blog entries</a>.</p>
+{% else %}
+<div class="debugging">There are currently no blog entries to display here.</div>
+{% endif %}
+</div>
+{% endblock sidebar %}

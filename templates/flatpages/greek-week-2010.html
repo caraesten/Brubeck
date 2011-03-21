@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript" src="/media/style/2010-04/js/jquery.easing.js"></script>
+<script type="text/javascript" src="/media/style/2010-04/js/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/style/2010-04/js/fancybox.css" />
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".profiles").fancybox({
+            'transitionIn' : 'none',
+            'transitionOut' : 'none',
+            'titleShow': false,
+        });
+    });
+</script>
+<style>
+.profiles {
+    margin-bottom: 10px;
+}
+.profiles img {
+    border: 1px solid #000000;
+}
+.main-title {
+    border-bottom: 1px dotted #009830;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="content" class="grid_8 alpha">
+<h1 class="main-title">Greek Week 2010</h1>
+
+<h2 class="headline">Greek Week focuses on giving</h2>
+<p class="cdeck"><em><p>'Letters for the Better' increased Greek Week beneficiaries to 14.</p></em></p>
+<p class="byline">By <span class="byline"><a href="/staff/view/kaylen-ralph/">Kaylen Ralph</a></span></p>
+
+{{ flatpage.content|markdown }}
+
+</div>
+
+<div id="sidebar" class="grid_4 omega">
+
+    <h2 class="sectiongrey">Greek Week Sweet Sixteen</h2>
+
+    <p>Below are the MU seniors who have been selected as candidates for King and Queen of Greek Week 2010.</p>
+
+    <p>Click on a finalist's picture to view their profile.</p>
+
+    <p><em>Compiled by <a href="/staff/view/alex-pesek/">Alex Pesek</a> and <a href="/staff/view/mary-novokhovsky/">Mary Novokhovsky</a> of The Maneater staff</em></p>
+
+    <div id="profiles-row-1" class="grid_4 alpha">
+
+        <div class="profile grid_1 alpha">
+            <a class="profiles" href="#profile1"><img src="/media/2010/0419/photos/greekweek_thumbs/adriennepedersen.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile1" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Adrienne Pedersen</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/adriennepedersen.png" />
+                <p>As an out-of-state student at MU, Adrienne Pedersen decided going through recruitment freshman year would help her meet new people.</p>
+                <p>Pedersen said her Greek Life participation as a Kappa Kappa Gamma member has opened many other avenues for campus involvement. She joined the Alumni Association Student Board her freshman year, worked at KOMU for four years, participated on the RAMS steering committee, became involved in the Griffiths Leadership Society and is a member of the Honors College.</p>
+                <p>Pedersen's most memorable Greek Life experience left her inspired and excited about being a part of her sorority.</p>
+                <p>"I loved watching a Kappa on our advisory board receive her 50 year pin," Pedersen said in an e-mail. "She's contributed so much to our organization and it's inspiring. It helps remind me that Kappa isn't just a four-year commitment. It's a lifetime."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile2"><img src="/media/2010/0419/photos/greekweek_thumbs/blairwhitney.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile2" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Blair Whitney</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/blairwhitney.png" />
+                <p>Columbia native Blair Whitney said she was hoping to experience her hometown in a new way when she decided to rush Pi Beta Phi her freshman year.</p>
+                <p>"I kind of just wanted to find new friends and find out more about Columbia than what I was used to," Whitney said.</p>
+                <p>The textile and apparel management major said her experience as a Pi Beta Phi allowed her to meet new people and get involved on campus.</p>
+                <p>The most memorable time Whitney said she had was going through the house and meeting all her sorority sisters after the stresses of formal recruitment had dissipated.</p>
+                <p>In addition to her sorority involvement, Whitney is a member of Tiger Crew and the Omicron Delta Kappa honor society.</p>
+                <p>After graduating in May, Whitney will be a merchandise intern at Disney.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile3"><img src="/media/2010/0419/photos/greekweek_thumbs/bradleyminkow.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile3" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Bradley Minkow</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/bradleyminkow.png" />
+       	       	<p>For Bradley Minkow, a strategic communications major from Northbrook, Ill., being chosen as a royalty candidate is about the growth and success of his fraternity.</p>
+                <p>"Greek Royalty is more a reflection of my chapter than myself," Minkow said. "It proves to me that we are collectively becoming bigger, more involved and leaders on this campus."</p>
+                <p>As former president of Alpha Epsilon Pi, a part of the Omicron Delta Kappa Tap Day society and a member of Homecoming, GAMMA and RAMS steering committees, Minkow said one of his proudest achievements was breaking records in his fraternity's philanthropy, Rock-a-Thon.</p>
+                <p>"Greek Life has allowed and inspired me to do and learn so much at MU," Minkow said. "I have met so many people over the past four years and I will be forever grateful for their guidance."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1 omega">
+            <a class="profiles" href="#profile4"><img src="/media/2010/0419/photos/greekweek_thumbs/carolinevastyan.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile4" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Caroline Vastyan</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/carolinevastyan.png" />
+       	       	<p>Alpha Phi Caroline Vastyan became involved in Greek life to help her adjust to MU.</p>
+                <p>"I decided to become involved in Greek Life because Mizzou was such a big school," Vastyan said. "I knew that being involved in a sorority would make it smaller."</p>
+                <p>Vastyan said her most memorable experience within the Greek Life community has been the role she played during Panhellenic Association formal recruitment last August. She said she got to play a role in helping potential new members in picking a house they would like.</p>
+                <p>Vastyan said she was honored to be chosen as a part of the Sweet Sixteen.</p>
+                <p>"Being chosen for the Sweet Sixteen is such an honor, and a great bookend to my time at Mizzou," Vastyan said.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="profiles-row-2" class="grid_4 alpha">
+
+        <div class="profile grid_1 alpha">
+            <a class="profiles" href="#profile5"><img src="/media/2010/0419/photos/greekweek_thumbs/clintklipfel.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile5" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Clint Klipfel</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/clintklipfel.png" />
+       	       	<p>Clint Klipfel, a member of FarmHouse, was not expecting to be nominated as a royalty candidate.</p>
+                <p>"I was really surprised when I heard I was nominated by my chapter," Klipfel said. "The royalty group is a great group of outgoing people, and I have enjoyed meeting all of them."</p>
+                <p>A pre-medicine student majoring in biochemistry, Klipfel has served on Homecoming and RAMS steering communities, been a member of College of Agriculture, Food and Natural Resources student council and biochemistry club, and is now the assistant manager at Tiger Garden. Klipfel says joining a fraternity made college a completely different experience.</p>
+                <p>"I joined my sophomore year," Klipfel said. "My freshman year felt like it was lacking something, and I found what I felt I was lacking when I met my fraternity brothers."</p>
+                <p>Klipfel, of Portageville, will apply to medical school in fall 2011.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile6"><img src="/media/2010/0419/photos/greekweek_thumbs/jaclynpiel.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile6" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Jaclyn Piel</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/jaclynpiel.png" />
+       	       	<p>Biology major and Kappa Delta member Jaclyn Piel made the decision to rush a sorority her freshman year in order to make friends and engage in Greek Life opportunities.</p>
+                <p>When looking back on her most memorable experiences within the Greek Life community, Piel said Fling is an event she will never forget.</p>
+                <p>"I love dancing on the stage hearing all my sisters cheer me on," Piel said in an e-mail. "It's great to have their support."</p>
+                <p>Alongside her Greek Life involvement, Piel is also president of the Beta Beta Beta Biological Honors Society, vice president of Membership for Mortar Board and a member of the Student Health Advisory Council.</p>
+                <p>Piel is headed back home to St. Louis after graduation in May to work and save money before embarking on a career in medicine the following year.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile7"><img src="/media/2010/0419/photos/greekweek_thumbs/joemuenster.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile7" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Joe Muenster</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/joemuenster.png" />
+       	       	<p>Phi Kappa Theta member Joe Muenster said joining his fraternity freshman year was a logical step in his path at MU.</p>
+                <p>"I'd come from an all guys high school in St. Louis and I had a bunch of friends that were also in Phi Kappa Theta," Muenster said.</p>
+                <p>Muenster is a pre-medicine student anticipating a degree in psychology. After graduation, he will be continuing at the MU School of Medicine.</p>
+                <p>"Winning Greek Week was one of the coolest experiences for my entire fraternity," Muenster said.</p>
+                <p>In addition to Phi Kappa Theta's big win, Muenster said he will also look back fondly on the people he's met and the opportunities Greek Life has provided him with.</p>
+                <p>Along with his Greek Life involvement, Muenster was a director for the RAMS committee and part of the Alumni Association Student Board.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1 omega">
+            <a class="profiles" href="#profile8"><img src="/media/2010/0419/photos/greekweek_thumbs/kevinlewis.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile8" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Kevin Lewis</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/kevinlewis.png" />
+       	       	<p>Sigma Phi Epsilon Kevin Lewis member said being in a fraternity, compared to any other campus activity, challenged him the most to be a part of a community. Struggles early on in his fraternity with social tension, compared to the current state of his fraternity, helped him grow with his brothers.</p>
+                <p>"We used to be a tense group of about 35 people," Lewis said. "Now we have grown to over 100 and are united as a group, a fraternity and as friends."</p>
+                <p>Lewis said he plans to work in television as a reporter, a dream of his since he was 9 years old.</p>
+                <p>"It's crazy to think that I'm now at a point where my dreams are actualized," Lewis said. "I wish I had a way to rewind time a bit because now I'm in real life. I don't have four-month vacations anymore."</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="profiles-row-3" class="grid_4 alpha">
+
+        <div class="profile grid_1 alpha">
+            <a class="profiles" href="#profile9"><img src="/media/2010/0419/photos/greekweek_thumbs/kurtbecker.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile9" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Kurt Becker</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/kurtbecker.png" />
+       	       	<p>For Kurt Becker, memories of MU and his fraternity have stuck from the very beginning.</p>
+                <p>"The snow day we had during my first semester here still sticks with me," Becker said. "Being with my pledge brothers, playing hockey, sledding with whatever we could find -- things like that are what I will remember about MU."</p>
+                <p>Becker, a finance major from Mexico, Mo., said being able to represent his fraternity, Alpha Gamma Sigma, is one of the best parts of having been chosen.</p>
+                <p>"It's definitely an honor, and being able to represent my chapter and all of the work we have done is a massive part of that," Becker said.</p>
+                <p>Becker has also been an active member within the Mizzou Investment Fund, a volunteer for Big Brothers, Big Sisters and an initiating member of Bigs of MU.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile10"><img src="/media/2010/0419/photos/greekweek_thumbs/kyletibbles.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile10" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Kyle Tibbles</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/kyletibbles.png" />
+       	       	<p>When looking back at his years in Pi Kappa Alpha, civil engineering major Kyle Tibbles said his most memorable experience was during the presidents/leaders retreat, where he had the opportunity to meet other leaders in the Greek Life community.</p>
+                <p>"I've always been an athlete, and I've always had a team experience," Kyle Tibbles said. "A fraternity is a way to keep that relationship going."</p>
+                <p>Tibbles said he was able to take away a lot from this experience and his service on the Interfraternity Council.</p>
+                <p>Tibbles said he feels a great deal of gratification being chosen for the Sweet Sixteen and it is a very flattering honor.</p>
+                <p>"I feel like I've given a whole lot to the Greek community," Tibbles said. "I feel like now it's giving back to me."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile11"><img src="/media/2010/0419/photos/greekweek_thumbs/kylewisniewski.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile11" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Kyle Wisniewski</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/kylewisniewski.png" />
+       	       	<p>Beta Theta Pi member Kyle Wisniewski is an accounting major and said he decided to get involved in Greek Life because of all the things he had heard about the experience.</p>
+                <p>"I just heard so many positive things about it," Wisniewki said. "I heard how it brings people together, all the different things you can do for service or sports, just being a Greek member makes you feel well-rounded."</p>
+                <p>Wisniewski said his most memorable experience was probably being a pledge trainer. He got to be responsible for 38 freshmen and teach them about what it meant to be a Beta Theta Phi.</p>
+                <p>Wisniewski said being chosen for the Sweet Sixteen was a great feeling because he felt like his hard work had paid off.</p>
+                <p>"It's like the icing on the cake," Wisniewski said of the honor.</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1 omega">
+            <a class="profiles" href="#profile12"><img src="/media/2010/0419/photos/greekweek_thumbs/lauraeisenbeis.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile12" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Laura Eisenbeis</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/lauraeisenbeis.png" />
+       	       	<p>For Laura Eisenbeis, a marketing and economics major from Kansas City, the idea of graduation is a liberating yet scary thought.</p>
+                <p>"I call it the g-word," Eisenbeis said. "It's exciting, incredible and rewarding, but I'm sad to see this chapter close."</p>
+                <p>As a member of Kappa Alpha Theta, Eisenbeis has served on the Homecoming steering committee, the Cornell Leadership Program and volunteered for the Women of Worth Mentor Program.</p>
+                <p>Eisenbeis said being involved in the Greek community is one of the biggest things she will take from her college experience.</p>
+                <p>"I have made the best friends I could have ever imagined making," Eisenbeis said. "They challenge me, and being with them has been the most amazing experience. You're only in college once, and joining my sorority was one of the best decisions I made."</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="profiles-row-4" class="grid_4 alpha">
+
+        <div class="profile grid_1 alpha">
+            <a class="profiles" href="#profile13"><img src="/media/2010/0419/photos/greekweek_thumbs/laurenloreleyrobie.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile13" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Loreley Robie</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/laurenloreleyrobie.png" />
+       	       	<p>Delta Delta Delta member Loreley Robie is honored to be Greek Life royalty as part of this year's Sweet Sixteen.</p>
+                <p>Robie said she is applying to medical school this summer with the hope of one day being able to utilize her Spanish skills in providing medical assistance to the Hispanic community.</p>
+                <p>Although Robie didn't know very much about Greek Life before she decided to participate her freshman year, she said she was glad to have had this experience, which allowed her to meet so many amazing women.</p>
+                <p>"Really when I started I didn't know a lot about being in a sorority," Robie said. "It turned out to be once of the most rewarding experiences I've had so far."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile14"><img src="/media/2010/0419/photos/greekweek_thumbs/melaniebuford.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile14" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Melanie Buford</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/melaniebuford.png" />
+       	       	<p>After graduating, Melanie Buford, a member of Alpha Chi Omega sorority, will be continuing in graduate school at MU for another year.
+                <p>"It is crazy that graduation is so close, and everyone is leaving so soon, but maybe a little more real for me because I have to see them go while I stay behind," Buford said. "I know this is cliché to say, but it feels surreal that it came up on us so fast."</p>
+                <p>A strategic communications major with a resume that includes volunteering for Jumpstart, a non-profit providing low-income children with tutoring, Buford said this year's royalty group is different than before.</p>
+                <p>"This year's group is the most diverse that I have known," Buford said. "I think it's really telling of the nature of the Greek community and where we're headed."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1">
+            <a class="profiles" href="#profile15"><img src="/media/2010/0419/photos/greekweek_thumbs/pattybloom.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile15" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Patty Bloom</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/pattybloom.png" />
+       	       	<p>Patty Bloom, a strategic communications major from Moline, Ill., rushed Alpha Delta Pi as a sophomore and has been making memories ever since.</p>
+                <p>"I always love the sports aspect," Bloom said. "They're one of the best opportunities for us to display spirit, and for me have been some of the best experiences with my house."</p>
+                <p>A career specialist in the MU Career Center, a member of the Griffith Leadership Society for Women and the Alumni Association Student Board, Bloom said she was surprised to be chosen as a royalty candidate.</p>
+                <p>"It's pretty incredible to think that I was recognized, especially amongst other people who do such great things for the community," Bloom said. "I know the Greek community is sometimes portrayed negatively, but the more we continue to improve the community, the more I see us being portrayed positively."</p>
+            </div>
+        </div>
+
+        <div class="profile grid_1 omega">
+            <a class="profiles" href="#profile16"><img src="/media/2010/0419/photos/greekweek_thumbs/scottcyliax.png" alt="" /></a>
+        </div>
+
+        <div style="display: none;">
+            <div id="profile16" style="width: 400px; height: 100px; overflow: auto;">
+                <h1 style="border-bottom: 1px solid #BBBBBB;">Scott Cyliax</h1>
+                <img class="photo left" src="/media/2010/0419/photos/greekweek_photos/scottcyliax.png" />
+       	       	<p>For Scott Cyliax, a finance major from St. Louis, being chosen as a royalty candidate is indicative of hard work in the community.</p>
+                <p>"It really means a lot to me," Cyliax said. "It feels special to be a part of a group where everyone brings something different to the table."</p>
+                <p>Cyliax said he will take countless memories as a member of Delta Tau Delta fraternity with him after graduation.</p>
+                <p>"My sophomore year represents some of my favorite memories," Cyliax said. "I had just finished my pledge semester, roomed with one of my best friends and enjoyed my first homecoming with my fraternity."</p>
+                <p>Cyliax, club sports supervisor and Greek Week steering committee member, closes his years at MU with advice for others.</p>
+                <p>"Get involved, don't take yourself too seriously, get good grades and have fun," Cyliax said. "College doesn't last forever."</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <br />
+
+    <h2 class="section">Calendar</h2>
+
+    <h2>Tuesday</h2>
+    <h3>Fling Prelims</h3>
+    <p><em>Jesse Auditorium</em></p>
+    <p><em>6 p.m.</em></p>
+
+    <h2>Wednesday</h2>
+    <h3>Fling Prelims</h3>
+    <p><em>Jesse Auditorium</em></p> 
+    <p><em>6 p.m.</em></p>
+
+    <h2>Thursday</h2>
+    <h3>Fling Prelims</h3>
+    <p><em>Jesse Auditorium</em></p>
+    <p><em>6 p.m.</em></p>
+    <h3>Deferral Day</h3>
+    <p><em>Hearnes Center</em></p>
+    <p><em>10 a.m. – 5 p.m.</em></p>
+    <h3>Fling Announcements</h3>
+    <p><em>Steps of Jesse Hall</em></p>
+    <p><em>10 p.m.</em></p>
+
+    <h2>Friday</h2>
+    <h3>Championship Games</h3>
+    <p><em>Stankowski Field</em></p>
+    <p><em>6 p.m. to 10 p.m.</em></p>
+
+    <h2>Saturday</h2>
+    <h3>Fling Finals</h3>
+    <p><em>Jesse Auditorium</em></p> 
+    <p><em>7 p.m.</em></p>
+ 
+    <h2>Sunday</h2>
+    <h3>Greek Week Announcements</h3>
+    <p><em>Steps of Jesse Hall</em></p>
+    <p><em>7 p.m.</em></p>
+ 
+    <p>Source: MU Greek Life website</p>
+
+</div>
+
+{% endblock content_wide %}

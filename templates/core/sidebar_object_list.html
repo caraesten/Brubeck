@@ -1,0 +1,11 @@
+{% load markup %}
+{% if objects %}
+<div class="related_sidebar">
+<h2>{{ list_name }}</h2>
+<ul>
+    {% for object in objects %}
+    <li><a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></li>
+    {% endfor %}
+</ul>
+</div>
+{% endif %}

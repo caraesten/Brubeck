@@ -1,0 +1,15 @@
+{{ object.title }}
+{{ object.description }}
+{{ object.section.name }}
+{% for mpl in object.mapplacelink_set.all %}
+{{ mpl.place.name }}
+{% endfor %}
+{% for mpl in object.mapplacelink_set.all %}
+{{ mpl.place.address }}
+{% endfor %}
+{% for mpl in object.mapplacelink_set.all %}
+{{ mpl.web_site }}
+{% endfor %}
+{% for mpl in object.mapplacelink_set.all %}
+{{ mpl.additional_info }}
+{% endfor %}

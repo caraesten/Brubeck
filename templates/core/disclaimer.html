@@ -1,0 +1,40 @@
+{% load markup %}
+{% if type %}
+<div class="related_sidebar">
+    {% ifequal type "column" %}
+        <p>The opinions expressed by The Maneater columnists do not represent the opinions of The Maneater editorial board.</p>
+    {% else %}
+        {% ifequal type "editorial" %}
+            <p>Editorials represent the majority opinion of The Maneater editorial board.</p>
+        {% else %}
+            {% ifequal type "guest" %}
+                <p>Letters to the editor must include phone numbers. Guest columns must be about 450 words and include e-mail addresses.</p>
+                <p>All letters must be signed to be published.</p>
+                <p>The Maneater reserves the right to edit letters and columns for style and length.</p>
+                <p>Letters and columns can be e-mailed using the form above, faxed to 573.882.5550 or dropped off at N223 Memorial Union.</p>
+            {% else %}
+                {% ifequal type "letter" %}
+                    <p>Letters to the editor must include phone numbers. Guest columns must be about 450 words and include e-mail addresses.</p>
+                    <p> All letters must be signed to be published.</p>
+                    <p>The Maneater reserves the right to edit letters and columns for style and length.</p>
+                    <p>Letters and columns can be e-mailed to forum@themaneater.com, faxed to 573.882.5550 or dropped off at N223 Memorial Union.</p>
+                {% endifequal %}
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+</div>
+{% else %}
+<div class="related_sidebar">
+    <h2>Columns</h2>
+    <p>The opinions expressed by The Maneater columnists do not represent the opinions of The Maneater editorial board.</p>
+    <h2>Editorials</h2>
+    <p>Editorials represent the majority opinion of The Maneater editorial board.</p>
+    <h2>Guest columns/Letters to the Editor</h2>
+    <p>Letters to the editor must include phone numbers. Guest columns must be about 450 words and include e-mail addresses.</p>
+    <p> All letters must be signed to be published.</p>
+    <p>The Maneater reserves the right to edit letters and columns for style and length.</p>
+    <p>Letters and columns can be e-mailed to forum@themaneater.com, faxed to 573.882.5550 or dropped off at N223 Memorial Union.</p>
+</div>
+{% endif %}
+
+

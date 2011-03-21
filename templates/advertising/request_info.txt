@@ -1,0 +1,13 @@
+{% if mail_media_kit %}{% if mail_sample_copy %}Please send a rate card, media kit and sample copy of The Maneater to:{% else %}Please send a rate card and media kit to:{% endif %}{% else %}{% if mail_sample_copy %}Please send a sample copy of The Maneater to:{% else %}This person didn't ask us to send any printed materials, but he or she submitted contact info anyway--so here you go:{% endif %}{% endif %}
+Company name: {{ company_name|safe }}
+Contact name: {{ contact_name|safe }}
+Phone number: {{ phone_number|safe }}
+
+Address:
+{{ address|safe }}
+
+{% if comments %}This person also included the following comments:
+{{ comments|safe }}{% endif %}
+
+Sincerely,
+themaneater.com

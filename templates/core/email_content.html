@@ -1,0 +1,10 @@
+{% extends "emailing/form_base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Send {% ifequal object.mediatype "blog" %}a blog post{% else %}an article{% endifequal %}{% endblock title %}
+
+{% block content %}
+<h1>Send {% ifequal object.mediatype "blog" %}a blog post{% else %}an article{% endifequal %}</h1>
+<p>You are about to send <a href="{{ object.get_absolute_url }}">{{ object }}</a>.</p>
+{{ block.super }}
+{% endblock content %}

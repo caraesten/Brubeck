@@ -1,0 +1,46 @@
+{% extends "wikizou/base.html" %}
+{% load wiki_navigation %}{% load markup %}{% load markdown_wikify %}{% load core %}{% load comments %}
+
+{% block title %}{{ block.super }} &mdash; Preview your comment"{% endblock title %}
+
+{% block content %}
+<h1>Preview your comment</h1>
+<div class="entry_warning_outer">
+    <div class="entry_warning">
+        <div class="entry_warning_inner">
+            <p class="entry_warning_graphic">*</p>
+            {% render_flatpage_with_markdown '/wiki/comment-preview-guidelines/' %}
+        </div>
+    </div>
+</div>
+<div class="comment">
+   <h4><span class="comment_author">{% if form.url.data %}<a href="{{ form.url.data }}">{{ form.name.data }}</a>{% else %}{{ form.name.data }}{% endif %}</span> <span class="comment_date">{% now "g:i a, N j, Y" %}</span></h4>
+    {{ comment|markdown }}
+</div>
+{% if request.user.is_authenticated %}
+<div id="comment_form">
+    <div id="comment_form_inner">
+        {% comment %}{% if topic.allow_comments %}{% endcomment %}
+        <h3 class="comment_form_label">Edit comment</h3>
+        <form action="{% comment_form_target %}" method="post">
+            {% include "wikizou/form_fields.html" %}
+            <input type="hidden" name="next" value="/wiki/comment-submitted/" />
+            <p class="submit">
+                <input type="submit" name="preview" class="submit-preview" value="Preview" />
+                <input type="submit" name="post" class="submit-post" value="Post" />
+            </p>
+        </form>
+        <div style="clear: both;"></div>
+        {% comment %}{% else %}
+        <h3>Discussion on this topic has been closed.</h3>
+        {% endif %}{% endcomment %}
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block sidebar %}
+{% topic_navigation_by_id form.object_pk.data %}
+{% include "wikizou/sidebar_group_1.html" %}
+{% include "wikizou/sidebar_group_2.html" %}
+{% endblock sidebar %}

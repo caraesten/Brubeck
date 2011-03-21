@@ -1,0 +1,45 @@
+{% extends "tppe_base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+<script src="/media/style/2009-09/js/jPlayer/jplayer.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+    $("#jPlayer").jPlayer( {
+        ready: function () {
+            $(this).setFile("http://www.themaneater.com/media/2010/0406/podcasts/April_Fools_News_Roundup.mp3");
+        },
+        swfPath: "/media/style/2009-09/js/jPlayer",
+    });
+    $("#jPlayer").jPlayerId("play", "play")
+    $("#jPlayer").jPlayerId("pause", "pause")
+    $("#jPlayer").jPlayerId("stop", "stop")
+	$("#jPlayer").jPlayerId("loadBar", "progress_load_bar")
+	$("#jPlayer").jPlayerId("playBar", "progress_play_bar")
+	$("#jPlayer").jPlayerId("volumeMin", "volume_min")
+	$("#jPlayer").jPlayerId("volumeMax", "volume_max")
+	$("#jPlayer").jPlayerId("volumeBar", "volume_bar")
+	$("#jPlayer").jPlayerId("volumeBarValue", "volume_bar_value")
+	.onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+		var myPlayedTime = new Date(playedTime);
+		var ptMin = (myPlayedTime.getUTCMinutes() < 10) ? "0" + myPlayedTime.getUTCMinutes() : myPlayedTime.getUTCMinutes();
+		var ptSec = (myPlayedTime.getUTCSeconds() < 10) ? "0" + myPlayedTime.getUTCSeconds() : myPlayedTime.getUTCSeconds();
+		$("#play_time").text(ptMin+":"+ptSec);
+
+		var myTotalTime = new Date(totalTime);
+		var ttMin = (myTotalTime.getUTCMinutes() < 10) ? "0" + myTotalTime.getUTCMinutes() : myTotalTime.getUTCMinutes();
+		var ttSec = (myTotalTime.getUTCSeconds() < 10) ? "0" + myTotalTime.getUTCSeconds() : myTotalTime.getUTCSeconds();
+		$("#total_time").text(ttMin+":"+ttSec);
+	});
+    $("#jPlayer").onSoundComplete( function() {
+		$(this).play();
+	});
+});
+</script>
+{% endblock head_extras %}
+
+{% block content %}
+{{ flatpage.content }}
+{% endblock content %}

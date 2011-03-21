@@ -1,0 +1,67 @@
+{% load web_graphics %}
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/highcharts.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/excanvas.compiled.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function(){
+   var chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'chart-container',
+         defaultSeriesType: 'pie'
+      },
+      title: {
+         text: '{{ piechart.title }}'
+      },
+      subtitle: {
+         text: '{{ piechart.subtitle }}<div class="chart_source"><em>Source: {{ piechart.source }}</em></div>'
+      },
+      legend: {
+         layout: 'vertical',
+         backgroundColor: '#FFFFFF',
+         style: {
+            left: 'auto',
+            top: '100px',                                                                
+            bottom: 'auto',
+            right: '50px'
+         }
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ this.point.tip +'';
+         }
+      },
+      plotArea: {
+         shadow: null,
+         borderWidth: null,
+         backgroundColor: null
+      },
+      plotOptions: {
+         pie: {
+            dataLabels: {
+               color: '#FFFFFF',
+               enabled: {% if piechart.display_labels %}true{% else %}false{% endif %},
+               formatter: function() {
+                  if (this.y > 5) return this.point.name;
+               },
+               style: {
+                  font: '13px Helvetica, Arial, FreeSans, sans-serif'
+               }
+            }
+         }
+      },
+           series: [{
+         type: 'pie',
+         name: '{{ piechart.measurement_name }}',
+         data: [{% for slice in piechart.slices.all %}
+            {
+               name: '{{ slice.name }}',
+               tip: {% spaceless %}{% render_pie_chart_slice_tooltip slice slices_sum %}{% endspaceless %}{% if slice.color %}
+               color: '{{ slice.color }}',{% endif %}
+               y: {{ slice.value }},
+               sliced: {% if slice.emphasized %}true{% else %}false{% endif %}
+            }{% if not forloop.last %},{% endif %}{% endfor %}]
+      }]
+   });
+});
+</script>

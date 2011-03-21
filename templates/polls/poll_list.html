@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Polls{% endblock title %}
+
+{% block content %}
+<h1>Polls</h1>
+{% if object_list %}
+    <ul>
+        {% for poll in object_list %}
+        <li><a href="{{ poll.get_absolute_url }}">{{ poll }}</a> ({{ poll.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>For some reason, there aren't any polls to display here.</p>
+{% endif %}
+{% if is_paginated %}
+<div class="page_navigation">
+    {% if page_obj.has_next %}<a href="/polls/p{{ page_obj.next_page_number }}/">&laquo; Older | {% endif %}Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}{% if page_obj.has_previous %}<a href="/polls/p{{ page_obj.previous_page_number }}/">Newer &raquo;</a>{% endif %}
+</div>
+{% endif %}
+{% endblock content %}

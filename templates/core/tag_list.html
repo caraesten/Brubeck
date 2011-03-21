@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load markup %}{% load advertising %}
+
+{% block title %}{{ block.super }} &mdash; Tags{% endblock title %}
+
+{% block content_wide %}
+<div id="content" class="grid_8 alpha">
+    <h1>Tags</h1>
+    <p><em>The Maneater's articles, blog posts and multimedia are organized by hundreds of tags that include the people, places and issues making news at MU.</em></p>
+    <p><em>Click on a tag below to view all its related content.</em></p>
+    {% regroup object_list by title|first|upper as letters %}
+    <div class="tags">
+        {% for letter in letters %}
+            {% if not letter.grouper.isdigit %}
+            <h3 class="tag_label"><a href="#{{ letter.grouper }}">{{ letter.grouper }}</a></h3>
+            {% else %}
+                {% if forloop.first %}
+                    <h3 class="tag_label"><a href="#numbers">#</a></h3>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% for letter in letters %}
+        {% if not letter.grouper.isdigit %}
+            <div class="object_list tag_archive">
+                <h2 id="{{ letter.grouper }}" class="grid_8 alpha omega header">{{ letter.grouper }}</h2>
+                {% for item in letter.list %}
+                    <div class="grid_4 alpha">
+                        <h3><p><a href="{{ item.get_absolute_url }}">{{ item.title|markdown }}</a></p></h3>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if forloop.first %}
+                <div class="object_list tag_archive">
+                    <h2 id="numbers" class="grid_8 alpha omega header">#</h2>
+                    {% for item in letter.list %}
+                        <div class="grid_4 alpha">
+                            <h3><p><a href="{{ item.get_absolute_url }}">{{ item.title|markdown }}</a></p></h3>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+       	       	<div class="object_list tag_archive">
+                    {% for item in letter.list %}
+                        <div class="grid_4 alpha">
+                            <h3><p><a href="{{ item.get_absolute_url }}">{{ item.title|markdown }}</a></p></h3>
+                        </div>
+                    {% endfor %}
+       	       	</div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+<div id="sidebar" class="grid_4 omega">
+    {% render_banner_ad 'vertical' %}
+</div>
+{% endblock content_wide %}

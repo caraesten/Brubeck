@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block title %}{{ block.super }} &ndash; Podcasts &ndash; {% if page_title %}{{ page_title }}{% else %}{{ object.title }}{% endif %}{% endblock title %}
+
+{% block head_extras %}
+<link rel="alternate" type="application/rss+xml" title="{{ object.title }} RSS Feed" href="/feeds/podcasts/{{ object.slug }}/" />
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{% if page_title %}{{ page_title }}{% else %}{{ object.title|markdown }}{% endif %}</h1>
+{% if not object_list %}
+    {% with object.episode_set.all as object_list %}
+    {% if object_list %}
+    <div class="object_list">
+        {% for episode in object_list %}
+        {% ifchanged episode.pub_date.month %}
+            {% if not forloop.first %}
+            </div>
+            <div class="object_list">
+            {% endif %}
+            <h2 class="header"><div class="month">{{ episode.pub_date|date:"F Y" }}</div>
+            <div class="calendar_link"><a href="/podcasts/{{ episode.channel.slug }}/calendar/{{ episode.pub_date|date:"Y" }}/{{ episode.pub_date|date:"n" }}/">(calendar)</a></div><div class="float_clearer" /></h2>
+        {% endifchanged %}
+        <div class="item">
+            <h3><a href="{{ episode.get_absolute_url }}">{{ episode.pub_date|date:"N j, Y" }}{% if episode.name %}: {{ episode.name|markdown }}{% endif %}</a></h3>
+            <p class="cdeck">{{ episode.description|markdown }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>For some reason, there aren't any episodes to display here.</p>
+    {% endif %}
+    {% endwith %}
+{% else %}
+    {% if object_list %}
+    <div class="object_list">
+        {% for episode in object_list %}
+        {% ifchanged episode.pub_date.month %}
+            {% if not forloop.first %}
+            </div>
+            <div class="object_list">
+            {% endif %}
+            <h2 class="header"><div class="month">{{ episode.pub_date|date:"F Y" }}</div>
+             <div class="calendar_link"><a href="/podcasts/{{ episode.channel.slug }}/calendar/{{ episode.pub_date|date:"Y" }}/{{ episode.pub_date|date:"n" }}/">(calendar)</a></div><div class="float_clearer" /></h2>
+        {% endifchanged %}
+        <div class="item">
+            <h3><a href="{{ episode.get_absolute_url }}">{{ episode.pub_date|date:"N j, Y" }}{% if episode.name %}: {{ episode.name|markdown }}{% endif %}</a></h3>
+            <p class="cdeck">{{ episode.description|markdown }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>For some reason, there aren't any episodes to display here.</p>
+    {% endif %}
+{% endif %}
+{% endblock content %}
+
+{% block sidebar %}
+{% if channels %}
+<h2 class="header">Other channels:</h2>
+<p>Check out these other podcast series from The Maneater.</p>
+{% for channel in channels %}
+{% ifnotequal channel.id object.id %}
+<h3><a href="{{ channel.get_absolute_url }}">{{ channel.title }}</a></h3>
+<p> {{ channel.description|markdown }} </p>
+{% endifnotequal %}
+{% endfor %}
+<p />
+<p>Or, see <a href="/podcasts/">all recent podcasts</a>.</p>
+{% endif %}
+{% endblock sidebar %}

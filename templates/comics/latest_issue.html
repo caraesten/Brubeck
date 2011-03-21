@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; In Print &ndash; Comics{% endblock title %}
+
+{% block content %}
+<h1>Latest comics</h1>
+<div class="object_list">
+    {% for episode in episodes %}
+    <h2 class="header"><a href="{{ episode.strip.get_absolute_url }}">{{ episode.strip }}</a></h2>
+    <div class="item">
+        <img class="photo" style="float: none;" src="{{ episode.get_thumbnail600_url }}" alt="{{ episode.strip }}" />
+        {% if episode.byline %}<p>By <a href="{{ episode.byline.get_absolute_url }}">{{ episode.byline }}</a></p>{% else %}{% if episode.static_byline %}<p>By {{ episode.static_byline }}</p>{% else %}{% endif %}{% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

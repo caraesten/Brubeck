@@ -1,0 +1,16 @@
+{% extends "tournaments/bracket_base.html" %}
+
+{% block bracket %}
+{% block heading %}{% endblock heading %}
+{% block caption %}
+{% endblock caption %}
+<h1>Enter The Maneater Madness 2011 Bracket Challenge.</h1>
+<p>Anyone with a Maneater account may enter the contest.</p>
+<p>MU students will be eligible to win cash prizes. First place wins $50, second place wins $20 and third place wins $10.</p>
+<p>By entering into the contest, you agree to our <a href="/maneater-madness/terms/">Terms and Conditions</a>.</p>
+{% endblock bracket %}
+
+{% block submit %}
+<p style="display: inline; margin-right: 20px;">{{ form.tos }} I have read and agree to the terms of this contest.</p>
+<input class="submit-button" type="submit" value="Create my bracket">
+{% endblock submit %}

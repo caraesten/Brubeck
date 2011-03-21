@@ -1,0 +1,39 @@
+{% load thumbnail %}{% load markup %}{% load core %}
+
+<div class="section_priority_story">
+{% ifequal item.mediatype 'article' %}
+    {% if item.photos.all %}
+        {% thumbnail item.photos.all.0.image 100x70 crop as thumb %}
+        <a href="{{ item.get_absolute_url }}">
+            <img id="top_story_photo" class="photo left" src="{{ thumb }}" alt="{{ item.linked_object.title }}" class="photo" />
+        </a>
+    {% endif %}
+    <h2>{% ifnotequal item.type 'story' %}{{ item.get_type_display }}: {% endifnotequal %}<a href="{{ item.get_absolute_url }}">{{ item.title|markdown }}</a></h2>
+    {% ifnotequal item.type 'editorial' %}<p class="byline">By {% if item.byline.all %}{% render_byline item.byline %}{% else %}{% if item.static_byline %}{{ item.static_byline }}{% else %}The Maneater Staff{% endif %}{% endif %}{% if item.updated %}&mdash; <span class="breaking">Last updated {{ item.last_updated|date:"g:i a, N j, Y" }}</span>{% endif %}</p>{% endifnotequal %}
+    <div class="top_article_cdeck">
+        {% if item.blurb %}
+            {{ item.blurb|markdown }}
+        {% else %}
+            {% if item.cdeck %}
+                {{ item.cdeck|markdown }}
+            {% else %}
+                {{ item.body|markdown|truncatewords_html:"40" }}
+            {% endif %}
+        {% endif %}
+    </div>
+{% else %}
+    {% ifequal item.mediatype 'audioclip' %}
+
+    {% else %}
+        {% ifequal item.mediatype 'slideshow' %}
+
+        {% else %}
+            {% ifequal item.mediatype 'video' %}
+
+            {% else %}
+
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+{% endifequal %}
+</div>

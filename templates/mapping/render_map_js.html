@@ -1,0 +1,39 @@
+{% load mapping %}
+    {% comment %}Start mapping scripts{% endcomment %}
+    {% add_gmap_api %}
+    <script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // First create a div to host the map
+        var themap = $('<div id="map_box"></div>').css({
+            'width': '{{ width }}px',
+            'height': '{{ height }}px',
+            'border': '1px solid #000'
+        }).insertBefore('ul#place_list');
+
+        // Now initialize the map
+        var mapstraction = new Mapstraction('map_box', 'google');
+        mapstraction.addControls({
+            zoom: 'small',
+            map_type: true
+        });
+
+	bounds = new BoundingBox({{ extents.min_lat }}, {{ extents.min_lng }}, {{ extents.max_lat }}, {{ extents.max_lng }});
+
+        // Set center and zoom
+        mapstraction.setBounds(bounds);
+
+        // Extract the coordinates and add a marker
+        $('.vcard').each(function() {
+            var hcard = $(this);
+            var latitude = hcard.find('.geo .latitude').text();
+            var longitude = hcard.find('.geo .longitude').text();
+            var marker = new Marker(new LatLonPoint(latitude, longitude));
+            marker.setInfoBubble(
+                '<div class="bubble">' + hcard.html() + '</div>'
+            );
+            // marker.setIcon('url');
+            mapstraction.addMarker(marker);
+        });
+    });
+   </script>

@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}{% load thumbnail %}{% load maneaterdevelopment %}
+
+{% block title %}Apartment Guide from {{ block.super }}{% if no_sortby_url %} &ndash; Search results{% endif %}{% if landlord %} &ndash; Properties from {{ landlord.landlord_name }}{% endif %}{% if page_title %} &ndash; {{ page_title|lower|capfirst }}{% endif %}{% endblock title %}
+
+{% block head_extras %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/apartmentguide.css" />
+
+<script type="text/javascript">
+$(function() {
+$("#triggera").click(function(event) {
+event.preventDefault();
+$("#boxa").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#triggerb").click(function(event) {
+event.preventDefault();
+$("#boxb").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#triggerc").click(function(event) {
+event.preventDefault();
+$("#boxc").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#triggerd").click(function(event) {
+event.preventDefault();
+$("#boxd").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#trigger0").click(function(event) {
+event.preventDefault();
+$("#box0").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#trigger1").click(function(event) {
+event.preventDefault();
+$("#box1").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+$("#trigger2").click(function(event) {
+event.preventDefault();
+$("#box2").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger3").click(function(event) {
+event.preventDefault();
+$("#box3").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger4").click(function(event) {
+event.preventDefault();
+$("#box4").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger5").click(function(event) {
+event.preventDefault();
+$("#box5").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger6").click(function(event) {
+event.preventDefault();
+$("#box6").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger7").click(function(event) {
+event.preventDefault();
+$("#box7").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger8").click(function(event) {
+event.preventDefault();
+$("#box8").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function(){
+$("#trigger9").click(function(event) {
+event.preventDefault();
+$("#box9").slideToggle();
+})});
+</script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="mapbox"></div>').css({
+        'width': '226px',
+        'height': '500px',
+        'border': '1px solid #BBBBBB'
+    }).insertBefore('div#lists_wrapper');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('mapbox', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents.min_lat }}, {{ extents.min_lng }}, {{ extents.max_lat }}, {{ extents.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+
+<style>
+.marker_url {
+    display: none;
+}
+#map_box {
+    float: right;
+    /*margin-right: 10px;*/
+}
+</style>
+{% endblock head_extras %}
+
+{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}
+{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}
+{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}
+
+{% block content_wide %}
+{% construction12 %}
+<div id="header" class="grid_12"><h1>Apartment Guide{% if no_sortby_url %} &ndash; Search results{% endif %}</h1></div>
+<div id="navigation" class="grid_3 omega"><h2 class="sectionblack">Sort results</h2>Select from the options below to find your perfect place.
+<form method="get" action="">
+<h3><a href="#" id="triggera"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Rent</a></h3>
+    <div class="boxcontainer">
+    <ul id="boxa"{% if rent_max %} style="display:block;"{% else %}{% if rent_min %} style="display:block;"{% endif %}{% endif %}>
+        <li class="form-item">Minimum: $<input type="text" name="rentmin" size="5" maxlength="5"{% if rent_min %} value="{{ rent_min }}"{% endif %} /></li>
+        <li class="form-item">Maximum: $<input type="text" name="rentmax" size="5" maxlength="5"{% if rent_max %} value="{{ rent_max }}"{% endif %} /></li>
+	</ul>
+	</div>
+<h3><a href="#" id="triggerb"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Number of bedrooms</a></h3>
+    <div class="boxcontainer">
+    <ul id="boxb"{% if beds_max %} style="display:block;"{% else %}{% if beds_min %} style="display:block;"{% endif %}{% endif %}>
+        <li class="form-item">Minimum: <input type="text" name="bedsmin" size="2" maxlength="2"{% if beds_min %} value="{{ beds_min }}"{% endif %} /></li>
+        <li class="form-item">Maximum: <input type="text" name="bedsmax" size="2" maxlength="2"{% if beds_max %} value="{{ beds_max }}"{% endif %} /></li>
+	</ul>
+	</div>
+<h3><a href="#" id="triggerc"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Number of bathrooms</a></h3>
+    <div class="boxcontainer">
+    <ul id="boxc"{% if baths_max %} style="display:block;"{% else %}{% if baths_min %} style="display:block;"{% endif %}{% endif %}>
+        <li class="form-item">Minimum: <input type="text" name="bathsmin" size="2" maxlength="2"{% if baths_min %} value="{{ baths_min }}"{% endif %} /></li>
+        <li class="form-item">Maximum: <input type="text" name="bathsmax" size="2" maxlength="2"{% if baths_max %} value="{{ baths_max }}"{% endif %} /></li>
+	</ul>
+	</div>
+<h3><a href="#" id="trigger0"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Security deposit</a></h3>
+    <div class="boxcontainer">
+    <ul id="box0"{% if security_deposit_active %} style="display:block;"{% endif %}>
+	{% for choice in security_deposit %}
+		<li class="form-item"><input type="radio" name="deposit" value="{{ choice.0 }}"{% if security_deposit_active %}{% ifequal security_deposit_active choice.0 %} checked{% endifequal %}{% endif %} />{% if security_deposit_active %}{% ifequal security_deposit_active choice.0 %}<b>{% endifequal %}{% endif %}{{ choice.1|lower|capfirst }}{% ifequal choice.0 "O" %}: <input type="text" name="depamt" size="5" maxlength="5" {% if deposit_amount%}value="{{ deposit_amount }}"{% endif %} />{% endifequal %}{% if security_deposit_active %}{% ifequal security_deposit_active choice.0 %}</b>{% endifequal %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger1"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Property type</a></h3>
+    <div class="boxcontainer">
+    <ul id="box1"{% if property_type_active %} style="display:block;"{% endif %}>
+	{% for choice in property_type %}
+		<li class="form-item"><input type="radio" name="propertytype" value="{{ choice.0 }}"{% if property_type_active %}{% ifequal property_type_active choice.0 %} checked{% endifequal %}{% endif %} />{% if property_type_active %}{% ifequal property_type_active choice.0 %}<b>{% endifequal %}{% endif %}{{ choice.1|lower|capfirst }}{% if property_type_active %}{% ifequal property_type_active choice.0 %}</b>{% endifequal %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="triggerd"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Size</a></h3>
+    <div class="boxcontainer">
+    <ul id="boxd"{% if sqft_max %} style="display:block;"{% else %}{% if sqft_min %} style="display:block;"{% endif %}{% endif %}>
+        <li class="form-item">Minimum: <input type="text" name="sqftmin" size="5" maxlength="5"{% if sqft_min %} value="{{ sqft_min }}"{% endif %} /> square feet</li>
+        <li class="form-item">Maximum: <input type="text" name="sqftmax" size="5" maxlength="5"{% if sqft_max %} value="{{ sqft_max }}"{% endif %} /> square feet</li>
+	</ul>
+	</div>
+<h3><a href="#" id="trigger2"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Furnishings</a></h3>
+    <div class="boxcontainer">
+    <ul id="box2"{% if furnished_active %} style="display:block;"{% endif %}>
+	{% for choice in furnished %}
+		<li class="form-item"><input type="radio" name="furnished" value="{{ choice.0 }}"{% if furnished_active %}{% ifequal furnished_active choice.0 %} checked{% endifequal %}{% endif %} />{% if furnished_active %}{% ifequal furnished_active choice.0 %}<b>{% endifequal %}{% endif %}{{ choice.1|lower|capfirst }}{% if furnished_active %}{% ifequal furnished_active choice.0 %}</b>{% endifequal %}{% endif %}</li>
+		
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger3"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Included appliances</a></h3>
+    <div class="boxcontainer">
+    <ul id="box3"{% for item in qs %}{% ifequal item.0 'appliance' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in appliances %}
+	    <li class="form-item"><input type="checkbox" name="appliance" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger4"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Heating & air</a></h3>
+    <div class="boxcontainer">
+    <ul id="box4"{% for item in qs %}{% ifequal item.0 'hvac' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in hvac %}
+	    <li class="form-item"><input type="checkbox" name="hvac" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger5"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Paid utilities</a></h3>
+    <div class="boxcontainer">
+    <ul id="box5"{% for item in qs %}{% ifequal item.0 'utilities' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in paid_utilities %}
+	    <li class="form-item"><input type="checkbox" name="utilities" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger6"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Property features</a></h3>
+    <div class="boxcontainer">
+    <ul id="box6"{% for item in qs %}{% ifequal item.0 'features' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in other_services %}
+	    <li class="form-item"><input type="checkbox" name="features" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger7"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Amenities</a></h3>
+    <div class="boxcontainer">
+    <ul id="box7"{% for item in qs %}{% ifequal item.0 'amenities' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in on_site_facilities %}
+	    <li class="form-item"><input type="checkbox" name="amenities" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger8"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Pet policies</a></h3>
+    <div class="boxcontainer">
+    <ul id="box8"{% for item in qs %}{% ifequal item.0 'petpolicy' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in pets %}
+	    <li class="form-item"><input type="checkbox" name="petpolicy" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<h3><a href="#" id="trigger9"><img style="float: right;" src="http://www.themaneater.com/media/style/2009-07/images/maneater/expandcollapse.png" />Getting to campus</a></h3>
+    <div class="boxcontainer">
+    <ul id="box9"{% for item in qs %}{% ifequal item.0 'transportation' %} style="display:block;"{% endifequal %}{% endfor %}>
+	{% for offering in transportation_to_campus %}
+	    <li class="form-item"><input type="checkbox" name="transportation" value="{{ offering.slug }}"{% if offering.checked %} checked="checked"{% endif %} />{% if offering.escape %}{% if offering.checked %}<b>{% endif %}{{ offering|capfirst }}{% if offering.checked %}</b>{% endif %}
+	    {% else %}{% if offering.checked %}<b>{% endif %}{{ offering|lower|capfirst }}{% if offering.checked %}</b>{% endif %}{% endif %}</li>
+	{% endfor %}
+	</ul>
+	</div>
+<input id="aptsearchsubmit" type="submit" value="Find my place" />
+</form>
+<form method="link" action="?">
+<input id="aptsearchclear" type="submit" value="Start over" />
+</form>
+</div>
+<div id="archiveright" class="grid_9 alpha omega">
+<div id="listingblock" class="grid_6 alpha omega">
+    {% if landlord %}
+    
+    <div id="landlord_info" class="grid_6">
+    
+        <h1>{{ landlord.landlord_name }}</h1>
+        <p>{% if landlord.landlord_location %}{{ landlord.landlord_location }}{% endif %}</p>
+		<p>{% if landlord.landlord_location.address %}{{ landlord.landlord_location.address }}{% endif %}</p>
+		<p>{% if landlord.phone_number %}{{ landlord.phone_number }}{% endif %}</p>
+		<p>{% if landlord.landlord_email %}<a href="mailto:{{ landlord.landlord_email }}">E-mail</a>{% if landlord.landlord_url %} | {% endif %}{% endif %}
+		{% if landlord.landlord_url %}<a href="{{ landlord.landlord_url }}">Website</a>{% endif %}</p>
+    
+    </div>
+    
+    {% endif %}
+    {% if apartment_list %}
+    <div id="entryheader" class="grid_6">
+        <span style="float: left;">Sort by: 
+        {% ifnotequal sortby 'rent' %}<a href="?{% if no_sortby_url %}{{ no_sortby_url }}&{% endif %}sortby=rent">{% endifnotequal %}Rent{% ifnotequal sortby 'rent' %}</a>{% endifnotequal %} |
+        {% ifnotequal sortby 'bedrooms' %}<a href="?{% if no_sortby_url %}{{ no_sortby_url }}&{% endif %}sortby=bedrooms">{% endifnotequal %}Bedrooms{% ifnotequal sortby 'bedrooms' %}</a>{% endifnotequal %} |
+        {% ifnotequal sortby 'bathrooms' %}<a href="?{% if no_sortby_url %}{{ no_sortby_url }}&{% endif %}sortby=bathrooms">{% endifnotequal %}Bathrooms{% ifnotequal sortby 'bathrooms' %}</a>{% endifnotequal %} |
+        {% ifnotequal sortby 'sqft' %}<a href="?{% if no_sortby_url %}{{ no_sortby_url }}&{% endif %}sortby=sqft">{% endifnotequal %}Size{% ifnotequal sortby 'sqft' %}</a>{% endifnotequal %}</span>
+        <span style="float:right;">
+        {% if sortby %}
+        {% ifnotequal order 'asc' %}<a href="?{% if no_order_url %}{{ no_order_url }}&{% endif %}order=asc">{% endifnotequal %}View ascending{% ifnotequal order 'asc' %}</a>{% endifnotequal %} |
+        {% ifnotequal order 'desc' %}<a href="?{% if no_order_url %}{{ no_order_url }}&{% endif %}order=desc">{% endifnotequal %}View descending{% ifnotequal order 'desc' %}</a>{% endifnotequal %}
+        {% endif %}
+    </div>
+	{% for apartment in apartment_list %}
+		{% with apartment.photos.all.0.image as image %}
+		{% with apartment.is_listing_premium as premium %}
+		{% with apartment.is_apartment_available as available %}
+	<div id="entry" class="grid_6 {% if premium %}premium{% else %}basic{% endif %}listing" {% if not apartment.is_apartment_available %}style="padding-top: 5px;"{% endif %}{% if apartment.multiple_available %}style="padding-top: 5px;"{% endif %}>
+        {% if not available %}<p class="unavailable">This property is not currently available.</p>{% endif %}
+         {% if apartment.multiple_available %}<p class="multiavailable">Multiple units available</p>{% endif %}
+		<div id="listingphoto" class="grid_2 alpha"><img src="{% if image %}{% thumbnail image 138x138 %}{% else %}/media/style/2009-07/images/maneater/nophotos.png{% endif %}" /><p class="entrytype">{% if premium %}premium{% else %}basic{% endif %} listing</p></div>
+		<div id="listinfo" class="grid_3 alpha">
+		<h2><a href="{{ apartment.get_absolute_url }}">{{ apartment.apartment_name }}</a></h2><p>{% if premium %}{% if apartment.property_description %}{{ apartment.property_description|truncatewords:15 }}{% endif %}{% endif %}</p><p>Landlord: <a href="{{ apartment.landlord.get_absolute_url }}">{{ apartment.landlord.landlord_name }}</a></p></div>
+		<div id="rentbox" class="grid_1 omega">
+		    {% ifequal bigfield 'rent' %}
+			<div class="bigfield">${{ apartment.rent_minimum }}{% if apartment.rent_maximum %} &ndash; ${{ apartment.rent_maximum }}{% endif %}</div>
+			<p>{{ apartment.number_of_bedrooms }} bedrooms</p>
+			<p>{{ apartment.number_of_bathrooms }} bathrooms</p>
+			{% if apartment.squarefootage %}<p>{{ apartment.squarefootage }} sq. ft.</p>{% endif %}
+			{% else %}
+			    {% ifequal bigfield 'bedrooms' %}
+			    
+			        <div class="bedbathnumber">{{ apartment.number_of_bedrooms }} <span class="bedbathcaption">bedrooms</span></div>
+        			<p>{{ apartment.number_of_bathrooms }} bathrooms</p>
+        			<p>${{ apartment.rent_minimum }}{% if apartment.rent_maximum %} &ndash; ${{ apartment.rent_maximum }}{% endif %}</p>
+		        	{% if apartment.squarefootage %}<p>{{ apartment.squarefootage }} sq. ft.</p>{% endif %}
+			    
+			    {% else %}
+			        {% ifequal bigfield 'bathrooms' %}
+			        
+			            <div class="bedbathnumber">{{ apartment.number_of_bathrooms }} <span class="bedbathcaption">bathrooms</span></div>
+	    		        <p>{{ apartment.number_of_bedrooms }} bedrooms</p>
+            			<p>${{ apartment.rent_minimum }}{% if apartment.rent_maximum %} &ndash; ${{ apartment.rent_maximum }}{% endif %}</p>
+		        	    {% if apartment.squarefootage %}<p>{{ apartment.squarefootage }} sq. ft.</p>{% endif %}
+			        
+			        {% else %}
+			            {% ifequal bigfield 'sqft' %}
+			            
+			                <div class="bigfield">{{ apartment.squarefootage }} sq. ft.</div>
+			                <p>${{ apartment.rent_minimum }}{% if apartment.rent_maximum %} &ndash; ${{ apartment.rent_maximum }}{% endif %}</p>
+    	    		        <p>{{ apartment.number_of_bedrooms }} bedrooms</p>
+                			<p>{{ apartment.number_of_bathrooms }} bathrooms</p>
+			            
+			            {% endifequal %}
+			        {% endifequal %}
+			    {% endifequal %}
+			{% endifequal %}
+		</div>
+	</div>
+		{% endwith %}
+		{% endwith %}
+		{% endwith %}
+	{% endfor %}
+	{% else %}
+	    <h2 class="nolistings">There seem to be no listings to display here.</h2><h2 class="nolistings">Check back often for new listings.</h2>
+	{% endif %}
+	<div id="entryfooter" class="grid_6">
+	
+	{% if this_page.has_previous %}<a href="?{% if pagination_url %}{{ pagination_url }}&{% endif %}page={{ this_page.previous_page_number }}">&laquo; Previous</a> |{% endif %}<span> Page {{ this_page.number }} of {{ this_page.paginator.num_pages }} </span>
+	{% if this_page.has_next %}| <a href="?{% if pagination_url %}{{ pagination_url }}&{% endif %}page={{ this_page.next_page_number }}">Next &raquo;</a>{% endif %}
+	</div>
+</div>
+<div id="bigmap" class="grid_3 omega"><h2 class="section">Map of results</h2>{% comment %}Big-ass map will go here. I promise.{% endcomment %}
+
+<div id="lists_wrapper">
+    <div class="object_list grid_4 alpha" style="display:none;">
+        <h2 class="header">List of locations</h2>
+        <ul id="place_list">
+            {% for listing in apartment_list %}
+            <li class="vcard">
+                <h3 class="fn org"><a href="javascript:void(0);">{{ listing.apartment_name|safe }}</a></h3>
+                <div class="details">
+                    <p>${{ listing.rent_minimum }}{% if listing.rent_maximum %} &ndash; {{ listing.rent_maximum }}{% endif %}</p>
+			        <p>{{ listing.number_of_bedrooms }} bedrooms</p>
+		    	    <p>{{ listing.number_of_bathrooms }} bathrooms</p>
+        			{% if listing.squarefootage %}<p>{{ listing.squarefootage }} sq. ft.</p>{% endif %}
+                    {% comment %}{% if listing.web_site %}<a href="{{ place.web_site }}">{{ listing.web_site }}</a>{% endif %}
+                    {% if listing.address %}<p class="adr post-office-box">{{ listing.address }}</p>{% endif %}
+                    {% if listing.additional_info %}<div class="note">{{ listing.additional_info|markdown }}</div>{% endif %}{% endcomment %}
+                    <p class="geo">Coordinates: <span class="latitude">{{ listing.apartment_location.coords.lat }}</span>, <span class="longitude">{{ listing.apartment_location.coords.lng }}</span></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+<div id="underline" class="grid_12"></div>
+<div class="grid_12" style="height: 30px;"></div>
+{% endblock content_wide %}

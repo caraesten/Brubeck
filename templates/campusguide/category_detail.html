@@ -1,0 +1,490 @@
+{% extends "base.html" %}{% load markup %}{% load mapping %}{% load comparison %}{% load webdesign %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; Campus Guide &ndash; {{ category.name }}{% endblock title %}
+
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/minicalendar.css" />
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
+<script type="text/javascript" src="/media/style/2009-06/js/jquery.tabswitch.yui.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.MapTab').tabSwitch('create',{width: 700, type: 'toggle', toggle: 'fade', height: 400});
+		$('.tabNav').click(function(e){
+			$('.MapTab').tabSwitch('moveTo',{index: parseInt($(this).attr("rel"))});
+			e.preventDefault();
+		});
+	});
+</script>
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '675px',
+        'height': '300px',
+        'border': '1px solid #000'
+    }).insertBefore('div#lists_wrapper');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents.min_lat }}, {{ extents.min_lng }}, {{ extents.max_lat }}, {{ extents.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+
+{% if map1 %}
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box_1"></div>').css({
+        'width': '675px',
+        'height': '300px',
+        'border': '1px solid #000'
+    }).insertBefore('div#lists_wrapper_1');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box_1', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents1.min_lat }}, {{ extents1.min_lng }}, {{ extents1.max_lat }}, {{ extents1.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo1 .latitude1').text();
+        var longitude = hcard.find('.geo1 .longitude1').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+{% endif %}
+{% if map2 %}
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box_2"></div>').css({
+        'width': '675px',
+        'height': '300px',
+        'border': '1px solid #000'
+    }).insertBefore('div#lists_wrapper_2');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box_2', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents2.min_lat }}, {{ extents2.min_lng }}, {{ extents2.max_lat }}, {{ extents2.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo2 .latitude2').text();
+        var longitude = hcard.find('.geo2 .longitude2').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+{% endif %}
+{% if map3 %}
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box_3"></div>').css({
+        'width': '675px',
+        'height': '300px',
+        'border': '1px solid #000'
+    }).insertBefore('div#lists_wrapper_3');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box_3', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents3.min_lat }}, {{ extents3.min_lng }}, {{ extents3.max_lat }}, {{ extents3.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo3 .latitude3').text();
+        var longitude = hcard.find('.geo3 .longitude3').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+{% endif %}
+
+<script type="text/javascript">
+$(function() {
+    $('#place_list .details').hide();
+    $('#place_list h3').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+<script type="text/javascript">
+$(function() {
+    $('.object_list .item').hide();
+    $('.object_list h3').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+<style>
+#lists_wrapper .object_list {
+    clear: none;
+}
+.vcard h3 {
+    display: inline;
+}
+</style>
+{% endblock head_extras %}
+
+{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}
+{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}
+{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}
+
+{% block content %}
+<div id="categoryheader" class="grid_9 alpha omega">
+<h1 style="display:inline;">{{ category.name }}</h1><p class="cdeck" style="display:inline;">{{ category.description|markdown }}</p>
+</div>
+
+<div id="categoryinfo" class="grid_9 alpha omega">
+
+{% if category.image %}<img id="campusguidephoto" src="{% thumbnail category.image 640x200 crop %}" />{% endif %}
+
+<em>{% if category.blurb %}{{ category.blurb|markdown }}{% else %}{% lorem 3 p %}{% endif %}</em>
+
+</div>
+
+<div id="maps" class="grid_9 alpha omega">
+
+<div class="MapTab" id="Map0">
+<h3><span>Related Maps:</span>
+<span class="active">{{ map }}</span>
+<a class="tabNav farleft" href="#Map1" rel="1">{{ map1 }}</a>
+{% if map2 %}<a class="tabNav" href="#Map2" rel="2">{{ map2 }}</a>{% endif %}
+{% if map3 %}<a class="tabNav" href="#Map3" rel="3">{{ map3 }}</a>{% endif %}</h3>
+<p id="description">{{ map.description }}</p>
+<div id="map" class="grid_9 alpha omega">
+<div id="lists_wrapper">
+    <div class="object_list grid_4 alpha" style="display:none;">
+        <h2 class="header">List of locations</h2>
+        <ul id="place_list">
+            {% for place in places %}
+            <li class="vcard">
+                <h3 class="fn org"><a href="javascript:void(0);">{{ place.name|safe }}</a></h3>
+                <div class="details">
+                    {% if place.web_site %}<a href="{{ place.web_site }}">{{ place.web_site }}</a>{% endif %}
+                    {% if place.address %}<p class="adr post-office-box">{{ place.address }}</p>{% endif %}
+                    {% if place.additional_info %}<div class="note">{{ place.additional_info|markdown }}</div>{% endif %}
+                    <p class="geo">Coordinates: <span class="latitude">{{ place.point.get_y }}</span>, <span class="longitude">{{ place.point.get_x }}</span></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+<p class="morelink"><a href="{{ map.get_absolute_url }}">View and sort these locations...</a></p>
+</div>
+
+{% comment %}{% endcomment %}
+{% if map1 %}
+<div class="MapTab" id="Map1">
+<h3><span>Related Maps:</span>
+<a class="tabNav farleft" href="#Map0" rel="0">{{ map }}</a>
+<span class="active">{{ map1 }}</span>
+{% if map2 %}<a class="tabNav" href="#Map2" rel="2">{{ map2 }}</a>{% endif %}
+{% if map3 %}<a class="tabNav" href="#Map3" rel="3">{{ map3 }}</a>{% endif %}</h3>
+<p id="description">{{ map1.description }}</p>
+<div id="map1" class="grid_9 alpha omega">
+<div id="lists_wrapper_1">
+    <div class="object_list grid_4 alpha" style="display:none;">
+        <h2 class="header">List of locations</h2>
+        <ul id="place_list">
+            {% for place1 in places1 %}
+            <li class="vcard">
+                <h3 class="fn org"><a href="javascript:void(0);">{{ place1.name|safe }}</a></h3>
+                <div class="details">
+                    {% if place1.web_site %}<a href="{{ place.web_site }}">{{ place1.web_site }}</a>{% endif %}
+                    {% if place1.address %}<p class="adr post-office-box">{{ place1.address }}</p>{% endif %}
+                    {% if place1.additional_info %}<div class="note">{{ place1.additional_info|markdown }}</div>{% endif %}
+                    <p class="geo1">Coordinates: <span class="latitude1">{{ place1.point.get_y }}</span>, <span class="longitude1">{{ place1.point.get_x }}</span></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+<p class="morelink"><a href="{{ map1.get_absolute_url }}">View and sort these locations...</a></p>
+</div>
+{% endif %}
+
+{% if map2 %}
+<div class="MapTab" id="Map2">
+<h3><span>Related Maps:</span>
+<a class="tabNav farleft" href="#Map0" rel="0">{{ map }}</a>
+<a class="tabNav" href="#Map1" rel="1">{{ map1 }}</a>
+<span class="active">{{ map2 }}</span>
+{% if map3 %}<a class="tabNav" href="#Map3" rel="3">{{ map3 }}</a>{% endif %}</h3>
+<p id="description">{{ map2.description }}</p>
+<div id="map2" class="grid_9 alpha omega">
+<div id="lists_wrapper_2">
+    <div class="object_list grid_4 alpha" style="display:none;">
+        <h2 class="header">List of locations</h2>
+        <ul id="place_list">
+            {% for place2 in places2 %}
+            <li class="vcard">
+                <h3 class="fn org"><a href="javascript:void(0);">{{ place2.name|safe }}</a></h3>
+                <div class="details">
+                    {% if place2.web_site %}<a href="{{ place.web_site }}">{{ place2.web_site }}</a>{% endif %}
+                    {% if place2.address %}<p class="adr post-office-box">{{ place2.address }}</p>{% endif %}
+                    {% if place2.additional_info %}<div class="note">{{ place2.additional_info|markdown }}</div>{% endif %}
+                    <p class="geo2">Coordinates: <span class="latitude2">{{ place2.point.get_y }}</span>, <span class="longitude2">{{ place2.coordsget_x }}</span></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+<p class="morelink"><a href="{{ map2.get_absolute_url }}">View and sort these locations...</a></p>
+</div>
+{% endif %}
+
+{% if map3 %}
+<div class="MapTab" id="Map3">
+<h3><span>Related Maps:</span>
+<a class="tabNav farleft" href="#Map0" rel="0">{{ map }}</a>
+<a class="tabNav" href="#Map1" rel="1">{{ map1 }}</a>
+<a class="tabNav" href="#Map2" rel="2">{{ map2 }}</a>
+<span class="active">{{ map3 }}</span></h3>
+<p id="description">{{ map3.description }}</p>
+<div id="map3" class="grid_9 alpha omega">
+<div id="lists_wrapper_3">
+    <div class="object_list grid_4 alpha" style="display:none;">
+        <h2 class="header">List of locations</h2>
+        <ul id="place_list">
+            {% for place3 in places3 %}
+            <li class="vcard">
+                <h3 class="fn org"><a href="javascript:void(0);">{{ place3.name|safe }}</a></h3>
+                <div class="details">
+                    {% if place3.web_site %}<a href="{{ place.web_site }}">{{ place3.web_site }}</a>{% endif %}
+                    {% if place3.address %}<p class="adr post-office-box">{{ place3.address }}</p>{% endif %}
+                    {% if place3.additional_info %}<div class="note">{{ place3.additional_info|markdown }}</div>{% endif %}
+                    <p class="geo3">Coordinates: <span class="latitude3">{{ place3.point.get_y }}</span>, <span class="longitude3">{{ place3.point.get_x }}</span></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+<p class="morelink"><a href="{{ map3.get_absolute_url }}">View and sort these locations...</a></p>
+</div>
+{% endif %}
+{% comment %}{% endcomment %}
+
+</div>
+
+<div class="grid_9 alpha">
+
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+        <h2 class="section calendar"><a href="/calendar/">Calendar &ndash; {{ month_name }} {{ year }}</a></h2>
+{% if month_formatted %}
+<table class="calendar">
+{% if weekday_header %}
+<thead>
+<tr class="header">
+{% for weekday_name in weekday_header %}
+<th class="header">
+{{ weekday_name }}
+</th>
+{% endfor %}
+</tr>
+</thead>
+{% endif %}
+<tbody>
+{% for week in month_formatted %}
+<tr class="calendar">
+{% for day in week %}
+{% ifequal day 0 %}
+<td class="calendar inactive padding"></td>
+{% else %}
+
+{% ifequal day today %}
+
+{% ifequal month this_month %}
+
+{% ifequal year this_year %}
+
+{% if forloop.last %}                                                          
+<td class="today calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="today calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+
+{% endifequal %}
+
+<a class="tooltip" href="/calendar/{{ year }}/{{ month }}/{{ day }}/">{{ day }}
+
+<span>
+
+<p class="header">Events for {% now "N" %} {{ day }}, {{ year }}</p>
+
+{% for event in event_list %}
+
+    {% ifequal event.start.day day %}
+    
+        <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+    
+        {% if event.all_day %}
+                
+            <p class="eventdate">All day</p>
+                
+        {% else %}
+            <p class="eventdate">{{ event.start|time:"g:i a" }}</p>
+        {% endif %}
+    {% else %}
+        {% if event.end %}
+            {% ifequal event.end.day day %}
+                <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+                {% if event.all_day %}
+                    <p class="eventdate">All day</p>
+                {% else %}
+                    <p class="eventdate">{% ifequal event.start.year event.end.year %}{% ifequal event.start.month event.end.month %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"j" }}{% else %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"N j" }}{% endifequal %}{% else %}{{ event.start|date:"N j Y" }} &ndash; {{ event.end|date:"N j Y" }}{% endifequal %}</p>
+                {% endif %}
+                
+            {% else %}
+                {% if_greater day event.start.day %}
+                    {% if_less day event.end.day %}
+                        <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+                        {% if event.all_day %}
+                            <p class="eventdate">All day</p>
+                        {% else %}
+                            <p class="eventdate">{% ifequal event.start.year event.end.year %}{% ifequal event.start.month event.end.month %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"j" }}{% else %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"N j" }}{% endifequal %}{% else %}{{ event.start|date:"N j Y" }} &ndash; {{ event.end|date:"N j Y" }}{% endifequal %}</p>
+                        {% endif %}
+                        
+                    {% endif_less %}
+                {% endif_greater %}
+            {% endifequal %}
+        {% endif %}
+    {% endifequal %}
+{% endfor %}
+</span>
+</a>
+</td>
+{% endifequal %}
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% else %}
+Strangely enough, there's no content to display here. Try retracing your steps, or searching for what you want to find.
+{% endif %}
+<h3>Related calendars</h3>
+    <p class="calendar_list">
+        {% for calendar in category.calendars.all %}
+            <a href="{{ calendar.get_absolute_url }}">{{ calendar.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+
+    <h2 class="section">Important Contacts</h2>
+        {% for contact_list in category.contact_lists.all %}
+<div class="object_list">
+    <h3 class="header"><a href="javascript:void(0)">{{ contact_list }}</a></h3>
+    <ul class="item">
+        {% for contact in contact_list.contact_set.all %}
+        <li><strong>{{ contact.office }}:</strong> {{ contact.contact_info|safe }}</li>
+        {% endfor %}
+    </ul>
+</div>
+        {% endfor %}
+
+{% endblock sidebar %}

@@ -1,0 +1,9 @@
+{% extends "emailing/form_base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Send a letter to the editor{% endblock title %}
+
+{% block content %}
+<h1>Send a letter to the editor</h1>
+<p>Please limit letters to 200 words.</p>
+{{ block.super }}
+{% endblock content %}

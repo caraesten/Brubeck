@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block title %}{{ block.super }} &mdash; Top Online{% endblock title %}
+
+{% block content %}
+
+<h1>Top Online</h1>
+<h2>{{ start|date:"l, N j, Y" }} to {{ end|date:"l, N j, Y" }}</h2>
+
+{% comment %}
+
+{% for item in top_online %}
+
+<h3>No. {{ forloop.counter }} &mdash; 
+{% ifequal item.mediatype 'article' %}
+    {% ifnotequal item.type 'story' %}{{ item.get_type_display }}: {% endifnotequal %}
+    <a href="{{ item.get_absolute_url }}">{{ item|markdown }}</a>
+{% else %}
+    {% ifequal item.mediatype 'audio' %}
+        Audio clip: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+    {% else %}
+        {% ifequal item.mediatype 'blog' %}
+            Blog: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+        {% else %}
+            {% ifequal item.mediatype 'event' %}
+                Event: <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
+            {% else %}
+                {% ifequal item.mediatype 'graphic' %}
+                    Graphic: <a href="{{ item.get_absolute_url }}">{{ item }}</a>
+                {% else %}
+                    {% ifequal item.mediatype 'layout' %}
+                        Layout: <a href="{{ item.get_absolute_url }}">{{ item }}</a>
+                    {% else %}
+                        {% ifequal item.mediatype 'map' %}
+                            Map: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                        {% else %}
+                            {% ifequal item.mediatype 'photo' %}
+                                Photo: <a href="{{ item.get_absolute_url }}">{{ item }}</a>
+                            {% else %}
+                                {% ifequal item.mediatype 'podcast' %}
+                                    Podcast episode: <a href="{{ item.get_absolute_url }}">{{ item }}</a>
+                                {% else %}
+                                    {% ifequal item.mediatype 'poll' %}
+                                        Poll: <a href="{{ item.get_absolute_url }}">{{ item.question }}</a>
+                                    {% else %}
+                                        {% ifequal item.mediatype 'slideshow' %}
+                                            Slideshow: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                                        {% else %}
+                                            {% ifequal item.mediatype 'video' %}
+                                                Video: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                                            {% endifequal %}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endifequal %}
+                        {% endifequal %}
+                    {% endifequal %}
+                {% endifequal %}
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+{% endifequal %}
+</h3>
+
+{% endfor %}
+
+<br />
+
+{% endcomment %}
+
+<div id="copy-desk-top-online">
+
+{% for item in top_online %}
+
+<h3>No. {{ forloop.counter }} &mdash;
+{% ifequal item.mediatype 'article' %}
+    {% ifnotequal item.type 'story' %}{{ item.get_type_display }}: {% endifnotequal %}{{ item|markdown }} (<a href="{{ item.get_absolute_url }}">link</a>)
+{% else %}
+    {% ifequal item.mediatype 'audio' %}
+        Audio clip: {{ item.title }} (<a href="{{ item.get_absolute_url }}">link</a>)
+    {% else %}
+	{% ifequal item.mediatype 'blog' %}
+            Blog: {{ item.title }} (<a href="{{ item.get_absolute_url }}">link</a>)
+        {% else %}
+            {% ifequal item.mediatype 'event' %}
+                Event: {{ item.name }} (<a href="{{ item.get_absolute_url }}">link</a>)
+            {% else %}
+                {% ifequal item.mediatype 'graphic' %}
+                    Graphic: {{ item }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                {% else %}
+                    {% ifequal item.mediatype 'layout' %}
+                        Layout: {{ item }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                    {% else %}
+                        {% ifequal item.mediatype 'map' %}
+                            Map: {{ item.title }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                        {% else %}
+                            {% ifequal item.mediatype 'photo' %}
+                                Photo: {{ item }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                            {% else %}
+                                {% ifequal item.mediatype 'podcast' %}
+                                    Podcast episode: {{ item }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                                {% else %}
+                                    {% ifequal item.mediatype 'poll' %}
+                                        Poll: {{ item.question }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                                    {% else %}
+                                        {% ifequal item.mediatype 'slideshow' %}
+                                            Slideshow: {{ item.title }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                                        {% else %}
+                                            {% ifequal item.mediatype 'video' %}
+                                                Video: {{ item.title }} (<a href="{{ item.get_absolute_url }}">link</a>)
+                                            {% endifequal %}
+                                        {% endifequal %}
+                                    {% endifequal %}
+                                {% endifequal %}
+                            {% endifequal %}
+                        {% endifequal %}
+                    {% endifequal %}
+                {% endifequal %}
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+{% endifequal %}
+</h3>
+
+{% endfor %}
+
+</div>
+
+<br />
+
+<h1>Most viewed pages</h1>
+
+{% for page in top_pages_list %}
+<p>{{ forloop.counter }}. <a href="http://www.themaneater.com{{ page.0.1 }}">{{ page.0.0 }}</a> <span class="pageviews">{{ page.1.0 }} view{% ifnotequal page.1.0 1 %}s{% endifnotequal %}</span</p>
+{% endfor %}
+
+{% endblock content %}

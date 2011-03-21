@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; For reporters &ndash; Info pages{% endblock title %}
+
+{% block content %}
+<h1>Info pages</h1>
+<ul>
+    {% for page in object_list %}
+    <li><a href="{{ page.get_absolute_url }}">{{ page }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

@@ -1,0 +1,110 @@
+{% load thumbnail %}{% load markup %}
+<div id="top_story_{{ item.priority }}" class="ui-tabs-panel">
+    {% ifequal item.linked_object.mediatype 'article' %}
+        {% thumbnail item.linked_object.photos.all.0.image 380x255 as thumb %}
+        <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+            <a href="{{ item.linked_object.get_absolute_url }}">
+                <img id="top_story_photo" src="{{ thumb }}" alt="{{ item.linked_object.title }}" class="photo" />
+            </a>
+        </div>
+        <h1>
+            <a href="{{ item.linked_object.get_absolute_url }}">
+                {{ item.linked_object.title|markdown }}
+            </a>
+        </h1>
+        <div class="top_article_cdeck">
+                {% if item.linked_object.blurb %}
+                    {{ item.linked_object.blurb|markdown }}
+                {% else %}
+                    {% if item.linked_object.cdeck %}
+                        {{ item.linked_object.cdeck|markdown }}
+                    {% else %}
+                        {{ item.linked_object.body|markdown|truncatewords_html:"40" }}
+                    {% endif %}
+                {% endif %}
+        </div>
+    {% else %}
+        {% ifequal item.linked_object.mediatype 'photo' %}
+            {% thumbnail item.linked_object.image 380x255 as thumb %}
+            <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+                <a href="{{ item.linked_object.get_absolute_url }}">
+                    <img id="top_story_photo" src="{{ thumb }}" alt="Photo: {{ item.linked_object.title }}" class="photo" />
+                </a>
+            </div>
+            <h1>Photo: <a href="{{ item.linked_object.get_absolute_url }}">{{ item.linked_object.title|markdown }}</a></h1>
+            <div class="top_article_cdeck">{{ item.linked_object.cutline|markdown|truncatewords_html:"15" }}</div>
+        {% else %}
+            {% ifequal item.linked_object.mediatype 'audioclip' %}
+                {% thumbnail item.linked_object.image 380x255 as thumb %}
+                <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+                    <a href="{{ item.linked_object.get_absolute_url }}">
+                        <img id="top_story_photo" src="{{ thumb }}" alt="Audio clip: {{ item.linked_object.title }}" class="photo" />
+                    </a>
+                </div>
+                <h1>
+                    <a href="{{ item.linked_object.get_absolute_url }}">
+                        {{ item.linked_object.title|markdown }}
+                    </a>
+                </h1>
+                {% if item.linked_object.description %}
+                    <div class="top_article_cdeck">{{ item.linked_object.description|markdown|truncatewords_html:"20" }}</div>
+                {% endif %}
+            {% else %}
+                {% ifequal item.linked_object.mediatype 'slideshow' %}
+                    {% thumbnail item.linked_object.image 380x255 as thumb %}
+                    <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+                        <a href="{{ item.linked_object.get_absolute_url }}">
+                            <img id="top_story_photo" src="{{ thumb }}" alt="Slideshow: {{ item.linked_object.title }}" class="photo" />
+                        </a>
+                    </div>
+                    <h1>
+                        <a href="{{ item.linked_object.get_absolute_url }}">
+                            {{ item.linked_object.title|markdown }}
+                        </a>
+                    </h1>
+                    {% if item.linked_object.description %}
+                        <div class="top_article_cdeck">{{ item.linked_object.description|markdown|truncatewords_html:"20" }}</div>
+                    {% endif %}
+                {% else %}
+                    {% ifequal item.linked_object.mediatype 'video' %}
+                        {% thumbnail item.linked_object.preview_image 380x255 as thumb %}
+                        <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+                            <a href="{{ item.linked_object.get_absolute_url }}">
+                                <img id="top_story_photo" src="{{ thumb }}" alt="Video: {{ item.linked_object.title }}" class="photo" />
+                            </a>
+                        </div>
+                        <h1>
+                            <a href="{{ item.linked_object.get_absolute_url }}">
+                                {{ item.linked_object.title|markdown }}
+                            </a>
+                        </h1>
+                        {% if item.linked_object.description %}
+                            <div class="top_article_cdeck">{{ item.linked_object.description|markdown|truncatewords_html:"20" }}</div>
+                        {% endif %}
+                    {% else %}
+                        {% ifequal item.linked_object.mediatype 'custom' %}
+                            {% thumbnail item.linked_object.image 380x255 autocrop as thumb %}
+                            <div class="top_story_image_0" style="width: {{ thumb.width }}px">
+                            {% if item.linked_object.link %}<a href="{{ item.linked_object.link }}">{% endif %}
+                                <img id="top_story_photo" src="{{ thumb }}" alt="{{ item.linked_object.title }}" class="photo" />
+                            {% if item.linked_object.link %}</a>{% endif %}
+                            </div>
+                            <h1>{% if item.linked_object.link %}<a href="{{ item.linked_object.link }}">{% endif %}{{ item.linked_object.title|markdown }}{% if item.linked_object.link %}</a>{% endif %}</h1>
+                            <div class="top_article_cdeck">{{ item.linked_object.description|markdown }}</div>
+                        {% else %}
+                            {% ifequal item.linked_object.mediatype 'blog' %}
+                                {% thumbnail item.linked_object.photos.all.0.image 380x255 autocrop as thumb %}
+                                <div class="top_story_image_0" style="width: {{ thumb.width }}px">
+                                <a href="{{ item.linked_object.get_absolute_url }}"><img id="top_story_photo" src="{{ thumb }}" alt="Blog post: {{ item.linked_object.title }}" class="photo" /></a>
+                                </div>
+                                <h1><a href="{{ item.linked_object.get_absolute_url }}">{{ item.linked_object.title|markdown }}</a></h1>
+                                <div class="top_article_cdeck">{{ item.linked_object.body|markdown|truncatewords_html:"15" }}</div>
+                            {% else %}
+                            {% endifequal %}
+                        {% endifequal %}
+                    {% endifequal %}
+                {% endifequal %}
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+</div>

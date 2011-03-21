@@ -1,0 +1,10 @@
+{% if recipient_name %}Hi, {{ recipient_name }}!{% endif %} {% if sender_name %}{{ sender_name }} ({{ sender_email }}){% else %}{{ sender_email }}{% endif %} has sent you {% ifequal object.mediatype "blog" %}a blog post{% else %}an article{% endifequal %} from themaneater.com.
+
+The {% ifequal object.mediatype "blog" %}post{% else %}article{% endifequal %}, {{ object }}, may be found at {% ifequal object.mediatype "blog" %}http://{{ object.blog.section.publication.site.domain }}{% endifequal %}{{ object.get_absolute_url }}. {% if note %}
+
+{% if sender_name %}{{ sender_name }}{% else %}The sender{% endif %} also included the following note:
+{{ note }}{% endif %}
+
+Sincerely,
+
+themaneater.com

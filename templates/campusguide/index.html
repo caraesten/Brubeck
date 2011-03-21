@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Campus Guide{% endblock title %}
+
+{% block content %}
+<h1>Campus Guide</h1>
+    <ul>
+        <li><a href="/calendar/">Calendar</a><p>Find events going on all over campus.</li>
+        <li><a href="/campus-guide/contacts/">Contacts</a><p>Need to find an office or department? Look it up here.</li>
+        <li><a href="/campus-guide/maps/">Maps</a><p>Look here if you get turned around.</li>
+    </ul>
+{% endblock content %}

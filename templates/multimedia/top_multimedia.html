@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load core %}{% load markup %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; Multimedia{% comment %}{% ifnotequal object.mediatype "audioclip" %}{{ object.mediatype }}{% else %}Audio clip{% endifnotequal %}s &ndash; {{ object }}{% endcomment %}{% endblock title %}
+
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
+{% endblock head_extras %}
+
+{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}
+{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}
+{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}
+
+{% block content %}
+<h1>Multimedia</h1>
+{% for item in archive_page.object_list %}
+    {% if forloop.first %}
+    <div class="object_list">
+    {% endif %}
+    {% ifchanged item.pub_date.day %}
+        {% if not forloop.first %}
+        </div>
+        <div class="object_list">
+        {% endif %}
+        <h2 class="header">{{ item.pub_date|date:"N j, Y" }}</h2>
+    {% endifchanged %}
+        <div class="item">
+        {% ifequal item.mediatype "podcast" %}
+            {% if item.channel.image %}
+                <a href="{{ item.get_absolute_url }}"><img class="photo left" alt="{{ item }}" src="{% thumbnail item.channel.image 200x200 %}" /></a>
+            {% endif %}
+        {% else %}
+            {% ifequal item.mediatype "video" %}
+                {% if item.preview_image %}
+                    <a href="{{ item.get_absolute_url }}"><img class="photo left" alt="{{ item }}" src="{% thumbnail item.preview_image 200x150 crop %}" /></a>
+                {% else %}
+                    {% if item.thumbnail %}
+                        <a href="{{ item.get_absolute_url }}"><img class="photo left" alt="{{ item }}" src="{{ item.thumbnail }}" /></a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if item.image %}
+                    <a href="{{ item.get_absolute_url }}"><img class="photo left" alt="{{ item }}" src="{% thumbnail item.image 200x150 crop %}" /></a>
+                {% endif %}
+            {% endifequal %}
+        {% endifequal %}
+        <h3 class="headline">
+            {% ifequal item.mediatype "audioclip" %}Audio clip: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>{% endifequal %}
+            {% ifequal item.mediatype "podcast" %}Podcast: <a href="{{ item.get_absolute_url }}">{{ item.channel.title }}{% if item.name %}: {{ item.name }}{% endif %}</a>{% endifequal %}
+            {% ifequal item.mediatype "slideshow" %}Slideshow: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>{% endifequal %}
+            {% ifequal item.mediatype "video" %}Video: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>{% endifequal %}
+        </h3>
+        {% ifequal item.mediatype "audioclip" %}{{ item.description|safe|markdown }}{% endifequal %}
+        {% ifequal item.mediatype "podcast" %}{{ item.description|safe|markdown|truncatewords_html:"40" }}{% endifequal %}
+        {% ifequal item.mediatype "slideshow" %}{{ item.description|safe|markdown }}{% endifequal %}
+        {% ifequal item.mediatype "video" %}{{ item.description|safe|markdown }}{% endifequal %}
+        </div>
+    {% if forloop.last %}
+    </div>
+    {% endif %}
+{% endfor %}
+<div class="page_navigation">
+{% if archive_page.has_next %}<a href="/multimedia/{{ archive_page.next_page_number }}/">&laquo; Older</a> |{% endif %} Page {{ archive_page.number }} of {{ archive_page.paginator.num_pages }} {% if archive_page.has_previous %}| <a href="/multimedia/{{ archive_page.previous_page_number }}/">Newer &raquo;</a>{% endif %}
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+<h2 class="sectiongrey">Podcast channels</h2>
+<ul>
+{% for channel in channel_list %}
+<li><h3><a href="{{ channel.get_absolute_url }}">{{ channel.title }}</a></h3>{{ channel.description|markdown }}</li>
+{% endfor %}
+<h2 class="sectiongrey">Multimedia types</h2>
+<h3><a href="/audio/">Audio clips</h3>
+<h3><a href="/podcasts/">Podcasts</h3>
+<h3><a href="/slideshows/">Slideshows</h3>
+<h3><a href="/videos/">Videos</h3>
+{% endblock sidebar %}

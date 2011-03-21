@@ -1,0 +1,64 @@
+{% extends "tournaments/bracket_base.html" %}
+
+{% block head_extras %}
+{{ block.super }}
+<style>
+ul.first_round,
+ul.second_round {
+    font-size: 10px;
+    width: 160px;
+}
+ul.second_round {
+    margin-top: 17px;
+}
+li.game {
+    padding: 2px 0px 2px 2px;
+}
+li.odd {
+    border-top: 1px solid #000000;
+    margin-top: 20px;
+}
+li.even {
+    border-bottom: 1px solid #000000;
+}
+ul.left li {
+    border-right: 1px solid #000000;
+}
+ul.second_round li.odd {
+
+}
+ul.second_round li.even {
+    margin-bottom: 55px;
+    padding-top: 11px;
+}
+</style>
+{% endblock head_extras %}
+
+{% block heading %}Make your predictions: First round ({{ region_name|capfirst }} region){% endblock heading %}
+
+{% block bracket %}
+<ul class="first_round left">
+{% for game in first_round_games %}
+    {% if game.precursors.all %}
+        <li class="game odd">{{ game.opponent_set.all.0.team.ranking }} {{ game.opponent_set.all.0.team.team.get_school_abbrev }}</li>
+        <li class="game even">{{ game.precursors.all.0.opponent_set.all.0.team.ranking }} {{ game.precursors.all.0.opponent_set.all.0.team.team.get_school_abbrev }}/{{ game.precursors.all.0.opponent_set.all.1.team.team.get_school_abbrev }}</li>
+    {% else %}
+        <li class="game odd">{{ game.opponent_set.all.0.team.ranking }} {{ game.opponent_set.all.0.team.team.get_school_abbrev }}</li>
+        <li class="game even">{{ game.opponent_set.all.1.team.ranking }} {{ game.opponent_set.all.1.team.team.get_school_abbrev }}</li>
+    {% endif %}
+{% endfor %}
+</ul>
+<ul class="second_round left">
+    <li class="game odd">{{ form.game_one_winner }}</li>
+    <li class="game even">{{ form.game_two_winner }}</li>
+    <li class="game odd">{{ form.game_three_winner }}</li>
+    <li class="game even">{{ form.game_four_winner }}</li>
+    <li class="game odd">{{ form.game_five_winner }}</li>
+    <li class="game even">{{ form.game_six_winner }}</li>
+    <li class="game odd">{{ form.game_seven_winner }}</li>
+    <li class="game even">{{ form.game_eight_winner }}</li>
+</ul>
+{% endblock bracket %}
+{% block submit %}
+<input class="submit-button" type="submit" value="Save predictions">
+{% endblock submit %}

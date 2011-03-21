@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Maps{% endblock title %}
+
+{% block content %}
+<h1>Maps</h1>
+{% if object_list %}
+    <ul>
+        {% for map in object_list %}
+        <li><a href="{{ map.get_absolute_url }}">{{ map }}</a><p>{{ map.description }}</li>
+        {% endfor %}
+        {% comment %}<li><a href="/blotter/">Police Blotter</a><p>The latest arrests and reported incidents around campus.</p></li>{% endcomment %}
+    </ul>
+{% else %}
+    <p>For some reason, there aren't any maps to show.</p>
+{% endif %}
+{% endblock content %}

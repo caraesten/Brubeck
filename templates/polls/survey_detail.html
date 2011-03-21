@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; {{ survey.title }}{% endblock title %}
+
+{% block content %}
+<h1>{{ survey.title|markdown }}</h1>
+<p>{{ survey.description }}</p>
+<form method="POST" action="">
+    {% for title, form in question_forms %}
+        <h3>{{ title }}</h3>
+        <table>
+            {{ form.choice }}
+        </table>
+    {% endfor %}
+    <input type="submit" value="Vote" />
+</form>
+{% endblock content %}

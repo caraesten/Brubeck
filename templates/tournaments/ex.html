@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title%}{{ block.super }} &mdash; Bracket test{% endblock title%}
+{% block content %}
+<h1>Bracket test</h1>
+<form method="post">
+{% if form.errors %}{{ form.errors }}{% endif %}
+<ul class="second_round left">
+    <li class="game odd">{{ form.game_one_winner }}</li>
+    <li class="game even">{{ form.game_two_winner }}</li>
+    <li class="game odd">{{ form.game_three_winner }}</li>
+    <li class="game even">{{ form.game_four_winner }}</li>
+    <li class="game odd">{{ form.game_five_winner }}</li>
+    <li class="game even">{{ form.game_six_winner }}</li>
+    <li class="game odd">{{ form.game_seven_winner }}</li>
+    <li class="game even">{{ form.game_eight_winner }}</li>
+    {{ form.user_id }}
+</ul>
+<input type="submit" value="Save predictions">
+</form>
+
+
+{% endblock content %}

@@ -1,0 +1,2 @@
+{% load thumbnail %}
+<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{% thumbnail object.PDF.name 200x350 %}" /></a>

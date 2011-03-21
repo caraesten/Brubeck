@@ -1,0 +1,3 @@
+{% load markup %}
+<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h3>
+<p class="cdeck">{{ object.description|markdown }}</p>

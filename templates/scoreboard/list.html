@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Sports &ndash; Scores{% ifequal scoreboards.count 1 %} &ndash; {{ scoreboards.0 }}{% endifequal %}{% endblock title %}
+
+{% block content %}
+<h1>Scores</h1>
+{% for scoreboard in scoreboards %}
+<table class="scoreboard">
+    <caption>
+        {{ scoreboard.title }}<br />
+        <span class="last_updated">Last updated: {{ scoreboard.last_updated|date:"P, N j, Y" }}</span>
+    </caption>
+    <thead>
+        <tr>
+            <th>Team name</th>
+            <th>Conf. record</th>
+            <th>Overall record</th>
+            <th>Last game</th>
+            <th>Next game</th>
+        </tr>
+    </thead>
+    <tfoot>
+        {% for link in scoreboard.links %}
+        <tr><td colspan="5"><a href="{{ link.url }}">{{ link.title }}</a></td></tr>
+        {% endfor %}
+    <tfoot>
+    <tbody>
+        {% for team in scoreboard.teams %}
+        <tr class="{% cycle "even" "odd" %}">
+            <td>{{ team.name }}</td>
+            <td>{{ team.conf_record }}</td>
+            <td>{{ team.overall_record }}</td>
+            <td>{{ team.last_game }}</td>
+            <td>{{ team.next_game }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% load markup %}
+<div id="rendered_map">
+    <ul id="place_list">
+        {% for mpl in mpl_list %}
+        <li class="vcard">
+            <h3 class="fn org">{% if mpl.web_site %}<a href="{{ mpl.web_site }}">{% endif %}{{ mpl.place.name }}{% if mpl.web_site %}</a>{% endif %}</h3>
+            {% if mpl.place.address %}<p class="adr post-office-box">{{ mpl.place.address }}</p>{% endif %}
+            {% if mpl.additional_info %}<div class="note">{{ mpl.additional_info|markdown }}</div>{% endif %}
+            <p class="geo">Coordinates: <span class="latitude">{{ mpl.place.coords.lat }}</span>, <span class="longitude">{{ mpl.place.coords.lng }}</span></p>
+        </li>
+	{% endfor %}
+    </ul>
+</div>

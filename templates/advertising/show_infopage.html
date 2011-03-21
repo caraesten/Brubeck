@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; About &ndash; Advertising Information{% endblock title %}
+
+{% block content %}
+<h1>Advertising information</h1>
+<div class="object_list">
+    <h2 class="header">Download information</h2>
+    <div class="item">
+        <a href="{{ infopage.rate_card.url }}"><img class="photo" src="{{ infopage.get_thumbnail200_url }}" alt="Download rate card" />
+        <p>Download rate card</p></a>
+        {% if infopage.io_app %}<p><a href="{{ infopage.io_app.url }}">Download insertion order application</a</p>{% endif %}
+        {% if infopage.credit_app %}<p><a href="{{ infopage.credit_app.url }}">Download credit application</a</p>{% endif %}
+        {% if infopage.contract %}<p><a href="{{ infopage.contract.url }}">Download local contract</a</p>{% endif %}
+        {% if infopage.back_cover_contract %}<p><a href="{{ infopage.back_cover_contract.url }}">Download back cover contract</a</p>{% endif %}
+    </div>
+</div>
+<div class="object_list">
+    {% if infopage.links %}
+    <h2 class="header">Additional advertising opportunities</h2>
+    <ul>
+        {% for link in infopage.links %}
+        <li>{% if link.url %}<a href="{{ link.url }}">{% endif %}{{ link }}{% if link.url %}</a>{% endif %}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h2 class="header">Request information to be mailed</h2>
+    <form method="POST" action="">
+        <table>
+            {{ form.as_p }}
+        </table>
+        <input type="submit" value="Send" />
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,171 @@
+{% load core %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <title>Columbia Prowl &ndash; Listings</title>
+        <link rel="stylesheet" type="text/css" href="http://www.columbiaprowl.com/media/style/2009-01/style/960/reset.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.columbiaprowl.com/media/style/2009-01/style/960/960.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.columbiaprowl.com/media/style/2011-02/style/housing-guide-base.css" />
+        <link rel="shortcut icon" href="/media/favicon-prowl.png" type="image/png" />
+        <link rel="apple-touch-icon-precomposed" href="/media/apple-touch-icon-prowl.png" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="/media/style/2009-01/js/jquery.innerfade.js"></script>
+        <link rel="alternate" type="application/rss+xml" title="Latest Articles RSS Feed" href="/feeds/latest/" />
+        
+<link rel="stylesheet" type="text/css" href="http://www.columbiaprowl.com/media/style/2011-02/style/housing-guide.css" /> 
+<script type="text/javascript">
+// themaneater.com ticker fade. this will be on every page of the site, so there's no harm in adding it here.
+$(document).ready(
+    function(){
+        $('#ticker').innerfade({
+            animationtype: 'fade',
+            speed: 'slow',
+            timeout: 4000,
+            type: 'random'
+        });
+    }
+);
+
+</script>
+<script type="text/javascript">
+$(function() {
+    $('.object_list .item').hide();
+    $('.object_list h2').click(function() {
+        $(this).next().slideToggle('fast');
+    });
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-8727143-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+       <div id="bar-gutter">
+				<!-- <ul id="ticker" class="grid_8 alpha">
+{% render_ticker %}			
+               </ul>
+-->	
+                </div>
+       	<div id="bar-logo">
+       	    <div class="inner container_12">
+                <a href="/">
+                <div id="logo_image" class="grid_5 alpha">
+       	       	</div>
+                </a>
+       	       	<div id="tagline" class="grid_4">
+       	       	</div> 
+       	       	<a href="http://www.themaneater.com/">
+                <div id="search" class="grid_3">
+                    
+                </div> 
+                </a>
+       	    </div>
+       	</div>
+       	<div id="bar-nav">
+       	    <div class="inner container_12">
+       	       	<div id="nav" class="grid_8 alpha">
+       	       	    <ul>
+                        <li><a href="http://www.columbiaprowl.com/">Home</a></li>
+                        <li><a href="http://www.columbiaprowl.com/guide/">Renter's Guide</a></li>
+                        <li><a href="http://www.themaneater.com/about/advertising/">Advertise</a></li>
+                        <li><a href="http://www.themaneater.com/about/">About</a></li>
+                    </ul>
+       	       	</div>
+       	       	<div id="nav_extra" class="grid_4">
+       	       	</div>
+       	    </div>
+       	</div>
+        <div id="wrapper">
+            <div class="inner container_12">
+                
+<div id="apt-info" class="grid_8 omega"> 
+<div id="infocontainer"> 
+<h1 class="apt-name">Renter's Guide</h1> 
+ <div class="object_list" style="margin-left:10px;">
+   <h2 class="header" style="background-color:#e3eff7;"><a href="javascript:void(0)" style="color:#000;"><a href="javascript:void(0)">Terms to Know</a></h2>
+    <ul class="item">
+{% if terms_to_know %}
+    	    {% for property in terms_to_know %} 
+        
+        <li><strong>{{ property.terms }}:</strong> {{ property.definition }}</li>
+
+ {% endfor %}
+            {% endif %}              
+
+       
+               
+    </ul>
+    <h2 class="header" style="background-color:#e3eff7;"><a href="javascript:void(0)" style="color:#000;"><a href="javascript:void(0)">Important Numbers</a></h2>
+    <ul class="item">
+        
+      {% if important_numbers %}
+    	    {% for property in important_numbers %} 
+        
+        <li><strong>{{ property.contact_name }}:</strong> {{ property.contact_number }}</li>
+
+ {% endfor %}
+            {% endif %}  
+                     
+    </ul>
+
+    <h2 class="header" style="background-color:#e3eff7;"><a href="javascript:void(0)" style="color:#000;"><a href="javascript:void(0)">Recipes</a></h2>
+    <ul class="item">
+        
+ {% if recipes %}
+    	    {% for property in recipes %} 
+        
+       <h3>{{ property.title }}</h3>
+       <p>{{ property.body }}</p>
+
+ {% endfor %}
+            {% endif %}  
+               
+    </ul>
+
+</div>
+</div> 
+</div>
+<div class="grid_4 omega" style="float:right; margin-right:50px;">
+<div id="apt-info" class="housing-news">
+<h1 class="apt-name" style="border-bottom:2px solid #000;"><a href="http://www.themaneater.com/tags/columbia-prowl-housing-news/">Latest Housing News</a></h1>
+<div id="apt-info-inner">
+<ul>
+{% for article in housing_articles %}
+<li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+{% endfor %}
+</ul>
+<p class="fp_section_refer"><a href="http://www.themaneater.com/tags/columbia-prowl-housing-news/">More housing news...</a></p>
+</div>
+</div>
+
+</div>  <div id="clear" style="clear:both;"></div>
+
+
+            </div>
+        </div>
+        <div id="prowlfooter">
+            <div class="inner container_12">
+                <a href="/"><div id="prowllogo" class="grid_5"></div></a>
+                <div id="prowlfooter" class="grid_7">
+                    <ul>
+                        <li class="first">&copy;2011 The Maneater Student Newspaper</li>
+                        <li><a href="/advertise/">Advertising Information</a></li>
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="http://www.themaneater.com/staff/editors/">Staff</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,147 @@
+{% extends "base.html" %} {% load markup %} {% load comparison %} {% block title %}{{ block.super }} &ndash; {% if channel %}{{ channel }} &ndash;{% else %}All podcast episodes from{% endif %} {{ month_name }} {{ year }}
+{% endblock title %}
+{% block head_extras %}
+{% ifequal site.id 1 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/maneatercalendar.css" />{% endifequal %}
+{% ifequal site.id 2 %}<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/movecalendar.css" />{% endifequal %}
+{% endblock head_extras %}
+{% block content %}
+
+<div class="calendarmain">
+
+<div class="calendartitlebar">
+
+<div class="prevlink">
+<a href="/podcasts/{% if channel %}{{ channel.slug }}/calendar{% else %}calendar{% endif %}/{% ifnotequal month 1 %}{{ year }}/{{ month_minus }}/{% else %}{{ year_minus }}/12/{% endifnotequal %}">&laquo; Last Month</a>
+</div>
+
+<h1 class="caltitle">{% if channel %}{{ channel }} &mdash;{% else %}All podcast episodes from{% endif %} {{ month_name }} {{ year }}</h1>
+
+<div class="nextlink">
+<a href="/podcasts/{% if channel %}{{ channel.slug }}/calendar{% else %}calendar{% endif %}/{% ifnotequal month 12 %}{{ year }}/{{ month_plus }}/{% else %}{{ year_plus }}/1/{% endifnotequal %}">Next Month &raquo;</a>
+</div>
+
+<div class="spacer">
+</div>
+
+</div>
+<div class="calendarmessage">{{ page_name }}</div>
+</div>
+{% if month_formatted %}
+<table class="calendar">
+{% if weekday_header %}
+<tr class="header">
+{% for weekday_name in weekday_header %}
+<td class="header">
+{{ weekday_name }}
+</td>
+{% endfor %}
+</tr>
+{% endif %}
+{% for week in month_formatted %}
+<tr class="calendar">
+{% for day in week %}
+{% ifequal day 0 %}
+<td class="calendar inactive"></td>
+{% else %}
+
+{% ifequal day today %}
+
+{% ifequal month this_month %}
+
+{% ifequal year this_year %}
+
+{% if forloop.last %}                                                          
+<td class="today calendarlast calendar active">
+{% else %}
+<td class="today calendar active">
+{% endif %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+<div class="daybar">
+<div class="daymarker">
+<a href="/podcasts/{% if channel %}{{ channel.slug }}/calendar{% else %}calendar{% endif %}/{{ year }}/{{ month }}/{{ day }}/">
+{{ day }}
+</a>
+</div>
+</div>
+{% for episode in episode_list %}
+
+{% ifequal episode.pub_date.year year %}
+{% ifequal episode.pub_date.month month %}
+{% ifequal episode.pub_date.day day %}
+
+<div class="eventdetails">
+<p><a href="{{ episode.get_absolute_url }}">{{ episode.channel.title }}{% if episode.name %}: {{ episode.name }}{% endif %}</a></p>
+</div>
+
+
+{% endifequal %}
+{% endifequal %}
+{% endifequal %}
+
+{% endfor %}
+</td>
+{% endifequal %}
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+{% else %}
+Strangely enough, there's no content to display here. Try retracing your steps, or searching for what you want to find.
+{% endif %}
+{% endblock content %}
+{% block sidebar %}
+<div class="calsidebar">
+{% if channel_list %}
+<h2 class="header">{% if channel %}Other{% else %}Current{% endif %} channels:</h2>
+<p>Check out these {% if channel %}other {% else %}ongoing {% endif %}podcast series from The Maneater.</p>
+{% if channel %}
+{% for channelname in channel_list %}
+{% ifequal channelname.title channel.title %}
+<!--<h3>{{ channelname.title }}</h3>-->
+{% else %}
+<h3><a href="/podcasts/{{ channelname.slug }}/">{{ channelname.title }}</a></h3>
+{% endifequal %}
+{% endfor %}
+{% else %}
+{% for channelname in channel_list %}
+<h3><a href="/podcasts/{{ channelname.slug }}/">{{ channelname.title }}</a></h3>
+{% endfor %}
+{% endif %}
+<p />
+<p>Or, see <a href="/podcasts/">all recent podcasts</a>.</p>
+{% else %}
+<div class="debugging">There are currently no podcast channels to display here.</div>
+{% endif %}
+
+</div>
+{% endblock sidebar %}

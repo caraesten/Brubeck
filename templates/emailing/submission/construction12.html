@@ -1,0 +1,7 @@
+{% if not user.is_superuser %}
+<div id="devmode" class="grid-12"><div class="grid_2 omega" style="color:#555555;font-size:22px;font-weight:bold;">Page under construction<p class="ybw" style="color:#888888;font-size: 14px;font-weight:normal;margin-bottom:0px;margin-top:5px;">You've been warned.</p></div>
+<div class="grid_10 omega" style="border-left:1px solid #cccccc;margin-left:0px;padding-bottom:10px;padding-left:9px;"><p>Hi there. If you're viewing this, you are (hopefully) a registered user of <i>themaneater.com</i> and are (hopefully) logged in to your account.</p>
+<p>This page is currently under development, and so its contents are subject to change. Only logged in users can view it.</p>
+<p style="margin-bottom:0px;padding-bottom:0px;">If you have any questions or comments regarding this page please contact the online development editor at <a href="mailto:{{ email }}">this address</a>.</p>
+</div></div><div id="line" class="grid_12" style="background-color:#009830;height:4px;margin-bottom:10px;margin-top:10px;"></div>
+{% endif %}

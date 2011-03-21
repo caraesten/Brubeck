@@ -1,0 +1,3 @@
+{{ object.section.name }}
+{{ object.byline }}
+{{ object.static_byline }}

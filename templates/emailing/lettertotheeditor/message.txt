@@ -1,0 +1,13 @@
+Here's a new letter to the editor:
+
+Name: {{ name|safe }}{% if phone_number %}
+Phone number: {{ phone_number|safe }}{% endif %}
+E-mail address: {{ self_email|safe }}
+
+Letter:
+------
+{{ body|safe }}
+------
+
+Sincerely,
+themaneater.com

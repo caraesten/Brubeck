@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block title %}{{ block.super }} &ndash; Podcasts &ndash; {{ page_title }}{% endblock title %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+{% if object_list %}
+<div class="object_list">
+    {% for channel in object_list %}
+    <div class="item">
+        <h3><a href="{{ channel.get_absolute_url }}">{{ channel.title|markdown }}</a></h3>
+        <p class="cdeck">{{ channel.description|markdown }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>For some reason, there aren't any channels to display here.</p>
+{% endif %}
+<p><a href="/podcasts/{% ifnotequal page_title "Archived channels" %}archived/{% endifnotequal %}">View {% ifequal page_title "Archived channels" %}current{% else %}archived{% endifequal %} channels</a></p>
+{% endblock content %}
+
+{% block sidebar %}
+{% if sidebar %}
+{% for entry in sidebar %}
+{% if forloop.first %}
+<li>{{ entry }}</li>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock sidebar %}

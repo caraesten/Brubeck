@@ -1,0 +1,459 @@
+aaaa
+
+
+
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block title %}{{ block.super }} &mdash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript" src="/media/style/2010-04/js/jquery.easing.js"></script>
+<script type="text/javascript" src="/media/style/2010-04/js/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/style/2010-04/js/fancybox.css" />
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("a.collapse_text").hide();
+        $("div.hidden_text").hide();
+        $("a.reveal_text").click(function() {
+            $("a.reveal_text").hide();
+            $("div.hidden_text").slideDown('normal');
+            $("a.collapse_text").show();
+        });
+        $("a.collapse_text").click(function() {
+            $("a.collapse_text").hide();
+            $("div.hidden_text").slideUp('normal');
+            $("a.reveal_text").show();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("div.body_text").hide();
+        $("h3.reveal_blurb").click(function() {
+            if($(this).next("div.body_text").is(':visible')) {
+                $(this).next("div.body_text").slideUp('normal');
+            } else {
+                $("div.body_text").slideUp('normal');
+                $(this).next("div.body_text").slideDown('normal');
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".profiles").fancybox({
+            'transitionIn' : 'none',
+            'transitionOut' : 'none',
+            'titleShow': false,
+        });
+    });
+</script>
+<style>
+h1 {
+    border-bottom: 1px dotted;
+    margin-right: 10px;
+}
+h3.sbar {
+    background-color: #B31F26;
+    border-bottom: 7px double #FFFFFF;
+    border-top: 7px double #FFFFFF;
+    color: #FFFFFF;
+    margin-top: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    text-align: center;
+}
+#content_wide {
+    width: 965px;
+}
+#main_content {
+    margin: 0;
+    width: 720px;
+}
+#main_sidebar {
+    background-color: #BBBBBB;
+    border-bottom: 1px solid #AAAAAA;
+    border-left: 1px solid #AAAAAA;
+    margin: 0;
+    width: 244px;
+}
+#main_body h1 {
+    border-bottom: 0px none;
+}
+.image_holder {
+    border: 1px solid #555555;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 5px 5px 0px;
+}
+.image_holder img {
+    border: 1px solid #BBBBBB;
+}
+p.photo_cutline {
+    border-right:2px solid #000000;
+    font-style:italic;
+    font-weight:bold;
+    margin-right:5px;
+    padding-right:5px !important;
+}
+#blurbs_area_1 {
+    background-color: #DDDDDD;
+    border-bottom: 1px solid #AAAAAA;
+    border-top: 1px solid #336633;
+    color: #336633;
+    padding: 10px;
+}
+#blurbs_area_2 {
+    background-color: #BBBBBB;
+    border-bottom: 1px solid #B31F26;
+    border-top: 1px solid #B31F26;
+    color: #B31F26;
+    padding: 10px;
+}
+.reveal_blurb {
+    border-top: 1px dotted #555555;
+    padding-top: 10px;
+}
+.no_style {
+    border-top: 0;
+    padding-top: 5px;
+}
+#blurb_column_2 {
+    border-left: 1px dotted #555555;
+    border-right: 1px dotted #555555;
+    margin: 0;
+    padding: 0 4px;
+}
+#profiles-header {
+    color: #555555;
+    margin-top: 10px;
+}
+#profiles-row-1,
+#profiles-row-2,
+#profiles-row-3,
+#profiles-row-4,
+#profiles-row-5 {
+    margin: 0;
+    width: 245px;
+}
+#main_sidebar .profile {
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.profiles {
+    margin-bottom: 10px;
+}
+.profiles img {
+    border: 1px solid #AAAAAA;
+}
+.main-title {
+    border-bottom: 1px dotted #009830;
+}
+.grid_3 .body_text {
+    color: #555555;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="main_content" class="grid_9">
+
+<h3 class="sbar">{{ flatpage.title }}</h3>
+
+<div id="main_body" class="grid_9">
+    {{ flatpage.content|markdown }}
+</div>
+
+<div id="blurbs_area_1" class="grid_9 alpha omega">
+    <h1>Best of the year</h1>
+    <div id="blurb_column_1" class="grid_3 alpha">
+        <h3 class="no_style reveal_blurb">Best female athlete</h3>
+       	<div id="blurb_1" class="body_text">
+            <h4>Shire excels as gymnast</h4>
+            <p>The shortest Missouri gymnast on this year's roster ended her career as a Tiger with the longest list of accomplishments. 
+            <p>Senior Sarah Shire capped off her historic career at MU with a season that placed her among the program's best ever. 
+            <p>For starters, Shire won 11 all-around crowns (a school record), was named South Central Region Gymnast of the Year and Big 12 Gymnast of the Year for the second year in a row, made All-Big 12 for every event and the all-around and at one point was No. 1 in GymInfo's national all-around rankings.  
+            <p>And Shire's individual accomplishment didn't just flesh out her personal resume, either. The senior was the backbone of a Missouri team that went to the NCAA Championships after winning regionals over two top-10 teams. 
+            <p>Shire's year ended with first team All-American distinction in floor exercise and vault and second team honors on uneven parallel bars. She tied for second on floor and placed fifth on vault at the national championships to end her career as a Tiger.
+            <p>By doing virtually everything short of winning a national title, Shire etched her senior season as one of the best in MU history. Her individual credentials speak for themselves, but pushing the Tigers as a team to new heights will be a major part of Shire's legacy.
+       	</div>
+        <h3 class="reveal_blurb">Best male athlete</h3>
+       	<div id="blurb_2" class="body_text">
+            <h4>Askren only MU national champion</h4>
+            <p>Missouri senior Max Askren's rise to the top of college wrestling actually started with him making a move down. A three-time NCAA Championships qualifier and brother of former Missouri national champion Ben Askren, Max made the move from 197 pounds to 184 pounds for his senior season. Needless to say, the change worked.</p>
+            <p>Askren went 20-2 in 2009-2010 and capped the season off by defeating No. 1-seeded junior Kirk Smith of Boise State in Omaha, Neb., to become Missouri's third wrestling national champion. In addition to his brother, Askren joined Mark Ellis as the only Tiger wrestlers to be crowned national champs.</p>
+            <p>The Hartland, Wis., native also earned All-American honors for the third time in his career and finished at No. 13 in Missouri's all-time wins list with 104.</p>
+            <p>Askren stands as Missouri's only national champion in the 2009-2010 school year so far, including individuals and teams. The title marks another step in Missouri wrestling's claim as a top-tier program in the country (the Tigers finished 10th at the NCAA Championships) and makes the Askren brothers possibly the most successful sibling combo in Missouri athletics history.</p>
+       	</div>
+    </div>
+
+    <div id="blurb_column_2" class="grid_3">
+        <h3 class="no_style reveal_blurb">Best in arts</h3>
+       	<div id="blurb_3" class="body_text">
+            <h4></h4>
+            <p>Columbia's very own battle rap league made a huge splash this year.</p>
+            <p>This pre-written league puts performance first, allowing its more than 30 active rappers to rehearse their pieces before battle, ensuring only the most theatrical and innovative performances. A No Coast battle is not your typical rap battle. It's an experience that's destined to leave viewers laughing and competitors' egos bruised and battered. It's a rap battle royale with a focus on performance and content over quickness and musicality.</p>
+            <p>The battles consist of joke after joke with each line intended to target someone specifically. The raps are poignant and personal. The league's rappers do not rap over beats so the primary focus becomes their words and delivery. This Columbia-centered innovation has received national fame from numerous rap websites. 
+            <p>Founder Kelly Betz formed the league in hopes of making battle rap a national phenomenon. The group has already expanded to Kansas City, and Betz hopes battle leagues will eventually spring up in every major city.
+       	</div>
+        <h3 class="reveal_blurb">Biggest comeback</h3>
+        <div id="blurb_4" class="body_text">
+            <h4>CPD makes a comeback with beneficial changes</h4>
+            <p>The Columbia Police Department isn't perfect, but it has certainly made a comeback in taking strides to battle crime in Columbia.</p>
+            <p>When CPD Chief Kenneth Burton took office about a year ago, he pretty much cleaned house, simplifying CPD's beat system and creating additional units to focus on specific issues.</p>
+            <p>Last summer, the Downtown Unit was created to focus on crime in downtown Columbia, creating a larger police presence downtown. Businesses appreciate this, and the department's new geographic policing strategy allows officers in the downtown beat to stay in their respective area. CPD also created a unit for two officers to exclusively work on preventing impaired driving with their relatively new DWI Unit.</p>
+            <p>During the mayoral election, some candidates expressed concern of the "crime problem" in Columbia. Had they looked into the changes that have happened at CPD, perhaps they would have reconsidered. There is always room for improvement, but CPD has definitely changed for the better.</p>
+        </div>
+    </div>
+
+    <div id="blurb_column_3" class="grid_3 omega">
+        <h3 class="no_style reveal_blurb">Best megaphone</h3>
+       	<div id="blurb_5" class="body_text">
+            <h4></h4>
+       	    <p>Former Missouri Student Association President Jordan Paul did a lot of behind-the-scenes work for students this year in regard to speaking up, while still maintaining that delicate balance of diplomacy that keeps the line of communication open with the administration.</p>
+            <p>Unfortunately, many administrators did not appreciate his openness with the press in the last semester of his term, and he felt backlash after granting interviews on certain controversial topics. He still continues to work with MSA President Tim Noce in order to follow through on previously started initiatives. In addition, he continues to advocate on behalf of students through his column in The Maneater, in which he tackles student issues and how the administration should handle them.</p>
+            <p>Paul's transparency about his conversations with administrators might have angered some, but he fulfilled his service to students by maintaining a level of communication.</p>
+            <p>He continuously fought to get tailgating space for students. We have yet to see a tailgating spot, but getting Chancellor Brady Deaton and Vice Chancellor of Student Affairs Cathy Scroggs to sit down and have a conversation about drinking on campus is progress on an issue that goes deeper than Reactor Field. To find a solution that works, administrators and students must work together, and Paul helped to begin that dialogue on many occasions in the past year.</p>
+       	</div>
+        <div class="reveal_blurb" style="height:20px;"></div>
+    </div>
+</div>
+
+<div id="blurbs_area_2" class="grid_9 alpha omega">
+    <h1>Worst of the year</h1>
+    <div id="blurb_column_1" class="grid_3 alpha">
+        <h3 class="no_style reveal_blurb">Biggest assclowns</h3>
+       	<div id="blurb_5" class="body_text">
+            <h4>Tucker, Fitzgerald embarrass MU</h4>
+       	    <p>It doesn't take a lot of explanation to convey why Sean Fitzgerald, 19, and Zachary Tucker, 21, are MU's biggest assclowns of the year. Spreading cotton balls in front of the Gaines/Oldham Black Culture Center is more than enough to earn the title. Getting off with a littering charge seals the deal.</p>
+            <p>We understand proving a hate crime would have been difficult in court, and we know Fitzgerald and Tucker have expressed remorse since their arrests March 2. Unfortunately, that doesn't erase the fact the two became the worst possible representatives of MU students in a story that received national attention and no doubt did irreparable harm to the university's reputation.</p>
+            <p>The continued absence of any tangible changes on campus in response to the cotton ball incident is really just salt in an open wound. There has been little response from the university other than a series of town hall meetings, none of which resulted in changes to diversity course requirements, the main subject of discussion among students.</p>
+       	</div>
+        <h3 class="reveal_blurb">Biggest gaffe</h3>
+       	<div class="body_text">
+            <h4>What you talkin' 'bout, Noce?</h4>
+       	    <p>The infamous attempt by Missouri Students Association President Tim Noce to acquire a live tiger for MU football games was hands down the biggest gaffe of the year.</p>
+            <p>We're not sure where Noce came up with the idea, and the most concrete reason he ever gave for his proposal was that Louisiana State University and the University of Memphis had one, too. Apparently, that's how we're making decisions these days. If LSU and Memphis jumped off a bridge, would we do the same, Noce? Hopefully not. After talking with a breeder who said a tiger would cost about $13,000 and catching a lot of flack from concerned students and animal rights advocates, Noce cooled off on his pet project.</p>
+            <p>However, we have to admire Noce's grand entrance onto the political scene. With a less than memorable platform, his efforts to make MU a little more "wild" certainly let everyone know he wasn't here to mess around. Although Noce turned his efforts toward other, more realistic initiatives soon after ESPN, the St. Louis Post-Dispatch and the Associated Press picked up this story, we hear his back-up plan of adopting tigers at nearby zoos, is in the works.</p>
+       	</div>
+        <h3 class="reveal_blurb">Buzzkill</h3>
+       	<div class="body_text">
+            <h4></h4>
+       	    <p>MU devastated many football enthusiasts by shutting down the Reactor Field parking lot as a tailgating spot last semester and earned itself the title of the year's biggest buzzkill. Student leaders from the Missouri Students Association -- Tim Noce and Jordan Paul -- constructed multiple potential solutions but were repeatedly turned down for the remaining games of the season.</p>
+            <p>The reason this situation deserves biggest buzzkill is not because we are upset there's nowhere to drink or commemorate the game. Let's be honest -- there are plenty of places for that. What was most disappointing was the lack of concern from the administration for the student voice on an issue that so clearly affects students. Students can find other places to party; the problem lies in the troubling theme we're seeing with the administration of ignoring the student voice. We have school spirit. We like to watch the games. We'd also like a place to tailgate together before the game, and this year's situation was quite literally a buzzkill.</p>
+            <p>Reactor became a replacement for Frat Pit, which was also taken away from students, and unless administrators begin to tackle student drinking more realistically, the next spot will be taken away as well.</p>
+       	</div>
+    </div>
+
+    <div id="blurb_column_2" class="grid_3">
+        <h3 class="no_style reveal_blurb">Biggest clusterfuck</h3>
+       	<div id="blurb_6" class="body_text">
+            <h4>Webmail leads to frustration for students</h4>
+       	    <p>In fall 2009, MU's switch to the Microsoft Outlook Live Webmail system caused all sorts of headaches for students. E-mails to student Webmail accounts were delayed or in some cases, never received at all due to the transition from the old system.</p>
+            <p>E-mails sent to students who forwarded their student Webmail to other e-mail accounts stopped forwarding in many cases, meaning those students received no e-mails from professors, the university or anyone else trying to contact them via their student Webmail address.</p>
+            <p>An error on Microsoft's part resulted in a slowdown in e-mail delivery to student Webmail accounts Feb. 8 through Feb. 10. The Division of Information Technology was responsible for a slowdown in the system Feb. 15.</p>
+            <p>Despite the general clusterfuck created by the transition to a new Webmail system, the switch itself wasn't the biggest problem students faced regarding their university e-mail accounts this year. A Microsoft server error resulted in a complete crash for student Webmail April 5 and put the system offline and unavailable to students twice later that week.</p>
+            <p>Although the crash was the fault of Microsoft, not MU or DoIT, it resulted in a push from students who said the university should look into a new student Webmail system. Given the number of issues the new system has faced just in its first year, we'd be inclined to agree.</p>
+       	</div>
+        <h3 class="reveal_blurb">Biggest handjob</h3>
+       	<div class="body_text">
+            <h4>Brooks' e-mails inappropriate in wake of cotton incident</h4>
+       	    <p>Following the cotton ball incident at the Gaines/Oldham Black Culture in February, School of Journalism Associate Dean Brian Brooks sent a 207-word e-mail to all J school students. Of those 207 words, only 30 were directly related to the incident. The remaining 170 or so were devoted to lavish praise of J school students and their outstanding GPAs.</p>
+            <p>"You are, simply, the best," he said in the e-mail.</p>
+            <p>After receiving criticism from J school students, Brooks sent another e-mail touting his experience with diversity and tolerance and standing by his prideful remarks about the J school.</p>
+            <p>Never committed a racist act? Congratulations. To Brooks, you are, "simply, the best."</p>
+            <p>Brooks took the spotlight previously aimed at his students and pointed it at himself, referring to a "35-year track record" of not offending anyone, which he seems to equate with embracing diversity.</p>
+            <p>Regardless of Brooks' original intent, the e-mails, using the cotton ball incident as an opportunity to praise the J school, were entirely inappropriate for the situation. Brooks should limit his journalism school worshipping to presentations for incoming students and those pointless J1010 lectures.</p>
+       	</div>
+        <h3 class="reveal_blurb">Most useless</h3>
+       	<div class="body_text">
+            <h4>This category made for Tiger Watch</h4>
+       	    <p>After former Missouri Students Association senator Josh Travis stepped down from his position as Operations Committee chairman earlier this year, he turned his attention to more serious matters: Tiger Watch. What is Tiger Watch? Well, it is definitely not an army of Josh Travis minions, and it is most certainly not a group of under-qualified college kids running around demonstrating middle school karate tactics. No, this is a squadron of soon-to-be highly trained protectors of "the MU Family."</p>
+            <p>Disclaimer: Tiger Watch officers are not technically allowed to intervene in potentially dangerous situations. But gosh darn it, they have some state-of-the-art, $4,000 radios they can use to reach the people who actually can help. And did you hear? With the use of the official MSA golf cart (who even knew they had one of those?) pending, surveillance of campus might be done in high-class style. And have you seen those badges? Legit, they are definitely worth the $1,800 in Contingency and Reserve funds --sorry, KCOU/88.1 FM and MUTV/Channel 23.</p>
+       	</div>
+    </div>
+
+    <div id="blurb_column_3" class="grid_3 omega">
+        <h3 class="no_style reveal_blurb">Biggest earplugs</h3>
+       	<div class="body_text">
+            <h4>Student concerns fall on curators' deaf ears</h4>
+       	    <p>In the past year, the UM system Board of Curators upheld its reputation as the place where student-led campaigns for change go to die. The board, who serve as the system's governing body, has a history of ignoring issues for which students feel most passionate. This year was no exception.</p>
+            <p>After a huge push from students in spring 2009 to include gender identity and expression in the UM system's non-discrimination policy, the issue has never even showed up on the curators' agenda, and much less even the subject of discussion.</p>
+            <p>The IncludeMe campaign gained the support of several prominent student organizations, including Triangle Coalition, InsideOUT and the Missouri Students Association. The push reached its peak in April 2009 when a campus-wide MSA referendum to include gender identity and expression in the organization's non-discrimination policy passed by 82 percent. Given the overwhelming support students have shown for the IncludeMe MU campaign, its absence from the curators' agenda is disheartening to say the least.</p>
+            <p>Students weren't the only ones snubbed by the curators in the past year. Faculty Council's most prominent push came for same-sex domestic partner benefits for UM system employees. Although Faculty Council showed unanimous support for adding benefits for same-sex domestic partners, the curators shot the proposal down during their April meeting due to what they called a lack of support from all four UM system campuses.</p>
+            <p>Perhaps giving the single student curator who serves on the board a vote would allow for more student representation. Unfortunately, the curators have been this proposal's staunchest opponents in the eight years since it was first brought to the Missouri legislature, and the possibility of seeing it happen in the future does not look favorable.</p>
+       	</div>
+        <h3 class="reveal_blurb">Biggest waste of time</h3>
+       	<div class="body_text">
+            <h4>Good intentions, poor information from Coal Free Mizzou</h4>
+       	    <p>Coal Free Mizzou is a giant waste of time.</p>
+            <p>They have good intentions. Of course we would all like to live in a green world where carbon emissions are a thing of the past, but we don't, and we can't get there as quickly as Coal Free Mizzou and their relentless, repetitive promotional tactics would have us believe.</p>
+            <p>If Coal Free Mizzou would only open its eyes or do some research, the group would realize MU actually does pretty well when it comes to coal use. As a matter of fact, other universities look to MU as an example. The university is doing what it can to move off coal dependency.</p>
+            <p>It's admirable that Coal Free Mizzou is raising awareness around campus, but really, the ignorant should not be trusted to inform the student body. Spend your time finding the facts, Coal Free Mizzou, and then go about furthering your agenda.</p>
+       	</div>
+        <h3 class="reveal_blurb">Shadiest dealin'</h3>
+       	<div class="body_text">
+            <h4>Chamber's endorsements sweep council elections</h4>
+       	    <p>The Columbia Chamber of Commerce never endorsed anyone for a city council election in its more than 100-year-long history, until now.</p>
+            <p>For this election, the organization, which has more than 1,000 members, formed a special "Endorsement Task Force" with six members. These endorsements were suggested by the task force and then approved by the board. In the end, the chamber picked Bob McDavid for mayor, Gary Kespohl for Third Ward councilman and Daryl Dudley for Fourth Ward councilman.</p>
+            <p>Do those names sound familiar? They should, because they were also all the people who ended up winning the election. That's right, every person endorsed by the chamber won.</p>
+            <p>These weren't necessarily the best candidates in our opinion. Everyone on the council supports business, but these candidates could be seen as more pro-business than the average candidate.</p>
+            <p>Although the council can't do too much to influence policy, it still sucks we couldn't have more people like Sean O'Day or Sid Sullivan on the council. They would have had a better sense of issues important to us.</p>
+            <p>Now, there isn't anything wrong with the chamber's endorsements. They're entitled to pick who they want, but the process of a six-person committee selecting the endorsements of an organization of more than 1,000 members was an awfully good example of shady dealin'.</p>
+       	</div>
+    </div>
+
+</div>
+
+</div>
+
+<div id="main_sidebar" class="grid_3">
+
+<div id="profiles-header" class="grid_3">
+    <h2>Most influential students</h2>
+    <p>Click on each student's picture for a description.</p>
+</div>
+
+<div id="profiles-row-1" class="grid_3 alpha">
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile1"><img src="/media/2010/0503/photos/best-worst/joseph_beeman-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile1" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Joseph Beeman</h3>
+            <p>Senior Joseph Beeman, a Teach for America representative, is a pre-medicine student majoring in sociology and women's and gender studies.</p>
+            <p>In the past year, Beeman has helped to initiate and sustain BODYTALK, an e-zine that covers topics such as sexuality, bodies and reproductive health. BODYTALK created an open forum for discussion about sexuality and body issues that can't be found elsewhere. The e-zine has gained sponsorship from the Student Health Center and the Center for Social Justice.</p>
+            <p>Additionally, Beeman helped bring an international reproductive health forum to campus, which included Nigerian and Jamaican activists. The forum helped to raise awareness on campus about youth activism and international reproductive health.</p>
+        </div>
+    </div>
+
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile2"><img src="/media/2010/0503/photos/best-worst/tinacasagrand-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile2" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Tina Casagrand</h3>
+            <p>A journalism and anthropology major from Lebanon, Mo., sophomore Tina Casagrand has had an eventful last few weeks. She was elected Sustain Mizzou's next president, following in the footsteps of our persons of the year, Ben Datema and Pat Margherio, and was named to the Mystical Seven secret society on Tap Day.</p>
+            <p>As president, Casagrand has set goals for Sustain Mizzou in the coming semesters, aiming to expand Sustain Mizzou's cooperation with other groups on campus.</p>
+            <p>Previously, as vice president of programming, Casagrand has shown initiative, heading a project that placed 20 laundry-drying racks for students in residence halls. Casagrand said she was inspired to begin the program at MU by a collection of articles in the New York Times.</p>
+        </div>
+    </div>
+</div>
+<div id="profiles-row-2" class="grid_3 alpha">
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile3"><img src="/media/2010/0503/photos/best-worst/erinhorth-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile3" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Erin Horth</h3>
+            <p>Erin Horth led Triangle Coalition as president for two semesters and founded the IncludeMe MU campaign, a student-led initiative to push for gender identity and expression to be incorporated into the UM system's non-discrimination policy. She has also consistently been active in many movements in the lesbian, gay, bisexual, transgender, queer and questioning community at MU, as well as other social justice causes.</p>
+            <p>As an active member of Four Front, Horth works with other minority organizations to plan events, bring in speakers and educate fellow students, staff and faculty on MU’s most prominent diversity issues.</p>
+            <p>Horth is a senior and will be graduating this month, though she plans to attend graduate school at MU.</p>
+        </div>
+    </div>
+
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile4"><img src="/media/2010/0503/photos/best-worst/Joekarl-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile4" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Joe Karl</h3>
+            <p>Joe Karl is our watchdog in Jefferson City. When the state's lawmakers are working away on the upcoming year's budget or crafting laws that affect us all, Karl is there to speak up for the student body.Karl is the legislative director for Associated Students for University of Missouri, which means he heads up the lobbying efforts for ASUM and all of us.</p>
+            <p>This year, Karl has already shown his influence by keeping the tuition freeze in place and working to make Access Missouri awards equal for public and private university students.</p>
+            <p>Although there was wide support for both of those, Karl and others at ASUM made sure our voice was heard in the capitol's marble halls.</p>
+            <p>Doing this isn't the easiest thing either. Like most politicians, the state's legislators are bombarded by special interests and big groups that carry huge amounts of influence.</p>
+            <p>Granted, there are some things Karl and ASUM still need to get done, such as successfully lobbying for a voting student curator, but the powers that be can be too much for even our best representatives to handle. Despite that and other setbacks, ASUM is one student body we truly admire.</p>
+            <p>For standing up for students and representing us well in the capital, Joe Karl and ASUM have our thanks.</p>
+        </div>
+    </div>
+</div>
+<div id="profiles-row-3" class="grid_3 alpha">
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile5"><img src="/media/2010/0503/photos/best-worst/ian_krause-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile5" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Ian Krause</h3>
+            <p>We have to give Ian Krause props for tackling legitimate, important issues as a part of the Missouri Students Association. After his election to the vacant Academic Affairs chairperson position last semester, Krause took on several important projects and has seen them through to fruition.</p>
+            <p>Whether he was pressuring University Bookstore to ensure students are paying the lowest possible prices for their textbooks or creating working relationships with the Mizzou Student Veterans Association, Krause has picked up everyday issues that affect students and has come up with effective solutions. In an association in which many students forget their first duty is to serve students, Krause has rarely failed to represent the student voice throughout his four years as a senator and chairman.</p>
+        </div>
+    </div>
+
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile6"><img src="/media/2010/0503/photos/best-worst/tim_noce-gaffe-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile6" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Tim Noce</h3>
+            <p>Missouri Students Association President Tim Noce might have run unopposed, but it's obvious he has worked hard throughout the past semester to fulfill his role as president and to speak with administration about the issues students care for the most. His term might have had a shaky start (live tiger, anyone?), but he managed to turn his biggest blunder into MU adopting multiple tigers from Missouri zoos.</p>
+            <p>In the past semester, Noce has made sure to continue former MSA President Jordan Paul's openness and availability with members of the media, a welcome quality to have in a student leader.</p>
+            <p>The second semester of Noce's presidency is sure to bring more good to MU's campus, such as the implementation of his wireless walks and solutions to student tailgating and parking issues.</p>
+        </div>
+    </div>
+</div>
+<div id="profiles-row-4" class="grid_3 alpha">
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile7"><img src="/media/2010/0503/photos/best-worst/jordan_paul-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile7" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Jordan Paul</h3>
+            <p>As Missouri Students Association president, senior Jordan Paul gave students a voice on issues the administration often didn't want to talk about. He met with Chancellor Brady Deaton and Vice Chancellor Cathy Scroggs about tailgating and drinking on campus and worked out a plan that will have a trial run next semester. He challenged the administration and consistently demanded its confidence in the student body. Even after his term as president ended, Paul continued working with MSA in the spirit of representing the student body.</p>
+        </div>
+    </div>
+
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile8"><img src="/media/2010/0503/photos/best-worst/Daniel_Sewell-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile8" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Daniel Sewell</h3>
+            <p>This academic year was a big one for student veterans. Faculty Council's approval of a new policy to universally accept military transfer credit at MU was a huge step forward for those students, and they have Mizzou Veterans Association President Daniel Sewell to thank.</p>
+            <p>The push to allow all military credit to transfer to MU has been in the works for more than two years and has been the main objective of a task force Chancellor Brady Deaton created in 2008. In the past semester, Sewell took the issue of military credit transfer to Faculty Council, where it was finally met with approval.</p>
+        </div>
+    </div>
+</div>
+<div id="profiles-row-5" class="grid_3 alpha">
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile9"><img src="/media/2010/0503/photos/best-worst/weatherspoon-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile9" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Sean Weatherspoon</h3>
+            <p>Sean Weatherspoon's impact at MU can be found both on the field and in the large amount of assorted cutlery 
+            <p>"Spoon" was the vocal and emotional leader of the 2009 Tigers, in addition to leading Missouri in tackles with 
+            <p>Weatherspoon earned second team All-American honors from the Associated Press in addition to first team 
+        </div>
+    </div>
+
+    <div class="profile grid_1 alpha">
+        <a class="profiles" href="#profile10"><img src="/media/2010/0503/photos/best-worst/Greg_Winegar-thumb.jpg" alt="" /></a>
+    </div>
+
+    <div style="display: none;">
+        <div id="profile10" style="width: 400px; height: 100px; overflow: auto;">
+            <h3>Greg Winegar</h3>
+            <p>The appearance of KCOU/88.1 FM Program Director Greg Winegar on this list might come as a surprise. He hasn't served as a representative in student government nor has he lobbied for any student issues to the administration or the UM system. But his presence on this list comes as a result of KCOU's significant improvement in programming this past year. That's not to say there's not notable room for progress, but the station has come a long way from its near extinction in the 2008-2009 academic year.</p>
+            <p>KCOU General Manager Jonathan Hutcheson and Promotions Director Erin Gregory deserve credit for improving the station's campus presence, but it's the programming under Winegar that has carried the station in the past year.</p>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% endblock content_wide %}

@@ -1,0 +1,39 @@
+{% load core %}{% load markup %}{% load thumbnail %}
+<h1>{% ifnotequal article.type "story" %}{% ifnotequal article.type "online" %}{{ article.get_type_display }}: {% endifnotequal %}{% endifnotequal %}{{ article|markdown }}</h1>
+{% if article.cdeck %}<p class="cdeck"><i>{{ article.cdeck|markdown }}</i></p>{% endif %}
+{% ifnotequal article.type 'editorial' %}<p class="byline">By {% if article.byline.all %}{% render_byline article.byline %}{% else %}{% if article.static_byline %}{{ article.static_byline }}{% else %}{% ifequal article.section.publication.name "Move" %}the MOVE{% else %}The Maneater{% endifequal %} Staff{% endif %}{% endif %}</p>{% endifnotequal %}
+<p class="pub_date">Published {{ article.pub_date|date:"N j, Y" }}{% if article.updated %}, <span class="breaking">last updated {{ article.last_updated|date:"g:i a, N j, Y" }}</span>{% endif %}</p>
+{% ifequal article.type "column" %}{% if article.byline.all.0.mugshot %}
+<div class="mugshot">
+    <img class="photo" src="{{ article.byline.all.0.mugshot.url }}" alt="{{ article.byline.all.0 }}" />
+</div>
+{% endif %}{% endifequal %}
+{% if images %}
+<div id="gallery_wrapper">
+    <div id="gallery">
+        <ul>
+            {% for image in images %}
+            <li class="photo_container">
+                <a href="{{ image.get_absolute_url }}"><img class="photo" src="{% thumbnail image.image 200x200 %}" alt="Image" /></a>
+                <p class="byline">{% if image.illustration %}Photo illustration by {% endif %}{% ifequal image.mediatype 'editorialcartoon' %}Illustration by {% endifequal %}{% if image.byline %}<a href="{{ image.byline.get_absolute_url }}">{{ image.byline }}</a>{% ifnotequal image.mediatype 'editorialcartoon' %}/{% ifequal image.mediatype "photo" %}{{ image.byline.photographer_position }}{% else %}Graphic Designer{% endifequal %}{% endifnotequal %}</span>{% else %}{% if image.static_byline %}{{ image.static_byline }}{% endif %}{% endif %}</p>
+                {{ image.cutline|markdown }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <p><a href="images/">(View large image browser)</a></p>
+</div>
+{% endif %}
+{% if article.correction_set.all %}<p><strong>Correction appended</strong></p>{% endif %}
+{{ article.body|markdown }}
+{% if article.attached_audio %}
+<p><strong>Listen to attached audio:</strong></p>
+<embed src='http://webjay.org/flash/xspf_player' width='500' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+{% endif %}
+{% if article.correction_set.all %}
+<div id="corrections">
+    {% for correction in article.correction_set.all %}
+    <p><strong>Correction:</strong> {{ correction.correction|markdown }} (Added {{ correction.date_corrected|date:"P, F j, Y" }})</p>
+    {% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% comment %}The "title" block should be overridden in any child templates instead of in here.{% endcomment %}
+
+{% block content %}
+{% comment %}There should be an <h1> right here in any child templates with the page title. Any additional directions can go here, too.{% endcomment %}
+<form method="POST" action="">
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Send" />
+</form>
+{% endblock content %}

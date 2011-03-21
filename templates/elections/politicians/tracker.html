@@ -1,0 +1,15 @@
+{% for race, campaign_list in races_and_candidates %}
+<h3 class="office_label">{{ race.term_at_stake.seat.office.name }}</h3>
+<table>
+    <thead>
+        <td class="name">Candidate</td>
+        <td class="total">Vote totals</td>
+    </thead>
+    {% for campaign in campaign_list %}
+    <tr>
+        <td class="name">{% if campaign.won %}<strong>{% endif %}{{ campaign.politician }}{% if campaign.won %}</strong>{% endif %}</td>
+        <td class="total">{% if campaign.won %}<strong>{% endif %}{{ campaign.votes }}{% if campaign.won %}</strong>{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endfor %}

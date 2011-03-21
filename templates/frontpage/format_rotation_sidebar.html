@@ -1,0 +1,55 @@
+{% load thumbnail %}{% load markup %}
+<li id="top-story-{{ item.priority }}" class="ui-tabs-nav-item{% ifequal item.priority 0 %} ui-tabs-selected{% endifequal %}">
+    <a href="#top_story_{{ item.priority }}">
+        {% ifequal item.linked_object.mediatype 'article' %}
+            <img src="{% thumbnail item.linked_object.photos.all.0.image 60x45 crop %}" />
+            <div class="slider_text">
+                {{ item.linked_object.title|markdown }}
+            </div>
+        {% else %}
+            {% ifequal item.linked_object.mediatype 'photo' %}
+                <img src="{% thumbnail item.linked_object.image 60x45 crop %}" />
+                <div class="slider_text">
+                    Photo: {{ item.linked_object.cutline|markdown }}
+                </div>
+            {% else %}  
+                {% ifequal item.linked_object.mediatype 'audioclip' %}
+                    <img src="{% thumbnail item.linked_object.image 60x45 crop %}" />
+                    <div class="slider_text">
+                        Audio clip: {{ item.linked_object.title|markdown }}
+                    </div>
+                {% else %}
+                    {% ifequal item.linked_object.mediatype 'slideshow' %}
+                        <img src="{% thumbnail item.linked_object.image 60x45 crop %}" />
+                        <div class="slider_text">
+                            Slideshow: {{ item.linked_object.title|markdown }}
+                        </div>
+                    {% else %}
+                        {% ifequal item.linked_object.mediatype 'video' %}
+                            <img src="{% thumbnail item.linked_object.preview_image 60x45 crop %}" />
+                            <div class="slider_text">
+                                Video: {{ item.linked_object.title|markdown }}
+                            </div>
+                        {% else %}
+                            {% ifequal item.linked_object.mediatype 'custom' %}
+                                <img src="{% thumbnail item.linked_object.image 60x45 crop %}" />
+                                <div class="slider_text">
+                                    {{ item.linked_object.title|markdown }}
+                                </div>
+                            {% else %}
+                                {% ifequal item.linked_object.mediatype 'blog' %}
+                                    <img src="{% thumbnail item.linked_object.photos.all.0.image 60x45 crop %}" />
+                                    <div class="slider_text">
+                                        Blog post: {{ item.linked_object.title|markdown }}
+                                    </div>
+                                {% else %}
+                                {% endifequal %}
+                            {% endifequal %}
+                        {% endifequal %}
+                    {% endifequal %}
+                {% endifequal %}
+            {% endifequal %}
+        {% endifequal %}
+    </a>
+    <div class="clearer"></div>
+</li>

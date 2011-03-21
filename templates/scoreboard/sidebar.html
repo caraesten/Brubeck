@@ -1,0 +1,25 @@
+<div id="scores_sidebar">
+<h2>Sports scores</h2>
+{% for scoreboard in scoreboards %}
+<h3>{{ scoreboard }}</h3>
+<p class="last_updated"><em>Last updated: {{ scoreboard.last_updated|date:"g:i a, N j, Y" }}</em></p>
+<table class="scoreboard">
+    <thead>
+        <tr>
+            <td>Team name</td>
+            <td>Conf. record</td>
+            <td>Overall record</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for team in scoreboard.team_set.all %}
+        <tr class="{% cycle 'even' 'odd' %}">
+            <td>{{ team }}</td>
+            <td>{{ team.conf_record }}</td>
+            <td>{{ team.overall_record }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+</div>

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Test{% endblock title %}
+
+{% block head_extras %}
+<meta name="robots" content="noindex, nofollow" />
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '300px',
+        'height': '300px',
+        'border': '1px solid #000'
+    }).insertBefore('div#incident_info');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'small',
+        map_type: false
+    });
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var incidentPoint = new LatLonPoint(latitude, longitude);
+        // Set center and zoom
+        mapstraction.setCenterAndZoom(incidentPoint, 15);
+        var marker = new Marker(incidentPoint);
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        var marker_icon = hcard.find('.note .marker_url').text();
+        marker.setIcon(marker_icon);
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+<style>
+.marker_url {
+    display: none;
+}
+#map_box {
+    float: right;
+    margin-right: 10px;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content_wide %}
+
+<h1>{{ listing }}</h1>
+<div id="incident_info" class="vcard">
+    <h3>{{ incident.incident_date|date:"P, N j, Y" }}</h3>
+    <div class="info">
+        <p><span class="fn org">{{ listing.location.name }}</span> {% if listing.location.address %}{% ifnotequal listing.location.address listing.location.name %}<p class="adr post-office-box">{{ 
+incident.location.address }}</p>{% endifnotequal %}{% endif %}</p>
+        <div class="note">
+            <p>{% if incident.last_name %}<strong>Suspect:</strong> {{ incident.first_name }} {% if incident.middle_initial %}{{ incident.middle_initial }}. {% endif %}{{ incident.last_name }}<br />{% 
+endif %}
+            {% if incident.birth_date %}<strong>Date of birth:</strong> {{ incident.birth_date|date:"N j, Y" }}<br />{% endif %}
+            {% if incident.age %}<strong>Age:</strong> {{ incident.age }}<br />{% endif %}
+            {% if incident.home_address %}<strong>Home address:</strong> {{ incident.home_address }}<br />{% endif %}
+            {% if incident.arrest_date %}<strong>Arrested:</strong> {{ incident.arrest_date|date:"P, N j, Y" }}<br />{% endif %}</p>
+            
+            <p><strong>Charges:</strong>
+            <ul style="list-style: disc inside;">
+                {% for charge in incident.charges.all %}
+                <li><a href="{{ charge.get_absolute_url }}">{{ charge }}</a> ({{ charge.incident_type }})</li>
+                {% endfor %}
+            </ul></p>
+            
+            <p><strong>Police department:</strong> {{ incident.get_police_department_display }}<br />
+            <strong>Case number:</strong> {{ incident.case_number }}</p>
+            
+            <p class="marker_url">{{ incident.charges.all.0.incident_type.marker.url }}</p>
+            
+            {% if incident.articles.all %}
+            <h4>Related articles</h4>
+            <ul>
+                {% for article in incident.articles.all %}
+                <li><a href="{{ article.get_absolute_url }}">{{ article }}</a> ({{ article.pub_date|date:"N j, Y" }})</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <p class="geo">Coordinates: <span class="latitude">{{ incident.location.coords.lat }}</span>, <span class="longitude">{{ incident.location.coords.lng }}</span></p>
+    </div>
+</div>
+
+
+
+{% endblock content_wide %}
+

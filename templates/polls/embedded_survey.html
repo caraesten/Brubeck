@@ -1,0 +1,9 @@
+{% comment %}<form method="POST" action="">
+    {% for title, form in question_forms %}
+        <h3>{{ title }}</h3>
+        <table>
+            {{ form.choice }}
+        </table>
+    {% endfor %}
+    <input type="submit" value="Vote" />
+</form>{% endcomment %} Hi.

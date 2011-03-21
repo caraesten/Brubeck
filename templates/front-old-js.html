@@ -1,0 +1,638 @@
+{% extends "base.html" %}
+{% load core %}{% load markup %}{% load advertising %}{% load thumbnail %}{% load comparison %}
+{% block head_extras %}	<link rel="stylesheet" type="text/css" href="/media/style/2009-06/style/frontpage.css" />
+	<script type="text/javascript" src="/media/style/2009-06/js/jquery.tabswitch.yui.js"></script>
+	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/js/calendaring.css" />
+	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
+	<script type="text/javascript">
+        	$(function(){
+			$('.SlideTab').tabSwitch('create',{width: 622, type: 'toggle', toggle: 'fade', height: 370});
+    	{% if not featured_multimedia %}
+			$('.SlideTab').tabSwitch('startAuto',{speed: 400, interval: 6000});
+    	{% else %}{% ifnotequal featured_multimedia.mediatype "video" %}
+        		$('.SlideTab').tabSwitch('startAuto',{speed: 400, interval: 6000});
+    	{% endifnotequal %}{% endif %}
+			$('.tabSelect').click(function(e){
+				$('.SlideTab').tabSwitch('moveTo',{index: parseInt($(this).attr("rel"))});
+				e.preventDefault();
+			});
+			$('.Nav').click(function(e){
+		    	$('.SlideTab').tabSwitch('moveStep',{step: parseInt($(this).attr("rel"))});
+				e.preventDefault();
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.TopOnlineTab').tabSwitch('create',{width: 300, type: 'toggle', toggle: 'fade', height: 280});
+			$('.tabSwap').click(function(e){
+				$('.TopOnlineTab').tabSwitch('moveTo',{index: parseInt($(this).attr("rel"))});
+				e.preventDefault();
+			});
+		});
+	</script> 
+	<script type="text/javascript">
+		$(function(){
+			$('.NewsTab').tabSwitch('create',{width: 300, type: 'toggle', toggle: 'fade', height: 300});
+			$('.tabChange').click(function(e){
+				$('.NewsTab').tabSwitch('moveTo',{index: parseInt($(this).attr("rel"))});
+				e.preventDefault();
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.ArtsTab').tabSwitch('create',{width: 220, type: 'toggle', toggle: 'fade', height: 300});
+			$('.tabAlt').click(function(e){
+				$('.ArtsTab').tabSwitch('moveTo',{index: parseInt($(this).attr("rel"))});
+				e.preventDefault();
+			});
+		});
+	</script>{% spaceless %}
+{% endspaceless %}{% endblock head_extras %}
+{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}
+{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}
+{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block content_wide %}{% spaceless %}
+{% endspaceless %}{% if election %}
+{{ election }}
+{% endif %}{% spaceless %}
+{% endspaceless %}{% if other_info %}
+    <div id="news_burst_container" class="grid_12">
+        <div id="news_burst_label" class="grid_2 alpha omega">
+            <p>Special Information:</p>
+        </div>
+        <div id="news_burst_content" class="grid_10 alpha omega">
+            <p>{{ other_info }}</p>
+        </div>
+    </div>
+
+{% endif %}{% spaceless %}
+{% endspaceless %}				<div id="top_stories" class="grid_12 fp_row"{% if news_bursts %} style="height:460px !important;"{% endif %}>
+					<div id="fp_section_articles" class="grid_8 alpha">{% spaceless %}
+{% endspaceless %}{% if news_bursts %}{% for burst in news_bursts %}						<div id="news_burst_content" class="grid_8 alpha omega"{% if burst.burst_type.content_color %} style="background-color:{{ burst.burst_type.content_color }};"{% endif %}>
+							<ul>
+								<li>
+									<h1>{% if burst.link %}<a href="{{ burst.link }}">{% endif %}{{ burst.title }}{% if burst.link %}</a>{% endif %}</h1>
+									<p>{{ burst.body|markdown }}</p>
+								</li>
+							</ul>
+						</div>{% endfor %}{% endif %}{% spaceless %}
+{% endspaceless %}{% if featured_multimedia %}
+						<div class="SlideTab" id="TopStory0">
+							<div id="fp_section" class="grid_5 alpha">
+								<div id="top_story">
+									<div class="article_info">{% spaceless %}
+										{% endspaceless %}{% ifequal featured_multimedia.mediatype "custom" %}{% spaceless %}
+										{% thumbnail featured_multimedia.photo.image 380x255 as thumb %}{% endspaceless %}
+										<div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+											{% if featured_multimedia.get_absolute_url %}<a href="{{ featured_multimedia.get_absolute_url }}">{% endif %}<img id="top_story_photo" src="{{ thumb }}" alt="Photo" class="photo" />{% if featured_multimedia.get_absolute_url %}</a>{% endif %}
+										</div>{% spaceless %}
+										{% endspaceless %}{% else %}{% spaceless %}
+										{% endspaceless %}{% ifequal featured_multimedia.mediatype "slideshow" %}{% spaceless %}
+										{% thumbnail featured_multimedia.image 380x255 as thumb %}{% endspaceless %}
+										<div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+											<a href="{{ featured_multimedia.get_absolute_url }}">
+												<img id="top_story_photo" src="{{ thumb }}" alt="Slideshow" class="photo" />
+											</a>
+										</div>{% spaceless %}
+										{% endspaceless %}{% else %}{% spaceless %}
+										{% endspaceless %}{% ifequal featured_multimedia.mediatype "video" %}
+										<object width="420" height="383">
+											<param name="movie" value="{{ featured_multimedia.swf }}"></param>
+											<embed src="{{ featured_multimedia.swf }}" type="application/x-shockwave-flash" width="380" height="255"></embed>
+										</object>{% endifequal %}{% endifequal %}{% endifequal %}
+										<h1>{% if featured_multimedia.get_absolute_url %}<a href="{{ featured_multimedia.get_absolute_url }}">{% endif %}{{ featured_multimedia.title|markdown }}{% if featured_multimedia.get_absolute_url %}</a>{% endif %}</h1>{% spaceless %}
+									{% endspaceless %}{% if featured_multimedia.description %}{% spaceless %}
+{% endspaceless %}										<div class="top_article_cdeck">
+											{{ featured_multimedia.description|markdown|truncatewords_html:"20" }}
+                                                                                </div>{% spaceless %}
+									{% endspaceless %}{% endif %}
+									</div>
+								</div>
+							</div>
+        <div id="fp_section" class="grid_3 alpha">
+            <div class="othertoplinks">
+                <ul class="otl">
+                    <noscript><div class="otltitle">Top Stories:</div></noscript>
+                    <li class="otlitem active">
+                        <a class="tabSelect" href="#TopStory0" rel="0">
+                            <img src="{% ifequal featured_multimedia.mediatype "video" %}{{ featured_multimedia.thumbnail }}{% else %}{% ifequal featured_multimedia.mediatype "slideshow" %}{% thumbnail featured_multimedia.image 60x45 crop %}{% else %}{% thumbnail featured_multimedia.photo.image 60x45 crop %}{% endifequal %}{% endifequal %}" />
+                            <div class="slider_text">
+                                {{ featured_multimedia.title|markdown }}
+                            </div>
+                        </a>
+                        <div class="clearer"></div>
+                    </li>
+                {% for article in centerpiece_data %}
+                    <li class="otlitem">
+                        <a class="tabSelect" href="#TopStory{{ forloop.counter }}" rel="{{ forloop.counter }}">
+                            <img src="{% thumbnail article.photos.all.0.image 60x45 crop %}" />
+                            <div class="slider_text">{{ article.title|markdown }}</div>
+                        </a>
+                        <div class="clearer"></div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% for lead_article in centerpiece %}
+    <div class="SlideTab" id="TopStory{% if featured_multimedia %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
+        <div id="fp_section" class="grid_5 alpha">
+            <div id="top_story">
+                <div class="article_info">
+                    {% if lead_article.photos.all %}
+                        {% thumbnail lead_article.photos.all.0.image 380x255 as thumb %}
+                        <div class="top_story_image_0" style="width: {{ thumb.width }}px;">
+                            <a href="{{ lead_article.get_absolute_url }}">
+                                <img id="top_story_photo" src="{{ thumb }}" alt="Photo" class="photo" />
+                            </a>
+                        </div>
+                    {% endif %}
+                <h1><a href="{{ lead_article.get_absolute_url }}">{{ lead_article.title|markdown }}</a></h1>
+                <div class="top_article_cdeck">
+                    {% if lead_article.blurb %}
+                        {{ lead_article.blurb|markdown }}
+                    {% else %}
+                        {% if lead_article.cdeck %}
+                            {{ lead_article.cdeck|markdown }}
+                        {% else %}
+                            {{ lead_article.body|markdown|truncatewords_html:"40" }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div id="fp_section" class="grid_3 alpha">
+            <div class="othertoplinks">
+                <ul class="otl">
+                    {% comment %}<div class="otltitle">Top Stories:</div>{% endcomment %}
+                    {% if featured_multimedia %}
+                        <li class="otlitem">
+                            <a class="tabSelect" href="#TopStory0" rel="0">
+                                <img src="{% ifequal featured_multimedia.mediatype "video" %}{{ featured_multimedia.thumbnail }}{% else %}{% ifequal featured_multimedia.mediatype "slideshow" %}{% thumbnail featured_multimedia.image 60x45 crop %}{% else %}{% ifequal featured_multimedia.mediatype "custom" %}{% thumbnail featured_multimedia.photo.image 60x45 crop %}{% endifequal %}{% endifequal %}{% endifequal %}" />
+                                <div class="slider_text">{{ featured_multimedia.title|markdown }}</div>
+                            </a>
+                            <div class="clearer"></div>
+                        </li>
+                    {% endif %}
+                    {% for article in centerpiece_data %}
+                        <li class="otlitem{% ifequal lead_article article%} active{% endifequal %}">
+                            <a class="tabSelect" href="#TopStory{% if featured_multimedia %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}" rel="{% if featured_multimedia %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
+                                <img src="{% thumbnail article.photos.all.0.image 60x45 crop %}" />
+                                <div class="slider_text">
+                                    {{ article.title|markdown }}
+                                </div>
+                            </a>
+                            <div class="clearer"></div>
+                        </li>
+                     {% endfor %}
+                 </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}    
+    </div>
+    <div id="top_other" class="grid_4 omega">
+        <div class="tabbedarea">
+        <div class="TopOnlineTab" id="TopOnline0">
+            <div id="Mtab1" class="grid_2 alpha omega">
+                <h2 class="title Mtab1">More stories</h2>
+            </div>
+            <div id="Mtab2" class="grid_2 alpha omega Mtabpassive">
+                <h2 class="title Mtab2"><a class="tabSwap" href="#TopOnline1" rel="1">Most viewed</a></h2>
+            </div>
+            <ul>
+                {% for article in top_articles %}
+                    <li><h2>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h2></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="TopOnlineTab" id="TopOnline1">
+            <div id="Mtab1" class="grid_2 alpha omega Mtabpassive">
+                <h2 class="title Mtab1"><a class="tabSwap" href="#TopOnline0" rel="0">More stories</a></h2>
+            </div>
+            <div id="Mtab2" class="grid_2 alpha omega">
+                <h2 class="title Mtab2">Most viewed</h2>
+            </div>
+            <p class="top_online">&raquo;Last updated {{ issue.pub_date|date:"N j, Y" }}</p>
+            <ul>
+                {% if top_online %}
+                    {% for entry in top_online %}
+                        <li><h2>{% if entry.prefix %}{{ entry.prefix }}: {% endif %}<a href="{{ entry.url }}">{{ entry.item_name|markdown }}</a></h2></li>
+                    {% endfor %}
+                {% else %}
+                    <li><h2>D'oh!</h2></li>
+                    <li><h2>Top online hasn't been entered for this issue yet.</h2></li>
+                    <li><h2>FIX IT!</h2></li>
+                    <li><h2>Today!</h2></li>
+                {% endif %}
+            </ul>
+        </div>
+        </div>
+        <div id="fp_mam_ad">
+            {% comment %}<a href="http://www.facebook.com/pages/The-Maneater/21954347639"><img src="http://www.themaneater.com/media/style/2009-09/images/online_fbgraphic.jpg" /></a>{% endcomment %}
+            <div style="background-color: #EFEFEF; border:1px solid #CCCCCC;">
+            <script type="text/javascript" src="http://static.ak.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/en_US"></script><script type="text/javascript">FB.init("db443fd3b28ea97b830eec6712fb6dad");</script><fb:fan profile_id="21954347639" stream="0" connections="0" width="300"></fb:fan><div style="font-size:8px; padding-left:10px"><a href="http://www.facebook.com/pages/The-Maneater/21954347639">The Maneater</a> on Facebook</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fp_online_content" class="grid_12 fp_row">
+    <div id="fp_latest_mm" class="grid_6 alpha">
+        <h2 class="section">Latest multimedia</h2>
+        <div id="fp_other_content" class="grid_2 alpha">
+            <h3>Latest audio clip</h3>
+            <h3><a href="{{ latest_audio.get_absolute_url }}">{{ latest_audio }}</a></h3>
+            <img src="{% thumbnail latest_audio.image 140x105 crop %}" alt="Link to audio clip" class="right photo" />
+            <p>{{ latest_audio.description|markdown|truncatewords_html:"10" }} (<a href="{{ latest_audio.get_absolute_url }}">Listen to audio clip</a>{% if latest_audio.article_set.all %} or <a href="{{ latest_audio.article_set.all.0.get_absolute_url }}">read the article</a>{% endif %})</p>
+            <div style="clear:both;"></div>
+        </div>
+        {% with latest_slideshow as latest_multimedia %}
+        <div id="fp_other_content" class="grid_2 alpha">
+            <h3>Latest {{ latest_multimedia.mediatype|lower }}</h3>
+            <h3><a href="{{ latest_multimedia.get_absolute_url }}">{{ latest_multimedia.title }}</a></h3>
+            <img src="{% ifequal latest_multimedia.mediatype 'video' %}{% if latest_multimedia.preview_image %}{% thumbnail latest_multimedia.preview_image 140x105 crop %}{% else %}{{ latest_multimedia.thumbnail }}{% endif %}{% else %}{% thumbnail latest_multimedia.image 140x105 crop %}{% endifequal %}" alt="Link to {% ifequal latest_multimedia.mediatype 'video' %}video{% else %}slideshow{% endifequal %}" class="right photo" />
+            <p>{{ latest_multimedia.description|markdown|truncatewords_html:"10" }} (<a href="{{ latest_multimedia.get_absolute_url }}">{% ifequal latest_multimedia.mediatype "audioclip" %}Listen to audio clip{% else %}View {{ latest_multimedia.mediatype }}{% endifequal %}</a>{% if latest_multimedia.article_set.all %} or <a href="{{ latest_multimedia.article_set.all.0.get_absolute_url }}">read the article</a>{% endif %})</p>
+            <div style="clear:both;"></div>
+        </div>
+        {% endwith %}
+        <div id="fp_other_content" class="grid_2 alpha">
+            <h3>Latest podcasts</h3>
+            <ul>
+                {% for episode in latest_podcast_episodes %}
+                <li><h3><a href="{{ episode.get_absolute_url }}">{{ episode }}</a></h3></li>
+                {% endfor %}
+            </ul>
+            <p class="fp_section_refer"><a href="http://www.themaneater.com/podcasts/">See more podcasts...</a></p>
+        </div>
+    </div>
+    <div id="fp_latest_blog_posts" class="grid_4">
+        <div id="blogs_onlineonly_tabs">
+        <div class="NewsTab" id="BlogOnline0">
+            <div id="Mtab1" class="grid_2 alpha omega">
+                <h2 class="Mtab1">Latest blog posts</h2>
+            </div>
+            <div id="Mtab2" class="grid_2 alpha omega Mtabpassive">
+                <h2 class="Mtab2"><a class="tabChange" href="#BlogOnline1" rel="1">Web exclusives</a></h2>
+            </div>
+        {% if latest_blog_posts %}
+        <ul>
+            {% for post in latest_blog_posts %}
+            <li>
+                <h3><a href="{{ post.get_absolute_url }}">{{ post|markdown }}</a></h3>
+                {{ post.body|markdown|truncatewords_html:"10" }}
+                <p>(from <a href="{{ post.blog.get_absolute_url }}">{{ post.blog }}</a>)</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="fp_section_refer"><a href="http://www.themaneater.com/blogs/">See more blog posts...</a></p>
+        {% else %}
+                <p>There are currently no blog posts to display.</p>
+                <p class="fp_section_refer"><a href="http://www.themaneater.com/blogs/">See more blog posts...</a></p>
+        {% endif %}
+        </div>
+        <div class="NewsTab" id="BlogOnline1">
+        	<div id="Mtab1" class="grid_2 alpha omega Mtabpassive">
+        	    <h2 class="Mtab1"><a class="tabChange" href="#BlogOnline0" rel="0">Latest blog posts</a></h2>
+        	</div>
+        	<div id="Mtab2" class="grid_2 alpha omega">
+        	    <h2 class="Mtab2">Web exclusives</h2>
+        	</div>
+        <ul>
+            {% for article in latest_online_exclusives %}
+            <li>
+                <h3><a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3>
+                {% if article.cdeck %}{{ article.cdeck|markdown }}{% else %}{{ article.body|markdown|truncatewords_html:"20" }}{% endif %}
+                {% if article.updated %}<p class="breaking">last updated {{ article.last_updated|date:"g:i a, N j, Y" }}</p>{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+    </div>
+    <div id="fp_latest_podcasts" class="grid_2 omega">
+        <h2 class="section">Latest tweets</h2>
+        <ul>
+            {% render_tweets 3 %}
+            {% comment %}<li><p class="tweet">Twitter currently appears to be down.</p></li>
+            <li><p class="tweet">The Maneater is monitoring this situation. We will have our Twitter integration up and running as soon as possible.</p></li>{% endcomment %}
+        </ul>
+    </div>
+</div>
+<div id="ad_bar" class="grid_12 fp_row">
+    <span class="right">{% render_adsense 'banner' %}</span>{% render_banner_ad 'banner' %}
+</div>
+<div id="fp_articles_calendar" class="grid_12 fp_row">
+    <div id="fp_section_more_articles" class="grid_9 alpha">
+        <div id="fp_section_articles_row1" class="grid_9 alpha">
+            <div id="fp_section" class="grid_3 alpha">
+                <h2 class="section"><a href="{{ section_news.get_absolute_url }}">{{ section_news.name }}</a></h2>
+                <ul>
+                    {% for article in section_news_articles %}
+                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="{{ section_news.get_absolute_url }}">See more articles in {{ section_news.name }}...</a></p>
+            </div>
+            <div id="fp_section" class="grid_3 beta">
+                <h2 class="section"><a href="{{ section_outlook.get_absolute_url }}">{{ section_outlook.name }}</a></h2>
+                <ul>
+                    {% for article in section_outlook_articles %}
+                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="{{ section_outlook.get_absolute_url }}">See more articles in {{ section_outlook.name }}...</a></p>
+            </div>
+            <div id="fp_section" class="grid_3 omega">
+                <h2 class="section"><a href="{{ section_forum.get_absolute_url }}">{{ section_forum.name }}</a></h2>
+                <ul>
+                    {% for article in section_forum_articles %}
+                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="{{ section_forum.get_absolute_url }}">See more articles in {{ section_forum.name }}...</a></p>
+            </div>
+        </div>
+        <div id="fp_section_articles_row2" class="grid_9 alpha">
+            <div id="fp_section" class="grid_3 alpha">
+                <div class="ArtsTab" id="movearts0">
+                    <div id="Mtab1light">
+                        <h2 class="Mtab1light">MOVE</h2>
+                    </div>
+                    <div id="Mtab2light" class="Mtablightpassive">
+                        <h2 class="Mtab2light"><a class="tabAlt" href="#movearts1" rel="1">Arts</a></h2>
+                    </div>
+                    <ul>
+                        {% for article in move_articles %}
+                        <li><h3 class="move">{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                    </ul>
+                    <p class="fp_section_refer"><a href="http://move.themaneater.com/" class="move">See more from MOVE...</a></p>
+                </div>
+                <div class="ArtsTab" id="movearts1">
+                    <div id="Mtab1light" class="Mtablightpassive">
+                        <h2 class="Mtab1light"><a class="tabAlt" href="#movearts0" rel="0">MOVE</a></h2>
+                    </div>
+                    <div id="Mtab2light">
+                        <h2 class="Mtab2light">Arts</h2>
+                    </div>
+                    <ul>
+                        {% for article in section_arts_articles %}
+                        <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                        {% endfor %}
+                    </ul>
+                    <p class="fp_section_refer"><a href="{{ section_arts.get_absolute_url }}">See more articles in {{ section_arts.name }}...</a></p>
+                </div>
+            </div>
+            <div id="fp_section" class="grid_3 beta">
+                <h2 class="section"><a href="{{ section_sports.get_absolute_url }}">{{ section_sports.name }}</a></h2>
+                <ul>
+                    {% for article in section_sports_articles %}
+                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer"><a href="{{ section_sports.get_absolute_url }}">See more articles in {{ section_sports.name }}...</a></p>
+            </div>
+            <div id="fp_section" class="grid_3 omega">
+                <h2 class="section"><a href="{{ issue.get_absolute_url }}">In print</a></h2>
+                <ul>
+                    {% if issue_front %}<li class="issue_front_thumb"><a href="{{ issue_front.get_absolute_url }}"><img class="photo left" src="{% thumbnail issue_front.PDF.name 200x500 %}" alt="View the front page" /></a></li>{% endif %}
+                    {% if issue.comicepisode_set.all %}<li><h3><a href="/comics/latest/">Comics</a></h3></li>{% endif %}
+                    <li><h3><a href="/games/">Games</a></h3></li>
+                    {% for special_section in issue.specialsection_set.all %}
+                    <li><h3><a href="{{ special_section.get_absolute_url }}">{{ special_section }}</a></h3></li>
+                    {% endfor %}
+                    {% for layout in issue_other_layouts %}
+                    <li><a href="{{ layout.get_absolute_url }}">{% if not layout.last_page %}Page {{ layout.first_page }}{% else %}Pages {{ layout.first_page }}&ndash;{{ layout.last_page }}{% endif %}</a></li>
+                    {% endfor %}
+                </ul>
+                <p class="fp_section_refer" style="clear: both;"><a href="{{ issue.get_absolute_url }}">See more from this issue...</a></p>
+            </div>
+        </div>
+    </div>
+    <div id="fp_calendar" class="grid_3 omega">
+        <h2 class="section calendar"><a href="/calendar/">Calendar &ndash; {{ month_name }} {{ year }}</a></h2>
+{% if month_formatted %}
+<table class="calendar">
+{% if weekday_header %}
+<thead>
+<tr class="header">
+{% for weekday_name in weekday_header %}
+<th class="header">
+{{ weekday_name }}
+</th>
+{% endfor %}
+</tr>
+</thead>
+{% endif %}
+<tbody>
+{% for week in month_formatted %}
+<tr class="calendar">
+{% for day in week %}
+{% ifequal day 0 %}
+<td class="calendar inactive padding"></td>
+{% else %}{% spaceless %}
+{% ifequal day today %}
+{% ifequal month this_month %}
+{% ifequal year this_year %}
+{% if forloop.last %}                                                          
+<td class="today calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="today calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+{% else %}
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+{% endifequal %}
+{% else %}
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+{% endifequal %}
+{% else %}
+{% if forloop.last %}
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% else %}
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+{% endif %}
+{% endifequal %}{% endspaceless %}
+<a class="tooltip" href="/calendar/{{ year }}/{{ month }}/{{ day }}/">{{ day }}
+<span>
+<p class="header">Events for {% now "N" %} {{ day }}, {{ year }}</p>
+<ul id="fp_calendar_events_for_day">
+{% for event in event_list %}{% spaceless %}
+    {% ifequal event.start.day day %}
+        <li class="fp_calendar_event {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+        <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+        {% if event.all_day %}
+            <p class="eventdate">All day</p> 
+        {% else %}
+            <p class="eventdate">{{ event.start|time:"g:i a" }}</p>
+        {% endif %}
+        </li>
+    {% else %}
+        {% if event.end %}
+            {% ifequal event.end.day day %}
+                <li class="fp_calendar_event {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+                <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+                {% if event.all_day %}
+                    <p class="eventdate">All day</p>
+                {% else %}
+                    <p class="eventdate">{% ifequal event.start.year event.end.year %}{% ifequal event.start.month event.end.month %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"j" }}{% else %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"N j" }}{% endifequal %}{% else %}{{ event.start|date:"N j Y" }} &ndash; {{ event.end|date:"N j Y" }}{% endifequal %}</p>
+                {% endif %}
+                </li>
+            {% else %}
+                {% if_greater day event.start.day %}
+                    {% if_less day event.end.day %}
+                        <li class="fp_calendar_event {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+                        <p class="eventname">{{ event.name|truncatewords:6 }}</p>
+                        {% if event.all_day %}
+                            <p class="eventdate">All day</p>
+                        {% else %}
+                            <p class="eventdate">{% ifequal event.start.year event.end.year %}{% ifequal event.start.month event.end.month %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"j" }}{% else %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"N j" }}{% endifequal %}{% else %}{{ event.start|date:"N j Y" }} &ndash; {{ event.end|date:"N j Y" }}{% endifequal %}</p>
+                        {% endif %}
+                        </li>
+                    {% endif_less %}
+                {% endif_greater %}
+            {% endifequal %}
+        {% endif %}
+    {% endifequal %}
+{% endspaceless %}{% endfor %}
+</ul>
+</span>
+</a>
+</td>
+{% endifequal %}
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<p class="fp_section_refer"><a href="/calendar/">View full calendar</a></p>
+{% else %}
+Strangely enough, there's no content to display here. Try retracing your steps, or searching for what you want to find.
+{% endif %}
+<h2>Upcoming events</h2>
+        <ul>
+            {% for event in events %}
+            {% ifchanged %}<li class="calendar_date">
+                <h3>{{ event.start|date:"N j" }}{% if event.end %}{% ifnotequal event.start.date event.end.date %}{% if not event.all_day %} &ndash; {{ event.end|date:"N j" }}{% endif %}{% endifnotequal %}{% endif %}</h3>
+                <ul>{% endifchanged %}
+                    <li class="calendar_event">
+                        <h4><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+                        {% comment %}<p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }}{% if event.end %} &ndash; {{ event.end|date:"g:i a, N j" }}{% endif %}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                        <p class="calendar_description">{% if event.summary %}{{ event.summary|markdown }}{% endif %}</p>{% endcomment %}
+                    </li>
+                {% ifchanged event.start.date %}</ul>
+            </li>{% endifchanged %}
+            {% endfor %}
+        </ul>
+</div>
+</div>
+<div id="sitemap" class="grid_12 alpha omega">
+<div id="sitemap_header" class="grid_12 alpha omega">
+<div id="sitemap_tmsn" class="grid_7 alpha">
+<img src="http://www.themaneater.com/media/style/2009-07/images/maneater/sitemapheader.png" alt="The Maneater Student Newspaper" />
+</div>
+<div id="slogan" class="grid_5 omega">
+<h2>The student voice of MU since 1955</h2>
+</div>
+</div>
+<div id="sitemap_maneater_sections" class="grid_2 alpha">
+<h2 class="heading">Sections</h2>
+<ul>
+<li><h3><a href="http://www.themaneater.com/section/news/">News</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/section/outlook/">Outlook</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/section/forum/">Forum</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/section/arts/">Arts</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/section/sports/">Sports</a></h3></li>
+</ul>
+<h2 class="heading">Print issue</h2>
+<ul>
+<li><h3><a href="http://www.themaneater.com/games/">Game answers</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/graphics/">Graphics</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/photos/">Photos</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/layouts/">Print layouts</a></h3></li>
+</ul>
+</div>
+<div id="sitemap_move_sections" class="grid_2">
+<h2 class="heading">MOVE Magazine</h2>
+<ul>
+<li><h3><a href="http://move.themaneater.com/section/music/">Music</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/section/community/">Community</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/section/guide/">Guide</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/section/angles/">Angles</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/multimedia/">Multimedia</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/blogs/">Blogs</a></h3></li>
+<li><h3><a href="http://move.themaneater.com/calendar/">Arts Cal</a></h3></li>
+</ul>
+</div>
+<div id="sitemap_other_content" class="grid_2">
+<h2 class="heading">Online extras</h2>
+<ul>
+{% comment %}<li><h3><a href="http://www.themaneater.com/apartment-guide/">Apartment Guide</a></h3></li>{% endcomment %}
+<li><h3><a href="http://www.themaneater.com/blotter/">Blotter</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/campus-guide/">Campus Guide</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/classifieds/">Classifieds</a></h3></li>
+<li><h3><a href="http://www.columbiaprowl.com/">Columbia Prowl</a></h3></li>
+{% comment %}<li><h3><a href="http://m.themaneater.com/">Mobile version</a></h3></li>{% endcomment %}
+{% comment %}<li><h3><a href="http://www.themaneater.com/wikizou/">wikiZou</a></h3></li>{% endcomment %}
+</ul>
+<h2 class="heading">Social media</h2>
+<ul>{% comment %}
+<li><h3 class="list-title">Social media</h3></li>
+<ul class="inline">
+<li><h4><a href="http://www.facebook.com/pages/The-Maneater/21954347639">Facebook</a></h4></li>{% endcomment %}
+<li><h3><a href="http://www.facebook.com/pages/The-Maneater/21954347639">Facebook</a></h3></li>
+<li><h3><a href="http://www.twitter.com/TheManeater/">Twitter</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/feeds/">RSS</a></h3></li>
+<li><h3><a href="http://www.youtube.com/ManeaterVideo">YouTube</a></h3></li>{% comment %}
+</ul>{% endcomment %}
+</ul>
+</div>
+<div id="sitemap_multimedia" class="grid_2">
+<h2 class="heading">Multimedia</h2>
+<ul>
+<li><h3><a href="http://www.themaneater.com/audio/">Audio clips</a></h3></li>
+{% comment %}<li><h3><a href="http://www.themaneater.com/interactive-graphics/">Interactive graphics</a></h3></li>{% endcomment %}
+<li><h3><a href="http://www.themaneater.com/podcasts/">Podcasts</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/slideshows/">Slideshows</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/videos/">Videos</a></h3></li>
+</ul>
+</div>
+<div id="sitemap_blogs" class="grid_2">
+<h2 class="heading">Blogs</h2>
+<ul>
+{% if all_blogs %}
+{% for blog in all_blogs %}
+<li><h3><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></h3></li>
+{% endfor %}
+{% else %}
+<li><h3>There are no blogs to display.</h3></li>
+{% endif %}
+</ul>
+</div>
+<div id="sitemap_other_content" class="grid_2 omega">
+<h2 class="heading">About</h2>
+<ul>
+<li><h3><a href="http://www.themaneater.com/about/">About The Maneater</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/about/accuracy/">Accuracy</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/about/advertising/">Advertising</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/about/contact/">Contact us</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/about/jobs/">Get involved</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/staff/editors/">Staff</a></h3></li>
+<li><h3><a href="http://www.themaneater.com/about/colophon/">Web site colophon</a></h3></li>
+</ul>
+</div>
+</div>
+{% endblock content_wide %}

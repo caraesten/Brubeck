@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Top Online</h1>
+
+{% for item in top_online %}
+
+<h3>{{ forloop.counter }}. 
+<a href="{{ item.get_absolute_url }}">
+{% ifequal item.mediatype 'article' %}
+    {{ item.mediatype }}: {{ item }}
+{% else %}
+    {% ifequal item.mediatype 'audioclip' %}
+        Audio clip: {{ item.title }}
+    {% else %}
+        {% ifequal item.mediatype 'blog' %}
+            Blog post: {{ item.title }}
+        {% else %}
+            {% ifequal item.mediatype 'event.mediatype' %}
+            
+            {% else %}
+            {% endifequal %}
+        {% endifequal %}
+    {% endifequal %}
+{% endifequal %}
+</a></h3>
+
+{% endfor %}
+
+{% endblock content %}

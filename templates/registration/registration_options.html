@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Register &ndash; Account types{% endblock title %}
+
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2010-03/style/public-forms.css" />
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div id="content" class="grid_12">
+<h1>Choose your account type</h1>
+<p>Select the type of Maneater account you wish to create:</p>
+</div>
+<div id="content" class="grid_12">
+<div class="grid_6 alpha" style="border-right: 1px dotted #BBBBBB;margin-right:0px;padding-right:9px;">
+<h2>Student, faculty and staff account</h2>
+<p>If you have a valid <strong>@mail.mizzou.edu</strong> or <strong>@missouri.edu</strong> e-mail address, this account type is for you.</p>
+<p>Those who have these accounts are eligible to win contests on themaneater.com, and may benefit even more in the future.</p>
+<a class="submit-button" href="/accounts/register-student/">Create student account</a>
+</div>
+<div class="grid_6 omega">
+<h2>General account</h2>
+<p>Readers who do not have an MU e-mail address may sign up for general accounts on themaneater.com.</p>
+<a class="submit-button" href="/accounts/register-general/">Create general account</a>
+</div>
+</div>
+<div id="submit-buttons" class="grid_12">
+<p class="text-align:right;">Already have an account? Log in <a href="/accounts/login/">here</a>.</p>
+</div>
+<div style="clear: both;"></div>
+{% endblock content_wide %}

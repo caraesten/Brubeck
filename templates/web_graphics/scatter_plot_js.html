@@ -1,0 +1,72 @@
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/highcharts.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/excanvas.compiled.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function(){
+   var chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'chart-container',
+         defaultSeriesType: 'scatter'
+      },
+      title: {
+         text: '{{ scatterplot.title }}'
+      },
+      subtitle: {
+         text: '{{ scatterplot.subtitle }}<div class="chart_source"><em>Source: {{ scatterplot.source }}</em></div>'
+      },
+      xAxis: {
+         title: {
+            enabled: true,
+            text: '{{ scatterplot.x_axis_title }}{% if scatterplot.x_axis_units %} ({{ scatterplot.x_axis_units }}){% endif %}'
+         }
+      },
+      yAxis: {
+         title: {
+            text: '{{ scatterplot.y_axis_title }}{% if scatterplot.y_axis_units %} ({{ scatterplot.y_axis_units }}){% endif %}'
+         }
+      },
+      legend: {
+         layout: 'vertical',
+         backgroundColor: '#FFFFFF',
+         style: {
+            left: '100px',
+            top: '70px',                                                                
+            bottom: 'auto'
+         }
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.series.name +'</b><br/>'+ this.x +'{% if scatterplot.x_axis_units %} {{ scatterplot.x_axis_units }}{% endif %}, '+ this.y +'{% if scatterplot.y_axis_units %} {{ scatterplot.y_axis_units }}{% endif %}';
+         }
+      },
+      plotOptions: {
+         scatter: {
+            marker: {
+               radius: 5,
+               states: {
+                  hover: {
+                     enabled: true,
+                     lineColor: 'rgb(100,100,100)'
+                  }
+               }
+            },
+            states: {
+               hover: {
+                  marker: {
+                     enabled: false
+                  }
+               }
+            }
+         }
+      },
+      series: [{% for dataset in scatterplot.dataset.all %}{% with dataset.get_cleaned_coordinates as cleaned_coordinates %}{
+         name: '{{ dataset.name }}',{% if dataset.color %}
+         color: '{{ dataset.color }}',{% endif %}
+         data: [{% for coordinate in cleaned_coordinates %}
+            [{{ coordinate.0|safe }}, {{ coordinate.1|safe }}]{% if not forloop.last %}, {% endif %}{% endfor %}
+         ]
+      }{% if not forloop.last %}, {% endif %}{% endwith %}{% endfor %}]
+   });
+});
+</script>

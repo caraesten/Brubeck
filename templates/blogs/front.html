@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load markup %}{% load comments %}
+
+{% block title %}{{ block.super }} &ndash; Blogs{% endblock title %}
+
+{% block content %}
+<h1>{% if not archive %}Blogs{% else %}Blog archive{% endif %}</h1>
+{% if archived %}
+    <div class="object_list">
+        <h2 class="header">Archived blogs (no longer maintained)</h2>
+        {% for blog in archived %}
+            <h3><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></h3>
+            <p>{{ blog.description|markdown }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if not archived %}
+{% if current %}
+    <div class="object_list">
+        {% if archived %}<h2 class="header">Current blogs</h2>{% endif %}
+        {% for blog in current %}
+            <h2><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></h2>
+            <p>{{ blog.description|markdown }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endif %}
+<p>{% if not archive %}<a href="/blogs/archived/">View archive of all blogs</a>{% else %}<a href="/blogs/">View list only current blogs</a>{% endif %}</p>
+{% endblock %}

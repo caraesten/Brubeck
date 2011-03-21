@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &mdash; {{ page_name }}{% endblock title %}
+
+{% block content %}
+<h1>{{ page_name }}</h1>
+{% if event_page.object_list %}
+    <ul id="fp_calendar">
+        {% for event in event_page.object_list %}
+        {% ifchanged %}<li class="calendar_date">
+            <h3>{{ event.start|date:"N j" }}{% if event.end %}{% ifnotequal event.start.date event.end.date %}{% if not event.all_day %} &ndash; {{ event.end|date:"N j" }}{% endif %}{% endifnotequal %}{% endif %}</h3>
+            <ul>{% endifchanged %}
+                <li class="calendar_event">
+                    <h4><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+                    <p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }}{% if event.end %} &ndash; {{ event.end|date:"g:i a, N j" }}{% endif %}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                    <p class="calendar_description">{% if event.summary %}{{ event.summary|markdown }}{% endif %}</p>
+                    <p class="calendar_description">Listed in {% for calendar in event.calendars.all %}{% if not forloop.first %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}<a href="{{ calendar.get_absolute_url }}">{{ calendar }}</a>{% endfor %}</p>
+                </li>
+            {% ifchanged event.start.date %}</ul>
+        </li>{% endifchanged %}
+        {% endfor %}
+    </ul>
+    {% comment %}{% if is_paginated %}{% endcomment %}
+    <div class="page_navigation">
+        {% if event_page.has_previous %}<a href="/calendar/{% if calendar_slug %}{{ calendar_slug }}/{% endif %}page/{{ event_page.previous_page_number }}/">&laquo; Previous</a> |{% endif %} Page {{ event_page.number }} of {{ event_page.paginator.num_pages }} {% if event_page.has_next %}| <a href="/calendar/{% if calendar_slug %}{{ calendar_slug }}/{% endif %}page/{{ event_page.next_page_number }}/">Next &raquo;</a>{% endif %}
+        </div>
+    {% comment %}{% endif %}{% endcomment %}
+{% else %}
+    {% if date_list %}
+        {% for month in date_list %}
+        <h2><a href="/blogs/{{ blog.slug }}/{{ month|date:"Y/n" }}/">{{ month|date:"F" }}</a></h2>
+        {% endfor %}
+    {% else %}
+    <p>For some reason, there aren't any posts here.</p>
+    {% endif %}
+{% endif %}
+{% endblock content %}

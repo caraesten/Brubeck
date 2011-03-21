@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} &mdash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+  $("div.film_info").hide();
+  $("h3.film").click(function()
+  {
+    $(this).next("div.film_info").slideToggle(600);
+  });
+});
+</script>
+<style>
+.column_left {
+    float: left;
+    padding-right: 5px;
+    width: 340px;
+}
+.column_right {
+    border-left: 1px dotted #009830;
+    float: left;
+    padding-left: 4px;
+    width: 340px;
+}
+h3.film {
+    border-top: 1px solid #336633;
+    color: #336633;
+    padding-top: 5px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ flatpage.title }}</h1>
+<p><em>Click on a film title to see its description.</em></p>
+{{ flatpage.content }}
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Polls &ndash; {{ poll }}{% endblock title %}
+
+{% block head_extras %}
+    <script src="/media/style/2010-09/graphing/raphael-min.js" type="text/javascript"></script>
+    <![if !IE]><script src="/media/style/2010-09/graphing/poll.js" type="text/javascript"></script><![endif]>
+    <![if !IE]><script src="/media/style/2010-09/graphing/poll.css" type="text/javascript"></script><![endif]>
+    <![if !IE]><style type="text/css" media="screen">
+        #holder {
+            height: {{ results.chart_height }}px;
+            width: 688px;
+        }
+    </style><![endif]>
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{{ poll }}</h1>
+{% if voting_closed %}<p>Voting has ended for this poll.{% if already_voted %} Your vote is counted among the results.{% endif %}</p>{% else %}{% if already_voted %}<p>You've already voted in this poll.</p>{% endif %}{% endif %}
+{% if show_results %}
+    <div id="holder"></div>
+    <img class="chart" src="{{ results.chart }}" alt="Results" />
+    <br /><br />
+    <div class="object_list">
+        <h2 class="header">Vote breakdown</h2>
+        <table id="poll_results">
+            {% for choice in choices %}
+            <tr{% if forloop.last %} class="last"{% endif %}>
+            <th>{{ choice.choice }}</th><td>{{ choice.votes }} votes</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% else %}
+    <form method="POST" action="">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Vote" />
+    </form>
+{% endif %}
+{% endblock content %}

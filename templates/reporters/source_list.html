@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; For reporters &ndash; Sources &ndash; {{ source_type }}{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript">
+$(function() {
+    $('.object_list .item').hide();
+    $('.object_list h2').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{{ source_type }}</h1>
+<div class="object_list">
+    {% for source in sources %}
+    <h2 class="header"><a href="javascript:void(0);">{{ source.prefix}} {{ source.first_name }} {{ source.last_name }}</a> ({{ source.position }}, {{ source.org }})</h2>
+    <div class="item">
+        {% if source.email %}<p>E-mail address: <a href="mailto:{{ source.email }}">{{ source.email }}</a></p>{% endif %}
+        {% if source.mugshot %}<img class="mugshot" src="{{ source.mugshot.url }}" alt="{{ source.first_name }} {{ source.last_name }}" />{% endif %}
+        {% if source.addresses %}
+        <h3>Addresses</h3>
+        <ul>
+            {% for address in source.addresses %}
+            <li>{{ address.get_type_display }}: <br />{{ address.address }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if source.numbers %}
+        <h3>Phone numbers</h3>
+        <ul>
+            {% for number in source.numbers %}
+            <li>{{ number.get_type_display }}: <br />{{ number.number }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if source.other_info %}
+        <h3>Other info</h3>
+        {{ source.other_info|markdown }}
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

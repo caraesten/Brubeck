@@ -1,0 +1,13 @@
+{{ object.name }}
+{{ object.description }}
+{{ object.keywords }}
+{{ object.channel.title }}
+{% for byline in object.producers.all %}
+{{ byline }}
+{% endfor %}
+{% for byline in object.writers.all %}
+{{ byline }}
+{% endfor %}
+{% for byline in object.reporters.all %}
+{{ byline }}
+{% endfor %}

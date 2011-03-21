@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} &ndash; Register &ndash; Create general account{% endblock title %}
+
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2010-03/style/public-forms.css" />
+{% endblock head_extras %}
+
+{% block content %}
+<h1>Create general account</h1>
+<form method="POST" action="">
+    <table id="registration-table">
+        {{ form.as_table }}
+    </table>
+    <input class="submit-button" type="submit" value="Register" />
+</form>
+{% endblock content %}

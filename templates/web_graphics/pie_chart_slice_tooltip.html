@@ -1,0 +1,1 @@
+'{% spaceless %}{{ value }}{% if slice.chart.is_percentage %}{% spaceless %}%{% endspaceless %}{% else %}{% if slice.chart.units %} {{ slice.chart.units }}{% endif %} ({{ percentage }}%){% endif %}{% endspaceless %}',

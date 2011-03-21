@@ -1,0 +1,4 @@
+{% load thumbnail %}
+<a href="{{ latest_cartoon.get_absolute_url }}"><img class="photo" alt="{{ latest_cartoon }}" src="{% thumbnail latest_cartoon.image 200x200 %}" /></a>
+<p class="byline">Illustration by <span class="byline"><a href="{{ latest_cartoon.byline.get_absolute_url }}">{{ latest_cartoon.byline }}</a></span></p>
+<p class="fp_section_refer"><a href="/editorial-cartoons/">See more editorial cartoons...</a></p>

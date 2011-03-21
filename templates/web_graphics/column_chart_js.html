@@ -1,0 +1,60 @@
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/highcharts.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="/media/style/2010-01/js/highcharts/js/excanvas.compiled.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function(){
+   var chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'chart-container',
+         defaultSeriesType: 'column'
+      },
+      title: {
+         text: '{{ columnchart.title }}'
+      },
+      subtitle: {
+         text: '{{ columnchart.subtitle }}<div class="chart_source"><em>Source: {{ columnchart.source }}</em></div>'
+      },
+      xAxis: {
+         categories: [{% for label in x_axis_labels %}
+            '{{ label }}'{% if not forloop.last %},{% endif %}{% endfor %}
+         ],
+         title: {
+            enabled: true,
+            text: '{{ columnchart.x_axis_title }}'
+         }
+      },
+      yAxis: {
+         min: {{ columnchart.y_axis_min }},
+         title: {
+            text: '{{ columnchart.y_axis_title }}{% if columnchart.units %} ({{ columnchart.units }}){% endif %}'
+         }
+      },
+      legend: {
+         layout: 'vertical',
+         backgroundColor: '#FFFFFF',
+         style: {
+            left: '100px',
+            top: '70px',                                                                
+            bottom: 'auto'
+         }
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.series.name +'</b><br/>'+ this.x +': '+ this.y +'{% if columnchart.units %} {{ columnchart.units }}{% endif %}';
+         }
+      },
+      plotOptions: {
+         column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+         }
+      },
+           series: [{% for series in columnchart.series.all %}{% with series.get_cleaned_points as cleaned_points %}{
+         name: '{{ series.name }}',{% if series.color %}
+         color: '{{ series.color }}',{% endif %}
+         data: [{% for point in cleaned_points %}{{ point }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+      }{% if not forloop.last %}, {% endif %}{% endwith %}{% endfor %}]
+   });
+});
+</script>

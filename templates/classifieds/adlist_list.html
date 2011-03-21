@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Classifieds{% endblock title %}
+
+{% block head_extras %}
+<!-- <script type="text/javascript">
+$(function() {
+    $('.object_list .item').hide();
+    $('.object_list h2').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script> -->
+{% endblock head_extras %}
+
+{% block content %}
+<h1>Classifieds</h1>
+<div class="object_list">
+    {% for ad in object_list %}
+    <h2 class="header">{{ ad.category|safe }}</h2>
+    <div class="item">{{ ad.listings|markdown }}</div>
+    {% endfor %}
+</div>
+<p>Interested in advertising with The Maneater? <a href="/about/advertising/">Click here for more information.</a></p>
+{% endblock content %}

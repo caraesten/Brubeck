@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load core %}{% load markup %}{% load mapping %}{% load events %}
+
+{% block title %}{{ block.super }} &mdash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+    <link rel="stylesheet" type="text/css" href="/media/style/2010-10/style/bx_styles.css" />
+    <script type="text/javascript" src="/media/style/2010-10/js/jquery.bxSlider.js"></script>
+    <style>
+    body {
+    	background: #D8C7AA url("/media/style/2010-10/images/homecomingbg.jpg") no-repeat scroll center 0;
+    }
+    #container {
+        background: none;
+    	border: 0 none;
+    }
+    #ticker_and_search,
+    #flag_bar,
+    #nav_bar,
+    #footer {
+    	display: none;
+    }
+    #slider {
+    	margin-top: 10px;
+    }
+    #slider h2 {
+    	font-size: 27px;
+    }
+    </style>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#slider').bxSlider({
+        });
+      });
+    </script>
+{% endblock %}
+
+{% block content_wide %}
+<img id="logo" src="/media/style/2010-10/images/logo.png" alt="Tradition set in stone" />
+<ul id="slider">
+    <li>
+        <img class="photo" src="/media/style/2010-10/images/articles.jpg" alt="Articles" />
+        <h2>Articles</h2>
+    </li>
+    <li>
+        <h2>Profiles</h2>
+    </li>
+</ul>
+{{ flatpage.content }}
+{% endblock content_wide %}

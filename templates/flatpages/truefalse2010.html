@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load core %}{% load markup %}{% load mapping %}{% load events %}
+
+{% block title %}{{ block.super }} &mdash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+    {% render_map_js 16 488 %}
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("div.film_info").hide();
+        $("h3.film").click(function()
+        {
+            $(this).next("div.film_info").slideToggle(600);
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+     	$("div.schedule").hide();
+        $("div#25").show();
+        $("h2.25").addClass("active");
+        $("h2.25").click(function()
+        {
+            $(".calendar_nav h2").removeClass("active");
+            $(this).addClass("active");
+       	    $("div.schedule").hide();
+            $("div#25").show();
+        });
+        $("h2.26").click(function()
+        {
+       	    $(".calendar_nav h2").removeClass("active");
+            $(this).addClass("active");
+       	    $("div.schedule").hide();
+            $("div#26").show();
+        });
+        $("h2.27").click(function()
+        {
+       	    $(".calendar_nav h2").removeClass("active");
+            $(this).addClass("active");
+       	    $("div.schedule").hide();
+            $("div#27").show();
+        });
+        $("h2.28").click(function()
+        {
+       	    $(".calendar_nav h2").removeClass("active");
+            $(this).addClass("active");
+            $("div.schedule").hide();
+            $("div#28").show();
+        });
+    });
+    </script>
+    <style>
+    #rendered_map {
+        float: left;
+    }
+    #place_list {
+        display: none;
+    }
+    #twitter {
+        border-left: 1px dotted #009830;
+        float: left;
+        margin-left: 10px;
+        padding-left: 9px;
+        width: 190px;
+    }
+    #twitter ul, #content .schedule ul {
+        margin: 0;
+    }
+    #twitter ul li, li.calendar_event {
+        list-style-image: none;
+       	list-style-position: inside;
+       	list-style-type: none;
+    }
+    .calendar_nav {
+        border-top: 1px dotted #009830;
+        margin-top: 10px;
+        padding-top: 9px;
+    }
+    .calendar_nav h2 {
+        color: #336633;
+        display: inline;
+        padding-right: 15px;
+    }
+    .calendar_nav h2.active {
+        color: #333333;
+    }
+    #content .schedule ul {
+        width: 450px;
+    }
+    li.calendar_event {
+        width: 450px;
+    }
+    #films {
+        border-top: 1px dotted #009830;
+        margin-top: 10px;
+        padding-top: 9px;
+    }
+    .column_left {
+        float: left;
+        padding-right: 5px;
+        width: 340px;
+    }
+    .column_right {
+        border-left: 1px dotted #009830;
+        float: left;
+        padding-left: 4px;
+        width: 340px;
+    }
+    h3.film {
+        border-top: 1px solid #336633;
+        color: #336633;
+        padding-top: 5px;
+    }
+    .clearer {
+        clear: both;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ flatpage.title }}</h1>
+<p>Welcome to MOVE Magazine's coverage of True/False Film Fest 2010. We'll be here all weekend with everything you need during the festival, including a <a href="#schedule">schedule</a>, <a href="#map">map</a> and <a href="#films">previews of the films</a>. For up-to-the-minute coverage, follow <a href="http://twitter.com/movetf10">@MOVEtf10</a> on Twitter. Make sure to check in with our <a href="http://move.themaneater.com/blogs/truefalse-film-fest-2010-2010-feb-25-2-2010-feb-25/">live blog</a> throughout the weekend for film reviews, photos, multimedia and more.</p>
+{% render_map 16 %}
+<div id="twitter">
+    <h2>Latest tweets</h2>
+    <ul>
+        {% render_tweets_by_account 'movetf10' 3 %}
+    </ul>
+</div>
+<div class="clearer"></div>
+{% render_calendar 24 %}
+<div class="clearer"></div>
+<div id="films"><h3>Film previews</h3></div>
+<p><em>Click on a film title to see its description.</em></p>
+{{ flatpage.content }}
+{% endblock content %}

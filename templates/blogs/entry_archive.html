@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load markup %}{% load scoreboard %}{% load comments %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &mdash; {{ archive_name }}{% endblock title %}
+
+{% block head_extras %}
+<link rel="alternate" type="application/rss+xml" title="{{ blog }} RSS Feed" href="/feeds/blogs/{{ blog.slug }}/" />
+<style>
+    .object_list .item {
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{{ archive_name }}</h1>
+{{ blog.description|markdown }}
+{% if object_list %}
+    {% for object in object_list %}
+    {% if forloop.first %}
+    <div class="object_list">
+    {% endif %}
+    {% ifchanged object.pub_date.date %}
+        {% if not forloop.first %}
+        </div>
+        <div class="object_list">
+        {% endif %}
+        <h2 class="header"><div class="month">{{ object.pub_date|date:"N j, Y" }}</div><div class="calendar_link"><a href="/blogs/{{ object.blog.slug }}/calendar/{{ object.pub_date|date:"Y" }}/{{ object.pub_date|date:"n" }}/{{ object.pub_date|date:"j" }}/">(calendar)</a></div><div class="float_clearer" /></h2>
+    {% endifchanged %}
+        <div class="item">
+            <h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></h3>
+            <p class="byline">Posted to <a href="{{ blog.get_absolute_url }}">{{ blog }}</a>{% if object.byline %} by <a href="{{ object.byline.get_absolute_url }}">{{ object.byline }}</a>{% else %}{% if object.static_byline %} by {{ object.static_byline }}{% endif %}{% endif %} at {{ object.pub_date|date:"g:i a, N j, Y" }}</p>
+            {% if object.photos.all %}
+                {% with object.photos.all.0 as photo %}
+                {% if not photo.mugshot %}
+                <div class="wide_photo_container">
+                    <img class="photo" alt="{{ object }}" src="{% thumbnail photo.image 590x400 %}" />
+                    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                    {{ photo.cutline|markdown }}
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% endif %}
+            {% for photo in object.photos.all %}
+                {% if photo.mugshot %}
+                <div class="mugshot">
+                    <img class="photo" src="{{ photo.get_thumbnail100_url }}" alt="Mugshot" />
+                    <p><b>{{ photo.cutline }}</b></p>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <p class="cdeck">{{ object.body|safe|markdown }}</p>
+            {% if object.photos.all %}
+            {% for photo in object.photos.all %}
+                {% if not forloop.first %}
+                {% if not photo.mugshot %}
+                <div class="wide_photo_container">
+                    <img class="photo" alt="{{ object }}" src="{% thumbnail photo.image 590x400 %}" />
+                    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span>{% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                    {{ photo.cutline|markdown }}
+                </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% get_comment_count for object as comment_count %}
+            <p><a href="{{ object.get_absolute_url }}#comments">{{ comment_count }} comments</a></p>
+        </div>
+    {% if forloop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% if is_paginated %}
+    <div class="page_navigation">
+        {% if page_obj.has_next %}<a href="/blogs/{{ blog.slug }}/{{ page_obj.next_page_number }}/">&laquo; Older</a> |{% endif %} Page {{ page_obj.number }} of {{ paginator.num_pages }} {% if page_obj.has_previous %}| <a href="/blogs/{{ blog.slug }}/{{ page_obj.next_page_number }}/">Newer &raquo;</a>{% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    {% if date_list %}
+        {% for month in date_list %}
+        <h2><a href="/blogs/{{ blog.slug }}/{{ month|date:"Y/n" }}/">{{ month|date:"F" }}</a></h2>
+        {% endfor %}
+    {% else %}
+    <p>For some reason, there aren't any posts here.</p>
+    {% endif %}
+{% endif %}
+{% endblock content %}
+
+{% block sidebar %}
+{% ifequal blog.slug "sports" %}{% show_scores_sidebar %}{% endifequal %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% load thumbnail %}{% load move %}
+<br />
+<ul>
+{% for photo in photo_subset %}
+    <li class="left" style="{% if not forloop.last %}border-right: 1px solid #{% site_color %};{% endif %}height: 150px;text-align: center;width: 190px;">
+        <p class="pub_info" style="text-align: center;">({{ photo.pub_date|date:"N j, Y" }})</p>
+        <a class="noeffect"href="{{ photo.get_absolute_url }}"><img class="photo" src="{% thumbnail photo.image 150x120 %}" style="margin: 0 6px;"alt="photo" /></a>
+    </li>
+{% endfor %}
+</ul>

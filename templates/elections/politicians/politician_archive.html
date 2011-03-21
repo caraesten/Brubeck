@@ -1,0 +1,20 @@
+{% extends "elections/elections_base_real.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }} &mdash; Candidates{% endblock title %}
+
+{% block content %}
+{% for race, campaign_list in races_and_candidates %}
+    <div class="grid_8 alpha omega candidates_list">
+        <div class="grid_8 alpha omega">
+            <h2>{{ race.term_at_stake.seat.office.name }}{% if race.term_at_stake.seat.district_number %} (District {{ race.term_at_stake.seat.district_number }}){% endif %}</h2>
+        </div>
+    {% for campaign in campaign_list %}
+        <div class="grid_2 alpha omega">
+            <a href="{{ campaign.politician.get_absolute_url }}"><img src="{% thumbnail campaign.politician.photo 120x100 crop %}" alt="{{ campaign.politician }}" class="photo left" /></a>
+            <h3 style="margin-right: 10px;"><a href="{{ campaign.politician.get_absolute_url }}">{{ campaign.politician }}</a></h3>
+        </div>
+    {% endfor %}
+    </div>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,6 @@
+Name: {{ name|safe }}
+Comment: {{ comment|safe }}{% if website %}
+Web site: {{ website|safe }}{% endif %}
+
+Sincerely,
+themaneater.com

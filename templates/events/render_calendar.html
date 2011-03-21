@@ -1,0 +1,19 @@
+{% load markup %}
+<div class="calendar_nav">
+<h3 class="static">Events:</h3>
+{% for day, event_list in events_by_day %}
+    <h3 class="{{ day|date:"j" }}">{{ day|date:"N j" }}</h3>
+{% endfor %}
+</div>
+{% for day, event_list in events_by_day %}
+<div id="{{ day|date:"j" }}" class="schedule">
+    <ul>
+    {% for event in event_list|slice:"20" %}
+        <li class="calendar_event">
+            <h4 class="event_name"><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+        </li>
+    {% endfor %}
+    </ul>
+    {% if event_list.20 %}<a href="/calendar/truefalse-film-fest-2010/{{ day|date:"Y" }}/{{ day|date:"n" }}/{{ day|date:"j" }}/">More events on this day...</a>{% endif %}
+</div>
+{% endfor %}

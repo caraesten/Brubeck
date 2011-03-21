@@ -1,0 +1,187 @@
+
+{% extends "base.html" %}
+{% load markup %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &ndash; Staff &ndash; {{ staffer }}{% endblock title %}
+
+{% block content %}
+<h1>{{ staffer }}</h1>
+{% if staffer.editor_title %}<p class="cdeck">{{ staffer.editor_title }}</p>{% endif %}
+
+{% with staffer.tenure_set.all as tenures %}
+{% with staffer.article_set.all as articles %}
+{% with staffer.photo_set.all as photos %}
+{% with staffer.graphic_set.all as graphics %}
+{% with staffer.layout_set.all as layouts %}
+
+{% if staffer.mugshot %}
+<div class="mugshot">
+    <img class="photo" src="{{ staffer.mugshot.url }}" alt="{{ staffer }}" />
+</div>
+{% endif %}
+
+{% if tenures %}
+<div class="object_list">
+    <h2 class="header">Editorial board positions</h2>
+    <ul>
+        {% for tenure in tenures %}
+        <li>{{ tenure.position }} ({{ tenure.time_held }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="object_list">
+    <h2 class="header">Staff positions</h2>
+    <ul>
+        {% if articles %}<li>{{ staffer.writer_position }}</li>{% endif %}
+        {% if photos %}<li>{{ staffer.photographer_position }}</li>{% endif %}
+        {% if graphics or layouts %}<li>Graphic Designer</li>{% endif %}
+    </ul>
+</div>
+
+{% if articles %}
+<div class="object_list">
+    <h2 class="header">Articles ({{ articles.count }})</h2>
+    <ul>
+        {% for article in articles %}
+        <li><a href="{{ article.get_absolute_url }}">{{ article|markdown }}</a> ({{ article.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if photos %}
+<div class="object_list">
+    <h2 class="header">Photos ({{ photos.count }})</h2>
+    <ul>
+        {% for photo in photos %}
+        <li style="clear: left;">
+            <a href="{{ photo.get_absolute_url }}"><img class="photo left" src="{% thumbnail photo.image.name 200x400 %}" alt="Photo from {{ photo.pub_date|date:"N j, Y" }}" /></a>
+            <p>({{ photo.pub_date|date:"N j, Y" }})</p>
+            {{ photo.cutline|markdown }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if graphics %}
+<div class="object_list">
+    <h2 class="header">Graphics ({{ graphics.count }})</h2>
+    <ul>
+        {% for graphic in graphics %}
+        <li style="clear: left;">
+            <a href="{{ graphic.get_absolute_url }}"><img class="photo left" src="{{ graphic.get_thumbnail100_url }}" alt="Graphic from {{ graphic.pub_date|date:"N j, Y" }}" /></a>
+            <p>({{ graphic.pub_date|date:"N j, Y" }})</p>
+        </li>
+        {% endfor %} 
+    </ul>
+</div>
+{% endif %}
+
+{% if layouts %}
+<div class="object_list">
+    <h2 class="header">Layouts ({{ layouts.count }})</h2>
+    <ul>
+        {% for layout in layouts %}
+        <li style="clear: left;">
+            <a href="{{ layout.get_absolute_url }}"><img class="photo left" src="{% if layout.last_page %}{{ layout.get_thumbnail200_url }}{% else %}{{ layout.get_thumbnail100_url }}{% endif %}" alt="{% if layout.title %}{{ layout.title }}{% else %}Layout from {{ layout.pub_date|date:"N j, Y" }}{% endif %}" /></a>
+            <p>{% if layout.title %}{{ layout.title }} {% endif %}({{ layout.pub_date|date:"N j, Y" }})</p>
+        </li>
+        {% endfor %} 
+    </ul>
+</div>
+{% endif %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+{% with staffer.entry_set.all as blog_posts %}
+{% if blog_posts %}
+<div class="object_list">
+    <h2 class="header">Blog posts ({{ blog_posts.count }})</h2>
+    <ul>
+        {% for post in blog_posts %}
+        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a> ({{ post.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with staffer.episode_produced.all as podcast_episodes_produced %}
+{% if podcast_episodes_produced %}
+<div class="object_list">
+    <h2 class="header">Podcast episodes produced ({{ podcast_episodes_produced.count }})</h2>
+    <ul>
+        {% for episode in podcast_episodes_produced %}
+        <li><a href="{{ episode.get_absolute_url }}">{{ episode }}</a> ({{ episode.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with staffer.episode_written.all as podcast_episodes_written %}
+{% if podcast_episodes_written %}
+<div class="object_list">
+    <h2 class="header">Podcast episodes written ({{ podcast_episodes_written.count }})</h2>
+    <ul>
+        {% for episode in podcast_episodes_written %}
+        <li><a href="{{ episode.get_absolute_url }}">{{ episode }}</a> ({{ episode.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with staffer.episode_reported.all as podcast_episodes_reported %}
+{% if podcast_episodes_reported %}
+<div class="object_list">
+    <h2 class="header">Podcast episodes reported ({{ podcast_episodes_reported.count }})</h2>
+    <ul>
+        {% for episode in podcast_episodes_reported %}
+        <li><a href="{{ episode.get_absolute_url }}">{{ episode }}</a> ({{ episode.pub_date|date:"N j, Y" }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with staffer.video_set.all as videos %}
+{% if videos %}
+<div class="object_list">
+    <h2 class="header">Videos ({{ videos.count }})</h2>
+    <ul>
+        {% for video in videos %}
+        <li style="clear: left;">
+            <a href="{{ video.get_absolute_url }}"><img class="photo left" src="{{ video.thumbnail }}" alt="{{ video }}" /></a>
+            <p><a href="{{ video.get_absolute_url }}">{{ video }}</a> ({{ video.pub_date|date:"N j, Y" }})</p>
+        </li>
+        {% endfor %} 
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with staffer.slideshow_set.all as slideshows %}
+{% if slideshows %}
+<div class="object_list">
+    <h2 class="header">Slideshows ({{ slideshows.count }})</h2>
+    <ul>
+        {% for slideshow in slideshows %}
+        <li style="clear: left;">
+            <a href="{{ slideshow.get_absolute_url }}"><img class="photo left" src="{{ slideshow.image.url }}" alt="{{ slideshow }}" /></a>
+            <p><a href="{{ slideshow.get_absolute_url }}">{{ slideshow }}</a> ({{ slideshow.pub_date|date:"N j, Y" }})</p>
+        </li>
+        {% endfor %} 
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock content %}

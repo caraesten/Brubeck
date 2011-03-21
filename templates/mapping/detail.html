@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Maps &ndash; {{ map }} {% endblock title %}
+
+{% block head_extras %}
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '600px',
+        'height': '400px',
+        'border': '1px solid #000'
+    }).insertBefore('ul#place_list');
+    
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+    
+    bounds = new BoundingBox({{ extents.min_lat }}, {{ extents.min_lng }}, {{ extents.max_lat }}, {{ extents.max_lng }});
+    
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+    
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        // marker.setIcon('url');
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+<style>
+#place_list {
+    display: none;
+}
+</style>
+{% endblock head_extras %}
+
+{% block content %}
+<h1>{{ map }}</h1>
+<p id="description">{{ map.description }}</p>
+<ul id="place_list">
+    {% for mpl in mpl_list %}
+    <li class="vcard">
+        <h3 class="fn org">{% if mpl.web_site %}<a href="{{ mpl.web_site }}">{% endif %}{{ mpl.place.name }}{% if mpl.web_site %}</a>{% endif %}</h3>
+        {% if mpl.place.address %}<p class="adr post-office-box">{{ mpl.place.address }}</p>{% endif %}
+        {% if mpl.additional_info %}<div class="note">{{ mpl.additional_info|markdown }}</div>{% endif %}
+        <p class="geo">Coordinates: <span class="latitude">{{ mpl.place.point.get_y }}</span>, <span class="longitude">{{ mpl.place.point.get_x }}</span></p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

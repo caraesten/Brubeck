@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; {{ flatpage.title }}{% endblock title %}
+
+{% block head_extras %}
+<script type="text/javascript">
+$(function() {
+    $('.gifts li p').hide();
+    $('.gifts li h3').click(function() {
+        $(this).nextAll().toggle();
+    });
+});
+</script>
+<link rel="stylesheet" type="text/css" href="/media/style/2009-12/style/buyers-guide-2009.css" />
+{% endblock head_extras %}
+
+{% block content %}
+{{ flatpage.content|markdown }}
+{% endblock content %}

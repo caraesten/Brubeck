@@ -1,0 +1,48 @@
+{% extends "tournaments/bracket_base.html" %}
+
+{% block head_extras %}
+{{ block.super }}
+<style>
+ul.first_round,
+ul.second_round {
+    font-size: 10px;
+    width: 160px;
+}
+ul.second_round {
+    margin-top: 17px;
+}
+li.game {
+    padding: 2px 0px 2px 2px;
+}
+li.odd {
+    border-top: 1px solid #000000;
+    margin-top: 20px;
+}
+li.even {
+    border-bottom: 1px solid #000000;
+}
+ul.left li {
+    border-right: 1px solid #000000;
+}
+ul.second_round li.odd {
+
+}
+ul.second_round li.even {
+    border-right: 0;
+}
+</style>
+{% endblock head_extras %}
+
+{% block bracket %}
+<ul class="first_round left">
+    {% for participant in opening_round_participants %}
+    <li class="game {% cycle 'odd' 'even' %}">{{ participant }}</li>
+    {% endfor %}
+</ul>
+<ul class="second_round left">
+    <li class="game even">{{ form.opening_round_game_winner }}</li>
+</ul>
+{% endblock bracket %}
+{% block submit %}
+<input class="submit-button" type="submit" value="Save predictions">
+{% endblock submit %}

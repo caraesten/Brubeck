@@ -1,0 +1,296 @@
+{% extends "base.html" %} {% load markup %} {% load comparison %} {% block title %}{{ block.super }} &ndash; {% if calendar %}{{ calendar }} &ndash;{% else %}All events for{% endif %} {{ month_name }} {{ year }}
+{% endblock title %}
+{% block head_extras %}
+<link rel="stylesheet" type="text/css" href="/media/style/2009-05/style/calendar.css" />
+{% endblock head_extras %}
+{% block content_wide %}
+
+<div class="calendarmain">
+
+<div class="calendartitlebar">
+
+<div class="prevlink">
+<a href="/calendar/test/{% if calendar %}{{ calendar.slug }}{% else %}all{% endif %}/{% ifnotequal month 1 %}{{ year }}/{{ month_minus }}/{% else %}{{ year_minus }}/12/{% endifnotequal %}">&laquo; Last Month</a>
+</div>
+
+<h1 class="caltitle">{% if calendar %}{{ calendar }} &mdash;{% else %}All events for{% endif %} {{ month_name }} {{ year }}</h1>
+
+<div class="nextlink">
+<a href="/calendar/test/{% if calendar %}{{ calendar.slug }}{% else %}all{% endif %}/{% ifnotequal month 12 %}{{ year }}/{{ month_plus }}/{% else %}{{ year_plus }}/1/{% endifnotequal %}">Next Month &raquo;</a>
+</div>
+
+<div class="spacer">
+</div>
+
+</div>
+<div class="calendarmessage">{{ page_name }}</div>
+</div>
+{% if month_formatted %}
+<table class="calendar">
+{% if weekday_header %}
+<tr class="header">
+{% for weekday_name in weekday_header %}
+<td class="header">
+{{ weekday_name }}
+</td>
+{% endfor %}
+</tr>
+{% endif %}
+{% for week in month_formatted %}
+<tr class="calendar">
+{% for day in week %}
+{% ifequal day 0 %}
+<td class="calendar inactive"></td>
+{% else %}
+
+{% ifequal day today %}
+
+{% ifequal month this_month %}
+
+{% ifequal year this_year %}
+
+{% if forloop.last %}                                                          
+<td class="today calendarlast calendar active">
+{% else %}
+<td class="today calendar active">
+{% endif %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}                                                          
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+{% else %}
+
+{% if forloop.last %}
+<td class="calendarlast calendar active">
+{% else %}
+<td class="calendar active">
+{% endif %}
+
+{% endifequal %}
+
+<div class="daybar">
+<div class="daymarker">
+{{ day }}
+</div>
+</div>
+{% for event in event_list %}
+
+{% if event.end %}
+
+{% ifnotequal event.start.day event.end.day %}
+
+{% ifequal event.start.year year %}
+{% ifequal event.start.month month %}
+{% ifequal event.start.day day %}
+
+<div class="listedevent">
+
+<div class="multidayevent">
+
+<div class="timeheader multiday">
+
+{% ifequal event.start.year event.end.year %}
+{% ifequal event.start.month event.end.month %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"j" }}
+{% else %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"N j" }}
+{% endifequal %}
+{% else %}
+{{ event.start|date:"N j Y" }} - {{ event.end|date:"N j Y" }}
+{% endifequal %}
+
+</div>
+<div class="eventdetails">
+<a href="{{ event.get_absolute_url }}">{{ event.name|truncatewords:6 }}</a>
+</div>
+</div>
+</div>
+
+{% endifequal %}
+{% endifequal %}
+{% endifequal %}
+
+{% if_greater_or_equal event.start.year year %}
+{% if_less_or_equal event.end.year year %}
+{% if_greater_or_equal event.start.month month %}
+{% if_less_or_equal event.end.month month %}
+{% if_greater day event.start.day %}
+{% if_less day event.end.day %}
+
+<div class="listedevent">
+
+<div class="multidayevent">
+
+<div class="timeheader multiday">
+
+{% ifequal event.start.year event.end.year %}
+{% ifequal event.start.month event.end.month %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"j" }}
+{% else %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"N j" }}
+{% endifequal %}
+{% else %}
+{{ event.start|date:"N j Y" }} - {{ event.end|date:"N j Y" }}
+{% endifequal %}
+
+</div>
+<div class="eventdetails">
+<a href="{{ event.get_absolute_url }}">{{ event.name|truncatewords:6 }}</a>
+</div>
+</div>
+</div>
+
+{% endif_less %}
+{% endif_greater %}
+{% endif_less_or_equal %}
+{% endif_greater_or_equal %}
+{% endif_less_or_equal %}
+{% endif_greater_or_equal %}
+
+{% ifequal event.end.year year %}
+{% ifequal event.end.month month %}
+{% ifequal event.end.day day %}
+
+<div class="listedevent">
+
+<div class="multidayevent">
+
+<div class="timeheader multiday">
+
+{% ifequal event.start.year event.end.year %}
+{% ifequal event.start.month event.end.month %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"j" }}
+{% else %}
+{{ event.start|date:"N j" }} - {{ event.end|date:"N j" }}
+{% endifequal %}
+{% else %}
+{{ event.start|date:"N j Y" }} - {{ event.end|date:"N j Y" }}
+{% endifequal %}
+
+</div>
+<div class="eventdetails">
+<a href="{{ event.get_absolute_url }}">{{ event.name|truncatewords:6 }}</a>
+</div>
+</div>
+</div>
+
+{% endifequal %}
+{% endifequal %}
+{% endifequal %}
+
+{% endifnotequal %}
+
+{% endif %}
+
+{% ifequal event.start.year year %}
+{% ifequal event.start.month month %}
+{% ifequal event.start.day day %}
+
+{% if event.end %}
+
+{% ifnotequal event.end.day day %}
+
+{% else %}
+
+{% if event.all_day %}
+<div class="listedevent">
+<div class="timeheader allday">
+All Day
+</div>
+{% else %}
+<div class="listedevent">
+<div class="timeheader withtime">
+{{ event.start|time:"g:i a" }}
+</div>   
+{% endif %}
+
+<div class="eventdetails">
+<a href="{{ event.get_absolute_url }}">{{ event.name|truncatewords:6 }}</a>
+</div>
+</div>
+
+{% endifnotequal %}
+
+{% else %}
+
+{% if event.all_day %}
+<div class="listedevent">
+<div class="timeheader allday">
+All Day
+</div>
+{% else %}
+<div class="listedevent">
+<div class="timeheader withtime">
+{{ event.start|time:"g:i a" }}
+</div>
+{% endif %}
+
+<div class="eventdetails">
+<a href="{{ event.get_absolute_url }}">{{ event.name|truncatewords:6 }}</a>
+</div>
+</div>
+
+{% endif %}
+
+{% endifequal %}
+{% endifequal %}
+{% endifequal %}
+
+{% endfor %}
+</td>
+{% endifequal %}
+{% endfor %}
+</tr>
+{% endfor %}
+<table>
+{% else %}
+Strangely enough, there's no content to display here. Try retracing your steps, or searching for what you want to find.
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="calsidebar">
+{% if calendar_list %}
+<h2>{% if calendar %}More{% else %}Specific{% endif %} Calendars</h2>
+Check out these {% if calendar %}other {% endif %}calendars compiled by The Maneater:
+<ul>
+{% for calname in calendar_list %}
+{% if calendar %}
+{% ifequal calname.name calendar.name %}
+<li>{{ calname.name }}</li>
+{% else %}
+<li><a href="/calendar/test/{{ calname.slug }}/">{{ calname.name }}</a></li>
+{% endifequal %}
+{% else %}
+<li><a href="/calendar/test/{{ calname.slug }}/">{{ calname.name }}</a></li>
+{% endif %}
+{% endfor %}
+</ul>
+{% else %}
+<div class="debugging">There are currently no calendars to display here.</div>
+{% endif %}
+<br />
+Stay tuned to this sidebar for more content coming soon!
+</div>
+{% endblock content_wide %}

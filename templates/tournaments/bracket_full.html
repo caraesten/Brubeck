@@ -1,0 +1,10 @@
+{% load tournaments %}
+{% render_bracket_left 'E' user %}
+<ul class="bracket-region grid_2 alpha omega national-semifinal-top">
+<li>{% ifequal national_final_participants.0.0.ranking 17 %}16 UAPB/Winthrop{% else %}{{ national_final_participants.0.0.ranking }} {{ national_final_participants.0.0.team.get_school_abbrev }}{% endifequal %}</li>
+<li class="national-champion">{% ifequal national_champion.ranking 17 %}16 UAPB/Winthrop{% else %}{{ national_champion.ranking }} {{ national_champion.team.get_school_abbrev }}{% endifequal %}<span>National Champions</span></li></ul>
+{% render_bracket_right 'U' user %}
+<div style="clear: both;"></div>
+{% render_bracket_left 'W' user %}
+<ul class="bracket-region grid_2 alpha omega national-semifinal-bottom"><li>{% ifequal national_final_participants.0.1.ranking 17 %}16 UAPB/Winthrop{% else %}{{ national_final_participants.0.1.ranking }} {{ national_final_participants.0.1.team.get_school_abbrev }}{% endifequal %}</li></ul>
+{% render_bracket_right 'T' user %}
