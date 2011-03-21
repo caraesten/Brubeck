@@ -16,7 +16,6 @@ from django.db import models
 # Imports from Brubeck
 from brubeck.core.models import Content
 from brubeck.core import imaging
-# from maneater.core.models import Tag
 
 class AttachedFile(Content):
     """Provide support for attaching files to articles."""
@@ -188,10 +187,9 @@ class Video(Content):
     class Meta:
         get_latest_by = 'pub_date'
         ordering = ['-pub_date']
-        
+
 from brubeck.core.moderation import AkismetModerator
 from brubeck.core.emailing.views import render_email_and_send
-from django.conf import settings
 from django.contrib.comments.moderation import moderator
 
 class VideoModerator(AkismetModerator):
@@ -261,7 +259,7 @@ class SlideshowModerator(AkismetModerator):
         moderators.append(online_assistant)        
         context = {'comment': comment, 'content_object': content_object}
         subject = 'New comment awaiting moderation on "%s"' % content_object
-#        render_email_and_send(context=context, message_template='multimedia/slideshow_comment_notification_email.txt', subject=subject, recipients=moderators)
+        render_email_and_send(context=context, message_template='multimedia/slideshow_comment_notification_email.txt', subject=subject, recipients=moderators)
     def moderate(self, comment, content_object, request):
         return True      
 
@@ -309,7 +307,7 @@ class AudioClipModerator(AkismetModerator):
         moderators.append(online_assistant)        
         context = {'comment': comment, 'content_object': content_object}
         subject = 'New comment awaiting moderation on "%s"' % content_object
-#        render_email_and_send(context=context, message_template='multimedia/audioclip_comment_notification_email.txt', subject=subject, recipients=moderators)
+        render_email_and_send(context=context, message_template='multimedia/audioclip_comment_notification_email.txt', subject=subject, recipients=moderators)
     def moderate(self, comment, content_object, request):
         return True      
 

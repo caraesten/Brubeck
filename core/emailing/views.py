@@ -24,8 +24,6 @@ from django.template import Context, loader, RequestContext
 from django.utils.html import strip_tags
 
 # Imports from brubeck
-from brubeck.articles.models import Article
-from brubeck.blogs.models import Entry
 from brubeck.core.decorators import is_editor
 from brubeck.core.emailing.forms import *
 
@@ -99,6 +97,9 @@ def handle_form_and_email(request, form=None, form_template='', message_template
     }
     
     return render_to_response(form_template, page, context_instance=RequestContext(request))
+
+from brubeck.articles.models import Article
+from brubeck.blogs.models import Entry
 
 def captcha_form_and_email(request, form=None, form_template='', message_template='', subject='', recipients=None, redirect_to='/thanks/', sender=None, *args, **kwargs):
     """

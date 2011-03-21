@@ -22,7 +22,6 @@ from brubeck.personnel.models import Position, Staffer
 from brubeck.photography.models import Photo
 from brubeck.tagging.models import Tag
 from brubeck.publishing.models import Section
-from brubeck.core.emailing.views import render_email_and_send
 from brubeck.multimedia.models import AttachedFile, AudioClip, Slideshow, Video
 
 class CurrentManager(models.Manager):
@@ -142,6 +141,8 @@ class Entry(Content):
         verbose_name_plural = "entries"
 
 from brubeck.core.moderation import AkismetModerator
+from brubeck.core.emailing.views import render_email_and_send
+from django.conf import settings
 from django.contrib.comments.moderation import moderator
     
 class EntryModerator(AkismetModerator):

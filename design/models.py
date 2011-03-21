@@ -6,7 +6,6 @@ from __future__ import division
 from datetime import date, timedelta
 import hashlib
 import os
-import simplejson
 import urllib2
 
 # Imports from Django
@@ -18,6 +17,7 @@ from django.contrib.markup.templatetags.markup import markdown
 from django.contrib.sites.models import Site
 from django.core.files import File
 from django.contrib.gis.db import models
+from django.utils import simplejson
 
 # Imports from Brubeck
 from brubeck.core import imaging

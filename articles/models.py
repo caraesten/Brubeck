@@ -134,7 +134,7 @@ from brubeck.core.moderation import AkismetModerator
 from brubeck.core.emailing.views import render_email_and_send
 from django.conf import settings
 from django.contrib.comments.moderation import moderator
-    
+
 class ArticleModerator(AkismetModerator):
     enable_field = 'enable_comments'
     def email(self, comment, content_object, request):

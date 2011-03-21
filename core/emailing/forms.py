@@ -42,30 +42,6 @@ class SystemTestForm(RecaptchaForm):
     website = forms.URLField(widget=forms.TextInput(attrs={'class': 'wide'}), label='Web site (optional)', required=False)
     captcha = RecaptchaFieldPlaceholder(widget=RecaptchaWidget(theme='white'), label='Are you a human?')
 
-class WorkForUsForm(RecaptchaForm):
-
-    INTEREST_CHOICES = (
-    ('News', 'News'), # traviscornejo@gmail.com, kaylen.ralph@gmail.com, steve.dickherber@gmail.com aliciastice@gmail.com
-    ('Arts', 'Arts'), # asussell@gmail.com
-    ('Sports', 'Sports'), # zachmink12@gmail.com
-    ('Opinion', 'Opinion'), # ryanschuessler@gmail.com
-    ('MOVE Magazine', 'MOVE Magazine'), # ecwg33@mail.mizzou.edu
-    ('Photography', 'Photography'), # agro.nicholas@gmail.com
-    ('Design', 'Design'), # esdundon@gmail.com
-    ('Broadcast/Multimedia', 'Broadcast/Multimedia'), # nataliexcheng@gmail.com
-    ('Web Development', 'Web Development'), # aimeeml@gmail.com
-    ('Marketing/Promotions', 'Marketing/Promotions'), # piercecourchaine@gmail.com
-    ('Strategic Communications/Advertising', 'Strategic Communications/Advertising'), # molly.paskal@gmail.com
-
-    )   
-    name = forms.CharField()
-    class_title = forms.CharField(max_length=100)
-    self_email = forms.EmailField(label="E-mail address")
-    area_of_interest = forms.ChoiceField(choices=INTEREST_CHOICES, label="Select your area of interest.")
-    previous_experience = forms.CharField(widget=forms.Textarea, required=False, help_text="Optional: List previous journalism experience.")
-    cc_self = forms.BooleanField(label="Send yourself a copy of this e-mail (optional)", required=False)
-    captcha = RecaptchaFieldPlaceholder(widget=RecaptchaWidget(theme='white'), label='Are you a human?')
-
 class ContentEmailForm(forms.Form):
     """
     Shows a form with which users can e-mail links to our content.
