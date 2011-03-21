@@ -10,7 +10,7 @@ class Address(models.Model):
         ('other', "Other"),
     )
     type = models.CharField(max_length=5, choices=ADDRESS_CHOICES)
-    address = models.ForeignKey('brubeck.geography.Place')
+    address = models.ForeignKey('geography.Place', related_name='con_address')
 
     objects = models.GeoManager()
 

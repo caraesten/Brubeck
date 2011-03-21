@@ -91,7 +91,7 @@ class Issue(models.Model):
     old_archive = models.BooleanField(default=False, help_text="Is this an imported set of articles from the old (PHP) site? (Should never be checked for new issues.)")
     # FIXME: This had null=True in the 2008 site. Change this in the database.
     name = models.CharField(max_length=50, blank=True, help_text="Deprecated. Was used to collect articles for special events before we had blogs.")
-    poll = models.ForeignKey('brubeck.voxpopuli.Poll', db_index=True, blank=True, null=True, help_text="Deprecated. Was once used to publish polls on the front page.")
+    poll = models.ForeignKey('voxpopuli.Poll', db_index=True, blank=True, null=True, help_text="Deprecated. Was once used to publish polls on the front page.")
     streaming = models.BooleanField("show streaming video?", default=False, help_text="Deprecated. Was used to show live video streams on the front page.")
     color = models.CharField("primary website color", max_length=6, blank=True, null=True, help_text="Enter the six-characted hex code of the color you want featured on the site (note: this is a MOVE-specific feature).")
     masthead_image = models.ImageField('MOVE masthead image', upload_to='style/%Y-%m/images/masthead/', blank=True, null=True, help_text='If an image is uploaded here, it will replace the standard masthead on the MOVE site.')

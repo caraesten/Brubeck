@@ -58,9 +58,9 @@ class Video(Content):
     swf = models.CharField(max_length=300, blank=True, help_text="This should contain the URL to a Flash file to embed for this video.")
     description = models.TextField(blank=True, help_text="If this content was provided by a partner news organization (see the \"media partner\" field), be sure to include a link back to the original video.")
     length = models.PositiveSmallIntegerField(blank=True, help_text="Length of the video in seconds.")
-    publication = models.ForeignKey('brubeck.publishing.Publication', db_index=True, null=True, help_text="The publication to which this video is linked.")
-    tags = models.ManyToManyField('brubeck.tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('brubeck.management.WebFrontItem')
+    publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this video is linked.")
+    tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
+    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'video'
     
@@ -225,9 +225,9 @@ class Slideshow(Content):
     image = models.ImageField('preview photo', upload_to='%Y/%m%d/slideshows', help_text="Upload a photo to represent this slideshow on the site. It will automatically be resized for you.")
     swf = models.CharField(max_length=300, blank=True, help_text="URL to the Flash file to embed.")
     zip = models.FileField(upload_to='%Y/%m%d/slideshows', blank=True, null=True, help_text="Upload a zip file containing the slideshow's publish_to_web directory.")
-    publication = models.ForeignKey('brubeck.publishing.Publication', db_index=True, null=True, help_text="The publication to which this slideshow is linked.")
-    tags = models.ManyToManyField('brubeck.tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('brubeck.management.WebFrontItem')
+    publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this slideshow is linked.")
+    tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
+    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'slideshow'
     is_horizontal = True
@@ -274,9 +274,9 @@ class AudioClip(Content):
     length = models.PositiveSmallIntegerField(blank=True, help_text="This will be automatically determined if you don't specify it. Takes a number of seconds.", null=True)
     audio_file = models.FileField(upload_to='%Y/%m%d/audio', help_text="Only upload MP3 files.")
     image = models.ImageField('preview photo', upload_to='%Y/%m%d/audio', help_text="Upload a photo to represent this clip on the site. It will automatically be resized for you.")
-    publication = models.ForeignKey('core.Publication', db_index=True, null=True, help_text="The publication to which this audio clip is linked.")
-    tags = models.ManyToManyField('core.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('core.WebFrontItem')
+    publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this audio clip is linked.")
+    tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
+    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'audioclip'
     

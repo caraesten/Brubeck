@@ -20,7 +20,7 @@ from django.contrib.gis.db import models
 from django.utils import simplejson
 
 # Imports from maneater
-from brubeck.core.models import Content
+from core.models import Content
 
 # Imports from other sources
 from pyPdf import PdfFileReader, PdfFileWriter
@@ -30,13 +30,13 @@ class Photo(Content):
     Provides support for photos.
     """
     title = models.CharField(max_length=150, blank=True, null=True, help_text="Optional. Used if this photo will be featured alone on a front page of the site.")
-    issue = models.ForeignKey('brubeck.publishing.Issue', db_index=True, help_text="The issue in which this photo was published.")
-    section = models.ForeignKey('brubeck.publishing.Section', db_index=True)
+    issue = models.ForeignKey('publishing.Issue', db_index=True, help_text="The issue in which this photo was published.")
+    section = models.ForeignKey('publishing.Section', db_index=True)
     mugshot = models.BooleanField(default=False, help_text="Is this photo a mugshot? (This is generally only true if the photo is for a crime story.)")
     illustration = models.BooleanField(default=False, help_text="Is this a photo illustration?")
     image = models.ImageField(upload_to='%Y/%m%d/photos', help_text="Accepts JPEG, GIF or PNG file formats.")
     cutline = models.TextField(blank=True)
-    tags = models.ManyToManyField('brubeck.tagging.Tag', blank=True, null=True, help_text="Tags that describe this photo.")
+    tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this photo.")
     
     mediatype = 'photo'
     
