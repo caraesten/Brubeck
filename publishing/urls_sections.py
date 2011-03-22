@@ -6,7 +6,7 @@ from django.contrib.sites.models import Site
 from brubeck.publishing.models import Section
 
 # Everything else
-urlpatterns += patterns('brubeck.publishing.views',
+urlpatterns = patterns('brubeck.publishing.views',
     (r'^(?P<slug>[-\w]+)/archives/(?P<page>\d+)/$', 'section_archive'),
     (r'^(?P<slug>[-\w]+)/archives/$', 'section_archive'),
 )

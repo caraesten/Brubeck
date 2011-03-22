@@ -13,7 +13,7 @@ from django.views.decorators.cache import cache_page
 
 # Imports from brubeck
 from brubeck.comics.models import ComicEpisode, ComicStrip
-from brubeck.core.models import Issue
+from brubeck.publishing.models import Issue
 
 @cache_page(60 * 30)
 def archive(request, slug=None, year=None, month=None, day=None, page=1):

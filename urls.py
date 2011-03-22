@@ -19,10 +19,10 @@ admin.autodiscover()
 #mobileadmin.autoregister()
 
 urlpatterns = patterns('',
-    (r'^admin/filebrowser/', include('filebrowser.urls')),
-    (r'^admin_tools/', include('admin_tools.urls')),
+#    (r'^admin/filebrowser/', include('filebrowser.urls')),
+#    (r'^admin_tools/', include('admin_tools.urls')),
     (r'^admin/', include(admin.site.urls)),
-    (r'^grappelli/', include('grappelli.urls')),
+#    (r'^grappelli/', include('grappelli.urls')),
 )
 
 #urlpatterns += patterns('',
@@ -43,7 +43,7 @@ urlpatterns += patterns('',
     (r'^tags/', include('brubeck.tagging.urls')),
     (r'^multimedia/(?P<page>[-\w]+)/$', 'brubeck.multimedia.views.top_multimedia'),
     (r'^multimedia/$', 'brubeck.multimedia.views.top_multimedia'),
-    (r'^top-online/$', 'brubeck.management.views.top_online'),
+    #(r'^top-online/$', 'brubeck.management.views.top_online'),
 )
 
 # Multimedia
@@ -109,7 +109,7 @@ urlpatterns += patterns('django.views.generic.simple',
 # Other applications
 urlpatterns += patterns('',
     # User controls (using django-registration)
-    (r'^accounts/', include('registration.urls')),
+    #(r'^accounts/', include('registration.urls')),
     # Blogs
     (r'^blogs/', include('brubeck.blogs.urls')),
     # Calendar
@@ -126,12 +126,12 @@ urlpatterns += patterns('',
     (r'^maps/', include('brubeck.mapping.urls')),
     # Podcasts
     (r'^podcasts/', include('brubeck.podcasts.urls')),
-    # Polls
-    (r'^polls/', include('brubeck.voxpopuli.urls_polls')),
+    # Polls - VIEWS NOT ADDED. COMMENT BACK IN WHEN THEY ARE.
+    #(r'^polls/', include('brubeck.voxpopuli.urls_polls')),
     # Reporters' database
     (r'^reporters/', include('brubeck.reporters.urls')),
-    # Surveys
-    (r'^surveys/', include('brubeck.voxpopuli.urls_surveys')),
+    # Surveys SEE ABOVE
+    #(r'^surveys/', include('brubeck.voxpopuli.urls_surveys')),
 )
 
 # Feeds

@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 
 # Imports from brubeck
-from brubeck.core.models import Article
+from brubeck.articles.models import Article
 from brubeck.multimedia.models import AudioClip, Slideshow, Video
 from brubeck.podcasts.models import Channel, Episode
 

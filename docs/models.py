@@ -38,7 +38,7 @@ class Entry(models.Model):
 ###    mistaken_values = models.TextField()
     order_by = models.CharField(max_length=1)
     slug = models.SlugField()
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True, null=True, related_name='docs_entry_set')
     text = models.TextField()
     title = models.CharField(max_length=400)
 

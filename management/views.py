@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 # Imports from standard libraries
 import calendar as pycal
 from datetime import date, datetime, time, timedelta
@@ -36,7 +37,7 @@ from brubeck.tagging.models import Tag
 from brubeck.voxpopuli.models import Poll
 
 # Imports from other dependencies.
-from googleanalytics import Connection
+#from googleanalytics import Connection
 
 @cache_page(60 * 1)
 def render_frontpage(request):
@@ -112,7 +113,7 @@ def render_frontpage(request):
     articles = Article.get_published.select_related(depth=1).filter(section__publication__site=site).filter(issue__pub_date__gte=issue.pub_date).filter(issue__pub_date__lte=datetime.now()).order_by('priority')
     
     # Here we get a list of all five top items, for a JavaScript rotation.
-    # Note we have two variables with this list — this is due to how our
+	# Note we have two variables with this list — this is due to how our
     # particular rotation is implemented.
     rotating_items = front.item_set.all()
     rotating_item_list = front.item_set.all()
@@ -343,176 +344,176 @@ def section_front(request, slug=None, page=1):
     
     return render_to_response('management/section_front.html', page, RequestContext(request))
 
-@cache_page(60 * 5)
-def top_online(request):
+# @cache_page(60 * 5)
+# def top_online(request):
 
-    connection = Connection(settings.ANALYTICS_EMAIL_ADDRESS, settings.ANALYTICS_EMAIL_PASSWORD)
+    # connection = Connection(settings.ANALYTICS_EMAIL_ADDRESS, settings.ANALYTICS_EMAIL_PASSWORD)
 
-    account = connection.get_accounts()[0]
+    # account = connection.get_accounts()[0]
 
-    today = datetime.today()
+#    today = datetime.today()
 
-    issues = Issue.objects.all().order_by('-pub_date').filter(online_update=0).filter(pub_date__lte=today)
+#    issues = Issue.objects.all().order_by('-pub_date').filter(online_update=0).filter(pub_date__lte=today)
 
-#    start = issues[1].pub_date.date()
+   # start = issues[1].pub_date.date()
 
-#    end = issues[0].pub_date.date()-timedelta(days=1)
+   # end = issues[0].pub_date.date()-timedelta(days=1)
 
-    start = issues[0].pub_date.date()
+#    start = issues[0].pub_date.date()
 
-    end = date.today()
+#    end = date.today()
 
-    top_hits = account.get_data(start_date=start, end_date=end, dimensions=['pagePath',], metrics=['pageviews',], sort=['-pageviews',])
+   # top_hits = account.get_data(start_date=start, end_date=end, dimensions=['pagePath',], metrics=['pageviews',], sort=['-pageviews',])
 
-    top_hits_list = top_hits.tuple[:25]
+   # top_hits_list = top_hits.tuple[:25]
 
-    top_pages = account.get_data(start_date=start, end_date=end, dimensions=['pageTitle','pagePath',], metrics=['pageviews',], sort=['-pageviews',])
+   # top_pages = account.get_data(start_date=start, end_date=end, dimensions=['pageTitle','pagePath',], metrics=['pageviews',], sort=['-pageviews',])
 
-    top_pages_list = top_pages.tuple[:25]
+    # top_pages_list = top_pages.tuple[:25]
 
-    allowed_url_bases = ['audio', 'blogs', 'calendar', 'graphics', 'layouts', 'maps', 'photos', 'podcasts', 'polls', 'slideshows', 'stories', 'videos']
+   # allowed_url_bases = ['audio', 'blogs', 'calendar', 'graphics', 'layouts', 'maps', 'photos', 'podcasts', 'polls', 'slideshows', 'stories', 'videos']
 
-    top_content = []
-    for entry in top_hits_list:
-        substring = entry[0][0].split('/')
-        if substring[1] in allowed_url_bases:
-            top_content.append((entry, substring[1]))
+    # top_content = []
+    # for entry in top_hits_list:
+        # substring = entry[0][0].split('/')
+        # if substring[1] in allowed_url_bases:
+            # top_content.append((entry, substring[1]))
 
-    top_online = []
-    for entry in top_content:
-        if entry[1] == 'audio':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                audioclip = AudioClip.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(audioclip)
-            except:
-                pass
-        elif entry[1] == 'blogs':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[3]
-                month = substring[4]
-                day = substring[5]
-                slug = substring[6]
-                entry = Entry.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(slug=slug)
-                top_online.append(entry)
-            except:
-                pass
-        elif entry[1] == 'calendar':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                slug = substring[5]
-                event = Event.objects.filter(start__year=year).filter(start__month=month).filter(start__day=day).get(slug=slug)
-                top_online.append(event)
-            except:
-                pass
-        elif entry[1] == 'graphics':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                graphic = Graphic.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(graphic)
-            except:
-                pass
-        elif entry[1] == 'layouts':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                layout = Layout.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(layout)
-            except:
-                pass
-        elif entry[1] == 'maps':
-            try:
-                substring = entry[0][0][0].split('/')
-                slug = substring[2]
-                map = Poll.objects.get(slug=slug)
-                top_online.append(map)
-            except:
-                pass
-        elif entry[1] == 'photos':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                photo = Photo.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(photo)
-            except:
-                pass
-        elif entry[1] == 'podcasts':
-            try:
-                substring = entry[0][0][0].split('/')
-                id = substring[3]
-                episode = Episode.objects.get(id=id)
-                top_online.append(episode)
-            except:
-                pass
-        elif entry[1] == 'polls':
-            try:
-                substring = entry[0][0][0].split('/')
-                id = substring[2]
-                poll = Poll.objects.get(id=id)
-                top_online.append(poll)
-            except:
-                pass
-        elif entry[1] == 'slideshows':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                slideshow = Slideshow.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(slideshow)
-            except:
-                pass
-        elif entry[1] == 'stories':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                slug = substring[5]
-                article = Article.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(slug=slug)
-                top_online.append(article)
-            except:
-                pass
-        elif entry[1] == 'videos':
-            try:
-                substring = entry[0][0][0].split('/')
-                year = substring[2]
-                month = substring[3]
-                day = substring[4]
-                id = substring[5]
-                video = Video.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
-                top_online.append(video)
-            except:
-                pass
+    # top_online = []
+    # for entry in top_content:
+        # if entry[1] == 'audio':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # audioclip = AudioClip.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(audioclip)
+            # except:
+                # pass
+        # elif entry[1] == 'blogs':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[3]
+                # month = substring[4]
+                # day = substring[5]
+                # slug = substring[6]
+                # entry = Entry.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(slug=slug)
+                # top_online.append(entry)
+            # except:
+                # pass
+        # elif entry[1] == 'calendar':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # slug = substring[5]
+                # event = Event.objects.filter(start__year=year).filter(start__month=month).filter(start__day=day).get(slug=slug)
+                # top_online.append(event)
+            # except:
+                # pass
+        # elif entry[1] == 'graphics':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # graphic = Graphic.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(graphic)
+            # except:
+                # pass
+        # elif entry[1] == 'layouts':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # layout = Layout.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(layout)
+            # except:
+                # pass
+        # elif entry[1] == 'maps':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # slug = substring[2]
+                # map = Poll.objects.get(slug=slug)
+                # top_online.append(map)
+            # except:
+                # pass
+        # elif entry[1] == 'photos':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # photo = Photo.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(photo)
+            # except:
+                # pass
+        # elif entry[1] == 'podcasts':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # id = substring[3]
+                # episode = Episode.objects.get(id=id)
+                # top_online.append(episode)
+            # except:
+                # pass
+        # elif entry[1] == 'polls':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # id = substring[2]
+                # poll = Poll.objects.get(id=id)
+                # top_online.append(poll)
+            # except:
+                # pass
+        # elif entry[1] == 'slideshows':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # slideshow = Slideshow.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(slideshow)
+            # except:
+                # pass
+        # elif entry[1] == 'stories':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # slug = substring[5]
+                # article = Article.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(slug=slug)
+                # top_online.append(article)
+            # except:
+                # pass
+        # elif entry[1] == 'videos':
+            # try:
+                # substring = entry[0][0][0].split('/')
+                # year = substring[2]
+                # month = substring[3]
+                # day = substring[4]
+                # id = substring[5]
+                # video = Video.objects.filter(pub_date__year=year).filter(pub_date__month=month).filter(pub_date__day=day).get(id=id)
+                # top_online.append(video)
+            # except:
+                # pass
                 
-    top_online = top_online[:10]
+    # top_online = top_online[:10]
 
-    page = {
-        'end': end,
-        'start': start,
-        'top_content': top_content,
-        'top_hits_list': top_hits_list,
-        'top_online': top_online,
-        'top_pages_list': top_pages_list,
-    }
+    # page = {
+        # 'end': end,
+        # 'start': start,
+        # 'top_content': top_content,
+        # 'top_hits_list': top_hits_list,
+        # 'top_online': top_online,
+        # 'top_pages_list': top_pages_list,
+    # }
 
-    return render_to_response('management/top_online.html', page, context_instance=RequestContext(request))
+    # return render_to_response('management/top_online.html', page, context_instance=RequestContext(request))

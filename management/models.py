@@ -111,9 +111,6 @@ class WebFrontItem(models.Model):
     webfront = models.ForeignKey(WebFront, related_name='item_set')
     priority = models.PositiveSmallIntegerField()
     object = models.ForeignKey(Content)
-#    content_type = models.ForeignKey(ContentType, limit_choices_to = {"model__in": ("article", "audioclip", "customcenterpiece", "slideshow", "video"), "app_label__in": ("core", "multimedia")})
-#    object_id = models.PositiveIntegerField()
-#    linked_object = generic.GenericForeignKey("content_type", "object_id")
 
     def __unicode__(self):
         return "Object #%s for WebFront %s" % (self.priority, self.webfront)

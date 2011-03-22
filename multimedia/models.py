@@ -60,7 +60,6 @@ class Video(Content):
     length = models.PositiveSmallIntegerField(blank=True, help_text="Length of the video in seconds.")
     publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this video is linked.")
     tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'video'
     
@@ -227,7 +226,6 @@ class Slideshow(Content):
     zip = models.FileField(upload_to='%Y/%m%d/slideshows', blank=True, null=True, help_text="Upload a zip file containing the slideshow's publish_to_web directory.")
     publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this slideshow is linked.")
     tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'slideshow'
     is_horizontal = True
@@ -276,7 +274,6 @@ class AudioClip(Content):
     image = models.ImageField('preview photo', upload_to='%Y/%m%d/audio', help_text="Upload a photo to represent this clip on the site. It will automatically be resized for you.")
     publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this audio clip is linked.")
     tags = models.ManyToManyField('tagging.Tag', blank=True, null=True, help_text="Tags that describe this article.")
-    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'audioclip'
     

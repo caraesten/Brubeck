@@ -10,11 +10,6 @@ from django.contrib import admin
 # Imports from brubeck
 from brubeck.multimedia.models import *
 
-try:
-    admin.site.register(MediaPartner)
-except admin.sites.AlreadyRegistered:
-    pass
-
 class AttachedFileAdmin(admin.ModelAdmin):
     date_hierarchy = 'pub_date'
     list_filter = ['pub_date']
@@ -33,7 +28,7 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('title', 'byline', 'static_byline')
         }),
         ("Publication information", {
-            'fields': ('pub_date', 'publication', 'media_partner')
+            'fields': ('pub_date', 'publication')
         }),
         ("The video", {
             'fields': ('url', 'length', 'description')
@@ -47,7 +42,7 @@ class VideoAdmin(admin.ModelAdmin):
     list_filter = ['pub_date']
     search_fields = ['id', 'title', 'pub_date', 'description',]
     search_fields_verbose = ['ID', 'title', 'publication date', 'description',]
-    list_display = ('title', 'pub_date', 'length', 'media_partner',)
+    list_display = ('title', 'pub_date', 'length',)
 
 try:
     admin.site.register(Video, VideoAdmin)
@@ -86,14 +81,14 @@ class AudioClipAdmin(admin.ModelAdmin):
             'fields': ('audio_file', 'image')
         }),
         ("Attribution", {
-            'fields': ('producers', 'static_byline_producer', 'reporters', 'static_byline')
+            'fields': ('byline', 'static_byline',)
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),
             'fields': ('enable_comments',),
         }),
     )
-    filter_horizontal = ['producers', 'reporters']
+    filter_horizontal = ['byline']
     list_filter = ['pub_date']
     search_fields = ['id', 'title', 'pub_date', 'description',]
     search_fields_verbose = ['ID', 'title', 'publication date', 'description',]

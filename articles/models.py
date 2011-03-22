@@ -97,7 +97,6 @@ class Article(Content):
     sidebar = models.TextField(blank=True, help_text="Use this if you'd like for specific sidebar content (movie review information, related links, etc.) to show up with the article.")
     runsheet_slug = models.CharField(max_length=50, blank=True, null=True, help_text="The brief phrase used to describe this article on the runsheet. Helps to ensure articles are given the same priority online and in print.")
     teaser_photo = models.ImageField(upload_to='%Y/%m%d/articles/teaser-photos', blank=True, null=True, help_text="If this article has a magazine-style illustration (for use with top stories on MOVE and Columbia Prowl), upload it here.")
-    webfronts = generic.GenericRelation('management.WebFrontItem')
     
     mediatype = 'article'
     

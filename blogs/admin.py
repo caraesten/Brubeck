@@ -5,30 +5,31 @@ from django.contrib.comments.models import Comment
 
 # Imports from brubeck
 from brubeck.blogs.models import *
+from brubeck.core.models import Content
 
 class BlogAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'calendar_key_color')
+            'fields': ('name','description')
         }),
         ("Publication information", {
-            'fields': ('section', 'is_live_blog', 'archived')
+            'fields': ('section', 'is_live_blog', 'is_archived')
         }),
         ("Moderators", {
             'fields': ('editorial_moderators', 'staff_moderators', 'moderators')
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),
-            'fields': ('slug', 'short_title',)
+            'fields': ('slug',)
         }),
     )
     filter_horizontal = ['editorial_moderators', 'staff_moderators']
-    list_display = ('title', 'section', 'archived', 'is_live_blog')
-    list_filter = ['archived', 'is_live_blog']
+    list_display = ('name', 'section', 'is_archived', 'is_live_blog')
+    list_filter = ['is_archived', 'is_live_blog']
     prepopulated_fields = {
-        'slug': ('title',)
+        'slug': ('name',)
     }
-    search_fields = ['id', 'title', 'description',]
+    search_fields = ['id', 'name', 'description',]
     search_fields_verbose = ['ID', 'title', 'description',]
 
 try:
@@ -40,7 +41,7 @@ class EntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'pub_date'
     fieldsets = (
         (None, {
-            'fields': ('title', 'pub_date', 'blog', 'published', 'byline', 'static_byline')
+            'fields': ('title', 'pub_date', 'blog', 'is_published', 'byline', 'static_byline')
         }),
         ("Content", {
             'fields': ('body', 'photos', 'tags')
@@ -55,8 +56,8 @@ class EntryAdmin(admin.ModelAdmin):
         }),
     )
     filter_horizontal = ['photos', 'tags']
-    list_display = ('title', 'blog', 'byline', 'pub_date', 'published')
-    list_editable = ('published',)
+    list_display = ('title', 'blog', 'pub_date', 'is_published')
+    list_editable = ('is_published',)
     list_filter = ['blog']
     prepopulated_fields = {
         'slug': ('title',)

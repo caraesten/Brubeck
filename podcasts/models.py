@@ -17,7 +17,7 @@ class CurrentManager(models.GeoManager):
     only current channels.
     """
     def get_query_set(self):
-        return super(CurrentManager, self).get_query_set().filter(archived=False)
+        return super(CurrentManager, self).get_query_set().filter(is_archived=False)
 
 class ArchivedManager(models.GeoManager):
     """
@@ -25,7 +25,7 @@ class ArchivedManager(models.GeoManager):
     channels no longer published.
     """
     def get_query_set(self):
-        return super(ArchivedManager, self).get_query_set().filter(archived=True)
+        return super(ArchivedManager, self).get_query_set().filter(is_archived=True)
 
 class Channel(ContentChannel):
     """
@@ -48,7 +48,7 @@ class Channel(ContentChannel):
         return '/podcasts/%s/' % self.slug
     
     class Meta:
-        ordering = ['title', 'archived']
+        ordering = ['name', 'is_archived']
 
 class Episode(Content):
     """

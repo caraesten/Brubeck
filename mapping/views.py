@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 
 # Imports from brubeck
-from brubeck.core.models import Article
+from brubeck.articles.models import Article
 from brubeck.mapping.models import Map, Place
 
 def detail(request, slug=None, mode='context'):

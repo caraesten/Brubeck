@@ -20,7 +20,7 @@ from django.contrib.gis.db import models
 from django.utils import simplejson
 
 # Imports from maneater
-from core.models import Content
+from brubeck.core.models import Content
 
 # Imports from other sources
 from pyPdf import PdfFileReader, PdfFileWriter

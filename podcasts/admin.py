@@ -7,7 +7,7 @@ from brubeck.podcasts.models import *
 class ChannelAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'section', 'keywords', 'archived')
+            'fields': ('name', 'description', 'section', 'keywords', 'is_archived')
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),
@@ -15,11 +15,11 @@ class ChannelAdmin(admin.ModelAdmin):
         }),
     )
     filter_horizontal = ['section']
-    list_filter = ['archived', 'section']
+    list_filter = ['is_archived', 'section']
     prepopulated_fields = {
-        'slug': ('title',)
+        'slug': ('name',)
     }
-    search_fields = ['id', 'title', 'description', 'keywords',]
+    search_fields = ['id', 'name', 'description', 'keywords',]
     search_fields_verbose = ['ID', 'title', 'description', 'keywords',]
 
 try:
@@ -37,14 +37,14 @@ class EpisodeAdmin(admin.ModelAdmin):
             'fields': ('file', 'description', 'keywords')
         }),
         ("Credits", {
-            'fields': ('producers', 'writers', 'reporters')
+            'fields': ('byline', 'static_byline')
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),
             'fields': ('enable_comments',)
         }),
     )
-    filter_horizontal = ['producers', 'writers', 'reporters']
+    filter_horizontal = ['byline']
     list_filter = ['channel']
     search_fields = ['id', 'name', 'pub_date', 'description', 'keywords',]
     search_fields_verbose = ['ID', 'descriptive name', 'publication date', 'description', 'keywords',]

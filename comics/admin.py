@@ -7,7 +7,7 @@ from brubeck.comics.models import *
 class ComicStripAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'volume', 'active')
+            'fields': ('name', 'volume', 'is_archived')
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),
@@ -15,9 +15,9 @@ class ComicStripAdmin(admin.ModelAdmin):
         }),
     )
     prepopulated_fields = {
-        'slug': ('title', 'volume')
+        'slug': ('name', 'volume')
     }
-    search_fields = ['id', 'title',]
+    search_fields = ['id', 'name',]
     search_fields_verbose = ['ID', 'title',]
 
 try:
