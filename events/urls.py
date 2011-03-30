@@ -1,6 +1,7 @@
 # Imports from Django
 from django.conf.urls.defaults import *
 
+
 urlpatterns = patterns('brubeck.events.views',
     url(r'^(?P<year>\d{4})/(?P<month>\w{1,2})/(?P<day>\w{1,2})/(?P<event_slug>[-\w]+)/$', 'event_detail', name='calendar-event-detail'),
     (r'^(?P<year>\d{4})/(?P<month>\w{1,2})/(?P<day>\w{1,2})/p(?P<page>\d+)/$', 'event_list'),
