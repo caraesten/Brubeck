@@ -7,7 +7,7 @@ from brubeck.events.models import *
 class CalendarAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('name',)
+            'fields': ('name','priority')
         }),
         ("Don't touch unless you know what you're doing", {
             'classes': ('collapse closed',),

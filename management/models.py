@@ -57,7 +57,7 @@ class NewsBurst(models.Model):
     """
     title = models.CharField(max_length=150, db_index=True)
     pub_date = models.DateTimeField('date published')
-    published = models.BooleanField()
+    is_published = models.BooleanField()
     body = models.TextField(blank=True)
     link = models.CharField(max_length=200, blank=True)
     

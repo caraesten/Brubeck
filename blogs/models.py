@@ -30,7 +30,7 @@ class CurrentManager(models.Manager):
     listing only current blogs.
     """
     def get_query_set(self):
-        return super(CurrentManager, self).get_query_set().filter(is_live_blog=False).filter(archived=False)
+        return super(CurrentManager, self).get_query_set().filter(is_live_blog=False).filter(is_archived=False)
 
 class ArchivedManager(models.Manager):
     """
@@ -100,7 +100,7 @@ class PublishedManager(models.Manager):
     published.
     """
     def get_query_set(self):
-        return super(PublishedManager, self).get_query_set().filter(published=True)
+        return super(PublishedManager, self).get_query_set().filter(is_published=True)
 
 # NEW: This model contains the following new fields: enable_comments, published,
 # tags
