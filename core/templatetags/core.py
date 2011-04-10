@@ -19,10 +19,14 @@ from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 
 # Imports from maneater
-from maneater.blogs.models import Entry
-from maneater.core.models import Article, Issue, Photo, Tag, WebFront
-from maneater.polls.models import Poll
-from maneater.socialmedia.models import TwitterAccount
+from brubeck.blogs.models import Entry
+from brubeck.articles.models import Article
+from brubeck.publishing.models import Issue
+from brubeck.photography.models import Photo
+from brubeck.tagging.models import Tag
+from brubeck.management.models import WebFront
+from brubeck.voxpopuli.models import Poll
+#from brubeck.socialmedia.models import TwitterAccount
 
 register = template.Library()
 
@@ -90,39 +94,39 @@ def render_ticker():
         'articles': articles
     }
 
-@register.inclusion_tag('core/twitter_list.html')
-def render_tweets(limit=None):
-    """
-    Pulls the latest five tweets from each of The Maneater's Twitter
-    accounts and sorts them by the date they were posted, from newest to
-    oldest.
-    """
-
-    cache_name = 'compiled-tweets'
-    tweet_list = cache.get(cache_name)
-
-    if not tweet_list:
-        try:
-            """
-            Try to import the Twitter accounts listed in settings.
-            """
-            default_twitter_account_id = settings.DEFAULT_TWITTER_ACCOUNT_ID
-            default_twitter_list = settings.DEFAULT_TWITTER_LIST
-            twitter_accounts = settings.TWITTER_ACCOUNTS
-        except:
-            """
-            If there are no Twitter accounts in settings, just use the
-            default account.
-            """
-            default_twitter_account_id = '8'
-            default_twitter_list = 'maneater-twitter-accounts'
-
-        try:
-            auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
-            default_user = TwitterAccount.objects.get(id=default_twitter_account_id)
-            auth.set_access_token(default_user.access_key, default_user.access_secret)
-            api = tweepy.API(auth)
-
+# @register.inclusion_tag('core/twitter_list.html')
+# def render_tweets(limit=None):
+#     """
+#     Pulls the latest five tweets from each of Brubeck's Twitter
+#     accounts and sorts them by the date they were posted, from newest to
+#     oldest.
+#     """
+# 
+#     cache_name = 'compiled-tweets'
+#     tweet_list = cache.get(cache_name)
+# 
+#     if not tweet_list:
+#         try:
+#             """
+#             Try to import the Twitter accounts listed in settings.
+#             """
+#             default_twitter_account_id = settings.DEFAULT_TWITTER_ACCOUNT_ID
+#             default_twitter_list = settings.DEFAULT_TWITTER_LIST
+#             twitter_accounts = settings.TWITTER_ACCOUNTS
+#         except:
+#             """
+#             If there are no Twitter accounts in settings, just use the
+#             default account.
+#             """
+#             default_twitter_account_id = '8'
+#             default_twitter_list = 'maneater-twitter-accounts'
+# 
+#         try:
+#             auth = tweepy.OAuthHandler(settings.TWITTER_KEY, settings.TWITTER_SECRET)
+#             default_user = TwitterAccount.objects.get(id=default_twitter_account_id)
+#             auth.set_access_token(default_user.access_key, default_user.access_secret)
+#             api = tweepy.API(auth)
+# 
 #            twitter_api = twitter.Api(username=settings.TWITTER_ACCOUNTS[0][0], password=settings.TWITTER_ACCOUNTS[0][1])
 #            unordered_tweets = []
 #            for account in twitter_accounts:
@@ -135,72 +139,72 @@ def render_tweets(limit=None):
 #            tweet_list = []
 #            for tweet in ordered_tweets:
 #                tweet_list.append(tweet[1])
-            tweet_list = api.list_timeline(owner=api.me().screen_name, slug=default_twitter_list, per_page=limit)
-            cache.set(cache_name, tweet_list, 60 * 10)
-        except:
-            tweet_list = None
-
-    if limit:
-        try:
-            limit = int(limit)
-            tweet_list = tweet_list[:limit]
-        except:
-            pass
-
-    return {
-        'tweet_list': tweet_list
-    }
-
-@register.inclusion_tag('core/twitter_list_by_account.html')
-def render_tweets_by_account(account='themaneater', limit=None):
-    """
-    Pulls the latest ten tweets from the given Twitter account
-    and sorts them by the date they were posted, from newest to
-    oldest.
-    """
-    
-    cache_name = 'compiled-tweets-by-account-%s' % account
-    tweet_list = cache.get(cache_name)
-    
-    if not tweet_list:
-        try:
-            """
-            Try to import the Twitter accounts listed in settings.
-            """
-            all_accounts = settings.TWITTER_ACCOUNTS
-        except:
-            """
-            If there are no Twitter accounts in settings, just use the
-            default account.
-            """
-            all_accounts = (
-                ('themaneater', 'hoochfest'),
-            )
-
-        twitter_account = account
-        twitter_password = None
-
-        for account in all_accounts:
-            if account[0] == twitter_account:
-                twitter_password = account[1]
-
-	try:
-            twitter_api = twitter.Api(username=twitter_account, password=twitter_password)
-            tweet_list = twitter_api.GetUserTimeline(twitter_account)[:10]
-            cache.set(cache_name, tweet_list, 60 * 10)
-        except:
-            tweet_list = None
-
-    if limit:
-	try:
-            limit = int(limit)
-            tweet_list = tweet_list[:limit]
-        except:
-            pass
-
-    return {
-	'tweet_list': tweet_list
-    }
+#             tweet_list = api.list_timeline(owner=api.me().screen_name, slug=default_twitter_list, per_page=limit)
+#             cache.set(cache_name, tweet_list, 60 * 10)
+#         except:
+#             tweet_list = None
+# 
+#     if limit:
+#         try:
+#             limit = int(limit)
+#             tweet_list = tweet_list[:limit]
+#         except:
+#             pass
+# 
+#     return {
+#         'tweet_list': tweet_list
+#     }
+# 
+# @register.inclusion_tag('core/twitter_list_by_account.html')
+# def render_tweets_by_account(account='themaneater', limit=None):
+#     """
+#     Pulls the latest ten tweets from the given Twitter account
+#     and sorts them by the date they were posted, from newest to
+#     oldest.
+#     """
+#     
+#     cache_name = 'compiled-tweets-by-account-%s' % account
+#     tweet_list = cache.get(cache_name)
+#     
+#     if not tweet_list:
+#         try:
+#             """
+#             Try to import the Twitter accounts listed in settings.
+#             """
+#             all_accounts = settings.TWITTER_ACCOUNTS
+#         except:
+#             """
+#             If there are no Twitter accounts in settings, just use the
+#             default account.
+#             """
+#             all_accounts = (
+#                 ('themaneater', 'hoochfest'),
+#             )
+# 
+#         twitter_account = account
+#         twitter_password = None
+# 
+#         for account in all_accounts:
+#             if account[0] == twitter_account:
+#                 twitter_password = account[1]
+# 
+# 	try:
+#             twitter_api = twitter.Api(username=twitter_account, password=twitter_password)
+#             tweet_list = twitter_api.GetUserTimeline(twitter_account)[:10]
+#             cache.set(cache_name, tweet_list, 60 * 10)
+#         except:
+#             tweet_list = None
+# 
+#     if limit:
+# 	try:
+#             limit = int(limit)
+#             tweet_list = tweet_list[:limit]
+#         except:
+#             pass
+# 
+#     return {
+# 	'tweet_list': tweet_list
+#     }
 
 @register.filter
 @stringfilter
@@ -296,18 +300,6 @@ def show_related_blog_posts(object):
         if isinstance(object, Entry):
             objects = objects.exclude(id=object.id)
         objects = objects[:5]
-        return {
-            'list_name': list_name,
-            'objects': objects
-        }
-    except:
-        return ''
-
-@register.inclusion_tag('core/sidebar_object_list.html')
-def show_cclips():
-    try:
-        list_name = "College Clips"
-        objects = Article.get_published.filter(section__slug='uwire').distinct()[:5]
         return {
             'list_name': list_name,
             'objects': objects
