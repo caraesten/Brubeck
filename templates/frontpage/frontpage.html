@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load core %}{% load markup %}{% load advertising %}{% load thumbnail %}{% load comparison %}
+{% load core %}{% load markup %}{% load advertising %}{% load thumbnail %}
 
 {% block head_extras %}	<link rel="stylesheet" type="text/css" href="/media/style/2010-06/style/frontpage.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" ></script>
@@ -438,8 +438,8 @@
                 {% endif %}
                 </li>
             {% else %}
-                {% if_greater day event.start.day %}
-                    {% if_less day event.end.day %}
+                {% if day > event.start.day %}
+                    {% if day < event.end.day %}
                         <li class="fp_calendar_event {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
                         <p class="eventname">{{ event.name|truncatewords:6 }}</p>
                         {% if event.all_day %}
@@ -448,8 +448,8 @@
                             <p class="eventdate">{% ifequal event.start.year event.end.year %}{% ifequal event.start.month event.end.month %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"j" }}{% else %}{{ event.start|date:"N j" }} &ndash; {{ event.end|date:"N j" }}{% endifequal %}{% else %}{{ event.start|date:"N j Y" }} &ndash; {{ event.end|date:"N j Y" }}{% endifequal %}</p>
                         {% endif %}
                         </li>
-                    {% endif_less %}
-                {% endif_greater %}
+                    {% endif %}
+                {% endif %}
             {% endifequal %}
         {% endif %}
     {% endifequal %}
