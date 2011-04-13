@@ -98,7 +98,8 @@ def render_eyebrow_ad():
     site = Site.objects.get_current()
 
     try:
-        ads = BannerAd.current.filter(site=site).filter(ad_type='eyebrow').filter(special_section__isnull=True)
+        ads = BannerAd.current.filter(site=site).filter(ad_type='eyebrow')
+#        .filter(special_section__isnull=True) Not sure if we need this anymore. Comment back in otherwise.
         if not ads:
             ad = None
         else:
