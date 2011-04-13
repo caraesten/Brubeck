@@ -73,7 +73,7 @@ def render_cube_ad():
             ad = None
         else:
             ad = random.choice(ads)
-    except Advertisement.DoesNotExist:
+    except BannerAd.DoesNotExist:
         ad = None
     if not ad:
         return ''
@@ -103,7 +103,7 @@ def render_eyebrow_ad():
             ad = None
         else:
             ad = random.choice(ads)
-    except Advertisement.DoesNotExist:
+    except BannerAd.DoesNotExist:
         ad = None
     if not ad:
         return ''
