@@ -68,7 +68,8 @@ def render_cube_ad():
     site = Site.objects.get_current()
             
     try:
-        ads = BannerAd.current.filter(site=site).filter(ad_type='cube').filter(special_section__isnull=True)
+        ads = BannerAd.current.filter(site=site).filter(ad_type='cube')
+        # .filter(special_section__isnull=True) see above
         if not ads:
             ad = None
         else:
@@ -136,7 +137,8 @@ def render_banner_ad(type, fallback='True'):
     
     if type in ['vertical', 'shortvert', 'banner']:
         try:
-            ads = BannerAd.current.filter(site=site).filter(ad_type=type).filter(special_section__isnull=True)
+            ads = BannerAd.current.filter(site=site).filter(ad_type=type)
+            # .filter(special_section__isnull=True) see above
             if not ads:
                 ad = None
             else:
@@ -181,7 +183,8 @@ def render_special_banner_ad(type, section_id, fallback='True'):
                                                                                      
     if type in ['vertical', 'shortvert', 'banner']:
         try:
-            ads = BannerAd.current.filter(site=site).filter(ad_type=type).filter(special_section__id=section_id)
+            ads = BannerAd.current.filter(site=site).filter(ad_type=type)
+            # .filter(special_section__id=section_id) see above.
             if not ads:
                 ad = None
             else:
