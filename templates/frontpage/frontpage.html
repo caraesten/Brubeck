@@ -382,29 +382,29 @@
 {% ifequal month this_month %}
 {% ifequal year this_year %}
 {% if forloop.last %}                                                          
-<td class="today calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="today calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% else %}
-<td class="today calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="today calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% endif %}
 {% else %}
 {% if forloop.last %}                                                          
-<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% else %}
-<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% endif %}
 {% endifequal %}
 {% else %}
 {% if forloop.last %}                                                          
-<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% else %}
-<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% endif %}
 {% endifequal %}
 {% else %}
 {% if forloop.last %}
-<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendarlast calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% else %}
-<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if_greater day event.start.day %}{% if_less day event.end.day %} date_has_event{% endif_less %}{% endif_greater %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
+<td class="calendar active{% for event in event_list %}{% ifequal event.start.day day %} date_has_event{% else %}{% if event.end %}{% ifequal event.end.day day %} date_has_event{% else %}{% if day > event.start.day %}{% if day < event.end.day %} date_has_event{% endif %}{% endif %}{% endifequal %}{% endif %}{% endifequal %}{% endfor %}">
 {% endif %}
 {% endifequal %}{% endspaceless %}
 <a class="tooltip" href="/calendar/{{ year }}/{{ month }}/{{ day }}/">{{ day }}
