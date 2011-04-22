@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/js/calendaring.css" />
 	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
     <script type="text/javascript">
-        $(function(){  
+        $(document).ready(function(){  
             $("#top-stories{% if news_bursts %}-newsburst-fix{% endif %}").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true);  
             $("#top-stories{% if news_bursts %}-newsburst-fix{% endif %}").hover(  
                 function() {  
@@ -20,7 +20,7 @@
         }); 
     </script>
 	<script type="text/javascript">
-		$(function (){
+		$(document).ready(function (){
 		    var totabContainers = $('div.TopOnlineTabs > div > div');
 		    
 		    $('div.TopOnlineTabs > div > div > div.tab_marker').css('backgroundColor','#FFFFFF');
@@ -36,7 +36,7 @@
 		});
 	</script>
 	<script type="text/javascript">
-		$(function (){
+		$(document).ready(function (){
 		    var botabContainers = $('div.blog_online_tabs > div > div');
 		    
 		    $('div.blog_online_tabs > div > div > div.tab_marker').css('backgroundColor','#FFFFFF');
@@ -52,7 +52,7 @@
 		});
 	</script>
 	<script type="text/javascript">
-		$(function (){
+		$(document).ready(function (){
 		    var atabContainers = $('div.ArtsTabs > div > div');
 		    
 		    $('div.ArtsTabs > div > div > div.tab_marker').css('backgroundColor','#FFFFFF');
@@ -68,9 +68,6 @@
 		});
 	</script>{% spaceless %}
 {% endspaceless %}{% endblock head_extras %}
-{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}
-{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}
-{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}
 {% block title %}{{ block.super }}{% endblock title %}
 {% block content_wide %}{% spaceless %}
 {% endspaceless %}{% if election %}
@@ -258,102 +255,21 @@
 <div id="fp_articles_calendar" class="grid_12 fp_row">
     <div id="fp_section_more_articles" class="grid_9 alpha">
         <div id="fp_section_articles_row1" class="grid_9 alpha">
+            {% if sections %}
+            {% for section in sections %}
             <div id="fp_section" class="grid_3 alpha">
-                <h2 class="section"><a href="{{ section_news.get_absolute_url }}">{{ section_news.name }}</a></h2>
+                <h2 class="section"><a href="{{ section.sec_obj.get_absolute_url }}">{{ section.sec_obj.name }}</a></h2>
                 <ul>
-                    {% for article in section_news_articles %}
+                    {% for article in section.articles %}
                     <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
                     {% endfor %}
                 </ul>
-                <p class="fp_section_refer"><a href="{{ section_news.get_absolute_url }}">See more articles in {{ section_news.name }}...</a></p>
+                <p class="fp_section_refer"><a href="{{ section.sec_obj.get_absolute_url }}">See more articles in {{ section.sec_obj.name }}...</a></p>
             </div>
-            <div id="fp_section" class="grid_3 beta">
-                <h2 class="section"><a href="{{ section_outlook.get_absolute_url }}">{{ section_outlook.name }}</a></h2>
-                <ul>
-                    {% for article in section_outlook_articles %}
-                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
-                    {% endfor %}
-                </ul>
-                <p class="fp_section_refer"><a href="{{ section_outlook.get_absolute_url }}">See more articles in {{ section_outlook.name }}...</a></p>
-            </div>
-            <div id="fp_section" class="grid_3 omega">
-                <h2 class="section"><a href="{{ section_forum.get_absolute_url }}">{{ section_forum.name }}</a></h2>
-                <ul>
-                    {% for article in section_forum_articles %}
-                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
-                    {% endfor %}
-                </ul>
-                <p class="fp_section_refer"><a href="{{ section_forum.get_absolute_url }}">See more articles in {{ section_forum.name }}...</a></p>
-            </div>
+            {% endfor %}    
+            {% endif %}
         </div>
         <div id="fp_section_articles_row2" class="grid_9 alpha">
-            <div id="fp_section" class="grid_3 alpha">
-            
-                <div class="ArtsTabs">
-                    <ul class="tab_navigation">
-                        <li id="Mtab1light">
-                            <h2 class="Mtab1light"><a href="#movearts0">MOVE</a></h2>
-                        </li>
-                        <li id="Mtab2light">
-                            <h2 class="Mtab2light"><a href="#movearts1">Arts</a></h2>
-                        </li>
-                    </ul>
-                    
-                    <div class="tab_wrapper">
-                    
-                        <div id="movearts0">
-                            <div class="tab_marker"></div>
-                            <ul>
-                                {% for article in move_articles %}
-                                <li><h3 class="move">{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
-                            {% endfor %}
-                            </ul>
-                            <p class="fp_section_refer"><a href="http://move.themaneater.com/" class="move">See more from MOVE...</a></p>
-                        </div>
-                    
-                        <div id="movearts1">
-                            <div class="tab_marker"></div>
-                            <ul>
-                                {% for article in section_arts_articles %}
-                                <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
-                                {% endfor %}
-                            </ul>
-                            <p class="fp_section_refer"><a href="{{ section_arts.get_absolute_url }}">See more articles in {{ section_arts.name }}...</a></p>
-                        </div>
-                    
-                    </div>
-                    
-                </div>
-                
-            </div>
-            <div id="fp_section" class="grid_3 beta">
-                <h2 class="section"><a href="{{ section_sports.get_absolute_url }}">{{ section_sports.name }}</a></h2>
-                <ul>
-                    {% for article in section_sports_articles %}
-                    <li><h3>{% ifnotequal article.type 'story' %}{{ article.get_type_display }}: {% endifnotequal %}<a href="{{ article.get_absolute_url }}">{{ article.title|markdown }}</a></h3></li>
-                    {% endfor %}
-                </ul>
-                <p class="fp_section_refer"><a href="{{ section_sports.get_absolute_url }}">See more articles in {{ section_sports.name }}...</a></p>
-            </div>
-            <div id="fp_section" class="grid_3 omega">
-                <h2 class="section"><a href="{{ issue.get_absolute_url }}">In print</a></h2>
-                <ul>
-                    {% if issue.pdf_converted %}
-                    <div style="border: 1px solid #BBBBBB; margin-bottom: 5px;"><object style="width:218px;height:165px" ><param name="movie" value="http://static.issuu.com/webembed/viewers/style1/v1/IssuuViewer.swf?mode=embed&amp;layout=http%3A%2F%2Fskin.issuu.com%2Fv%2Fcolor%2Flayout.xml&amp;backgroundColor=EFEFEF&amp;autoFlip=true&amp;autoFlipTime=6000&amp;documentId={{ issue.issuu_id }}&amp;docName=vol{{ issue.volume.volume_id }}issue{{ issue.issue_id }}&amp;username=TheManeater&amp;loadingInfoText=The%20Maneater%20--%20Volume%20{{ issue.volume.volume_id }}%2C%20Issue%20{{ issue.issue_id }}&amp;et=1275540505842&amp;er=59" /><param name="allowfullscreen" value="true"/><param name="menu" value="false"/><embed src="http://static.issuu.com/webembed/viewers/style1/v1/IssuuViewer.swf" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" style="width:218px;height:165px" flashvars="mode=embed&amp;layout=http%3A%2F%2Fskin.issuu.com%2Fv%2Fcolor%2Flayout.xml&amp;backgroundColor=EFEFEF&amp;autoFlip=true&amp;autoFlipTime=6000&amp;documentId={{ issue.issuu_id }}&amp;docName=vol{{ issue.volume.volume_id }}issue{{ issue.issue_id }}&amp;username=TheManeater&amp;loadingInfoText=The%20Maneater%20--%20Volume%20{{ issue.volume.volume_id }}%2C%20Issue%20{{ issue.issue_id }}&amp;et=1275540505842&amp;er=59" /></object></div>
-                    {% endif %}
-                    {% if issue.comicepisode_set.all %}<li><h3><a href="/comics/latest/">Comics</a></h3></li>{% endif %}
-                    <li><h3><a href="/games/">Games</a></h3></li>
-                    {% for special_section in issue.specialsection_set.all %}
-                    <li><h3><a href="{{ special_section.get_absolute_url }}">{{ special_section }}</a></h3></li>
-                    {% endfor %}
-                    {% comment %}
-                    {% for layout in issue_other_layouts %}
-                    <li><a href="{{ layout.get_absolute_url }}">{% if not layout.last_page %}Page {{ layout.first_page }}{% else %}Pages {{ layout.first_page }}&ndash;{{ layout.last_page }}{% endif %}</a></li>
-                    {% endfor %}
-                    {% endcomment %}
-                </ul>
-                <p class="fp_section_refer" style="clear: both;"><a href="{{ issue.get_absolute_url }}">See more from this issue...</a></p>
-            </div>
         </div>
     </div>
     <div id="fp_calendar" class="grid_3 omega">
@@ -483,72 +399,33 @@ Strangely enough, there's no content to display here. Try retracing your steps, 
 <div id="sitemap" class="grid_12 alpha omega">
 <div id="sitemap_header" class="grid_12 alpha omega">
 <div id="sitemap_tmsn" class="grid_6 alpha">
-<img src="http://www.themaneater.com/media/style/2011-01/images/MastheadWebsite_btm.png" alt="The Maneater Student Newspaper" />
+<img src="{{MEDIA_URL}}/images/brubeck.jpg" alt="Brubeck" />
 </div>
 <div id="slogan" class="grid_6 omega">
-<h2>The student voice of MU since 1955</h2>
+<h2>Newspaper slogan goes here.</h2>
 </div>
 </div>
 <div id="sitemap_maneater_sections" class="grid_2 alpha">
 <h2 class="heading">Sections</h2>
 <ul>
-<li><h3><a href="http://www.themaneater.com/section/news/">News</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/section/outlook/">Outlook</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/section/forum/">Forum</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/section/arts/">Arts</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/section/sports/">Sports</a></h3></li>
-</ul>
-<h2 class="heading">Print issue</h2>
-<ul>
-<li><h3><a href="http://www.themaneater.com/games/">Game answers</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/graphics/">Graphics</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/photos/">Photos</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/layouts/">Print layouts</a></h3></li>
+{% if sections %}
+{% for section in sections %}
+<li><h3><a href="{{section.sec_obj.get_absolute_url}}">{{section.sec_obj.name}}</a></h3></li>
+{% endfor %}
+{% endif %}
 </ul>
 </div>
 <div id="sitemap_move_sections" class="grid_2">
-<h2 class="heading">MOVE Magazine</h2>
-<ul>
-<li><h3><a href="http://move.themaneater.com/section/music/">Music</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/section/community/">Community</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/section/guide/">Guide</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/section/angles/">Angles</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/multimedia/">Multimedia</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/blogs/">Blogs</a></h3></li>
-<li><h3><a href="http://move.themaneater.com/calendar/">Arts Cal</a></h3></li>
-</ul>
 </div>
 <div id="sitemap_other_content" class="grid_2">
-<h2 class="heading">Online extras</h2>
-<ul>
-{% comment %}<li><h3><a href="http://www.themaneater.com/apartment-guide/">Apartment Guide</a></h3></li>{% endcomment %}
-<li><h3><a href="http://www.themaneater.com/blotter/">Blotter</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/campus-guide/">Campus Guide</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/classifieds/">Classifieds</a></h3></li>
-<li><h3><a href="http://www.columbiaprowl.com/">Columbia Prowl</a></h3></li>
-{% comment %}<li><h3><a href="http://m.themaneater.com/">Mobile version</a></h3></li>{% endcomment %}
-{% comment %}<li><h3><a href="http://www.themaneater.com/wikizou/">wikiZou</a></h3></li>{% endcomment %}
-</ul>
-<h2 class="heading">Social media</h2>
-<ul>{% comment %}
-<li><h3 class="list-title">Social media</h3></li>
-<ul class="inline">
-<li><h4><a href="http://www.facebook.com/pages/The-Maneater/21954347639">Facebook</a></h4></li>{% endcomment %}
-<li><h3><a href="http://www.facebook.com/pages/The-Maneater/21954347639">Facebook</a></h3></li>
-<li><h3><a href="http://www.twitter.com/TheManeater/">Twitter</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/feeds/">RSS</a></h3></li>
-<li><h3><a href="http://www.youtube.com/ManeaterVideo">YouTube</a></h3></li>{% comment %}
-</ul>{% endcomment %}
-</ul>
 </div>
 <div id="sitemap_multimedia" class="grid_2">
 <h2 class="heading">Multimedia</h2>
 <ul>
-<li><h3><a href="http://www.themaneater.com/audio/">Audio clips</a></h3></li>
-{% comment %}<li><h3><a href="http://www.themaneater.com/interactive-graphics/">Interactive graphics</a></h3></li>{% endcomment %}
-<li><h3><a href="http://www.themaneater.com/podcasts/">Podcasts</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/slideshows/">Slideshows</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/videos/">Videos</a></h3></li>
+<li><h3><a href="/audio/">Audio clips</a></h3></li>
+<li><h3><a href="/podcasts/">Podcasts</a></h3></li>
+<li><h3><a href="/slideshows/">Slideshows</a></h3></li>
+<li><h3><a href="/videos/">Videos</a></h3></li>
 </ul>
 </div>
 <div id="sitemap_blogs" class="grid_2">
@@ -566,13 +443,6 @@ Strangely enough, there's no content to display here. Try retracing your steps, 
 <div id="sitemap_other_content" class="grid_2 omega">
 <h2 class="heading">About</h2>
 <ul>
-<li><h3><a href="http://www.themaneater.com/about/">About The Maneater</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/about/accuracy/">Accuracy</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/about/advertising/">Advertising</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/about/contact/">Contact us</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/about/jobs/">Get involved</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/staff/editors/">Staff</a></h3></li>
-<li><h3><a href="http://www.themaneater.com/about/colophon/">Web site colophon</a></h3></li>
 </ul>
 </div>
 {% endblock content_wide %}

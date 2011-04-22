@@ -134,9 +134,9 @@ def render_frontpage(request):
 	section_list = []
 	
 	for section in sections:
-		sec_name = section.name
+		sec_obj = section
 		sec_articles = articles.filter(section=section).order_by('priority')[:5]
-		section_dict = {'name':sec_name,'articles':sec_articles}
+		section_dict = {'sec_obj':sec_obj,'articles':sec_articles}
 		section_list.append(section_dict)
 #    section_news = Section.objects.get(name='News')
 #    section_news_articles = articles.filter(section=section_news).order_by('priority')[:5]

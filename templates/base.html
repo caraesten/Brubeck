@@ -2,7 +2,7 @@
 {% load core %}{% load weather %}{% load advertising %}{% load markup %}
 <html>
 <head>
-        <title>{% block title %}The Maneater{% endblock title %}</title>
+        <title>{% block title %}Brubeck CMS{% endblock title %}</title>
         <link rel="stylesheet" type="text/css" href="/media/style/2009-01/style/960/reset.css" />
         <link rel="stylesheet" type="text/css" href="/media/style/2009-01/style/960/960.css" />
         <link rel="stylesheet" type="text/css" href="/media/style/2011-01/style/maneater.css" />
@@ -23,21 +23,14 @@
 				<ul id="ticker" class="grid_8 alpha">
 {% render_ticker %}				</ul>
 				<div id="other_media" class="grid_1 omega">
-					<a href="/feeds/"><img src="{% block rss_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/rss_20.png{% endblock rss_link %}" alt="RSS Feeds" /></a>
-					<a href="http://www.facebook.com/pages/The-Maneater/21954347639"><img src="{% block facebook_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/facebook_20.png{% endblock facebook_link %}" alt="Facebook" /></a>
-					<a href="http://twitter.com/themaneater"><img src="{% block twitter_link %}http://www.themaneater.com/media/style/2009-07/images/maneater/twitter_20.png{% endblock twitter_link %}" alt="Twitter" /></a>
 				</div>
 				<div id="search_small" class="grid_3 omega">
-					<form id="topsearch" action="/search/" method="get">
-						<input type="text" id="topsearchbox" name="q" />
-						<input id="topsearchsubmit" type="submit" value="Search"/>
-					</form>
 				</div>
 			</div>
 
 			<div id="flag_bar" class="grid_12">
 				<div class="grid_6 alpha">
-                    <a href="/"><img id="flag" src="http://www.themaneater.com/media/style/2011-01/images/MastheadWebsite0.png" alt="The Maneater" style="width:501px; height:64px;" /></a>
+                    <a href="/"><img id="flag" src="{{MEDIA_URL}}/images/brubeck.jpg" alt="Brubeck" /></a>
 				</div>
 				<div id="weather" class="grid_3 omega">
 {% render_weather_graphic %}				</div>
@@ -49,20 +42,7 @@
 
 			<div id="nav_bar" class="grid_12">{% comment %}
 				<p id="auth_links">{% if user.is_authenticated %}<a href="/accounts/logout/">Log out</a>{% else %}<a href="/accounts/login/">Log in</a>{% endif %}</p>{% endcomment %}
-				<ul>
-					<li><a href="/section/news/">News</a></li>
-					<li><a href="/section/outlook/">Outlook</a></li>
-					<li><a href="/section/forum/">Forum</a></li>
-					<li><a href="/section/arts/">Arts</a></li>
-					<li><a href="/section/sports/">Sports</a></li>
-					<li class="nav_move"><a href="http://move.themaneater.com/">MOVE</a></li>
-					<li><a href="/blogs/">Blogs</a></li>
-					<li><a href="/multimedia/">Multimedia</a></li>
-					<li><a href="/workforus/">Work for Us</a></li>
-					<li><a href="/classifieds/">Classifieds</a></li>
-					<li><a href="http://www.columbiaprowl.com/">Columbia Prowl</a></li>{% comment %}
-					<li><a href="/wikizou/">wikiZou</a></li>{% endcomment %}
-				</ul>
+				{% render_sections %}
 			</div>
 
 			<div id="content_wide">
@@ -87,7 +67,7 @@
 
 			<div id="footer" class="grid_12">
 				<ul>
-					<li class="first">&copy;{% now "Y" %} The Maneater Student Newspaper</li>
+					<li class="first">&copy;{% now "Y" %} The Brubeck Project</li>
 					<li><a href="/about/advertising/">Advertising Information</a></li>
 					<li><a href="/about/">About</a></li>
 					<li><a href="/staff/editors/">Staff</a></li>

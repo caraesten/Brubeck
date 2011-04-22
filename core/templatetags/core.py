@@ -21,7 +21,7 @@ from django.utils.safestring import mark_safe
 # Imports from maneater
 from brubeck.blogs.models import Entry
 from brubeck.articles.models import Article
-from brubeck.publishing.models import Issue
+from brubeck.publishing.models import Issue,Section
 from brubeck.photography.models import Photo
 from brubeck.tagging.models import Tag
 from brubeck.management.models import WebFront
@@ -66,7 +66,16 @@ def render_flatpage_with_markdown(url):
     else:
         return markdown.markdown(flatpage.content)
 
-
+@register.inclusion_tag('core/section_head.html')
+def render_sections():
+    try:
+        sections = Section.objects.all().order_by('-priority')[:5]
+    except:
+        sections = ''
+    return {
+        'sections': sections
+    }
+    
 
 @register.inclusion_tag('core/ticker.html')
 def render_ticker():
