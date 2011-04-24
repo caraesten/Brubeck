@@ -301,7 +301,7 @@ def section_front(request, slug=None, page=1):
 	
 	try:
 		section_front = WebFront.objects.filter(site=site, type='section').get(top_sections=section)
-		lead_item = section_front.item_set.all()[0]
+		lead_item = section_front.item_set.all()[:1]
 		priority_items = section_front.item_set.all()[1:5]
 	except WebFront.DoesNotExist:
 		raise Http404
