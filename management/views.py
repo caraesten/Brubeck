@@ -2,6 +2,7 @@
 # Imports from standard libraries
 import calendar as pycal
 from datetime import date, datetime, time, timedelta
+import random
 import itertools
 import operator
 
