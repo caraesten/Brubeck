@@ -100,7 +100,7 @@ def detail(request, year=None, month=None, day=None, slug=None, mode=None):
     """
     site = Site.objects.get_current()
     try:
-        article = Article.get_published.filter(section__publication__site=site).filter(pub_date__exact=date(int(year), int(month), int(day))).get(slug=slug)
+        article = Article.get_published.filter(section__publication__site=site).filter(pub_date__year=int(year), pub_date__month=int(month), pub_date__day=int(day)).get(slug=slug)
     except Article.DoesNotExist:
         raise Http404
     
