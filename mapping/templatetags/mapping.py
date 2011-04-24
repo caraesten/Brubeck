@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 
 # Imports from brubeck
-from brubeck.core.models import Article
+from brubeck.articles.models import Article
 from brubeck.mapping.models import Map, Place
 
 register = template.Library()
