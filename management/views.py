@@ -313,7 +313,7 @@ def section_front(request, slug=None, page=1):
 	except ValueError:
 		raise Http404
 
-	articles = Article.get_published.filter(section=section).exclude(webfronts__webfront=section_front)[:10]
+	articles = Article.get_published.filter(section=section).exclude(webfronts__webfrontitem=section_front)[:10]
 
 	blog_posts = Entry.get_published.filter(blog__section=section)[:5]
 
