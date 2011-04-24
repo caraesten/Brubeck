@@ -1,1 +1,0 @@
-<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object }}</a> ({{ object.pub_date|date:"N j, Y" }})</h3>

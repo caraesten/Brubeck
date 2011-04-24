@@ -1,3 +1,0 @@
-<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h3>
-{% if object.address %}<p class="cdeck">{{ object.address }}</p>{% endif %}
-<p>Listed in {% for mpl in object.mapplacelink_set.all %}<a href="{{ mpl.map.get_absolute_url }}">{{ mpl.map.title }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>

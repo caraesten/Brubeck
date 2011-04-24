@@ -1,6 +1,0 @@
-{% load core %}
-                        {% for tweet in tweet_list %}
-                            <li><p class="tweet"><span class="tweet_text">{{ tweet.text|twitterize }}</span> <span class="tweet_info">(Posted to <a href="http://www.twitter.com/{{ tweet.user.screen_name }}/">{{ tweet.user.screen_name }}</a> {{ tweet.GetRelativeCreatedAt }})</span></p></li>
-                        {% empty %}
-                            <li><p class="tweet">There are no tweets to be displayed here. This should be fixed soon.</p></li>
-                        {% endfor %}

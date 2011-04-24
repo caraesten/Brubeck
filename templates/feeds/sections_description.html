@@ -1,2 +1,0 @@
-{% load markup %}{% load core %}
-{% if obj.cdeck %}{{ obj.cdeck }}{% else %}{{ obj.body|markdown|truncate_paragraphs:1 }}{% endif %}

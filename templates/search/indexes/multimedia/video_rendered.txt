@@ -1,4 +1,0 @@
-{% load thumbnail %}{% load markup %}
-{% if object.preview_image %}<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{% thumbnail object.preview_image 200x350 %}" /></a>{% else %}{% if object.thumbnail %}<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{{ object.thumbnail }}" /></a>{% endif %}{% endif %}
-<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object }}</a></h3>
-<p class="cdeck">{{ object.description|safe|markdown }}</p>

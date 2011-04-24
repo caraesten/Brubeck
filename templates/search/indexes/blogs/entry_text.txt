@@ -1,8 +1,0 @@
-{{ object.title }}
-{{ object.body }}
-{% for tag in object.tags.all %}
-{{ tag.title }}
-{% endfor %}
-{{ object.blog.title }}
-{{ byline }}
-{{ object.static_byline }}

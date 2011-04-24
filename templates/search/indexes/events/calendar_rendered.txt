@@ -1,2 +1,0 @@
-{% load markup %}
-<h3 class="headline"><a href="{{ object.get_absolute_url }}">{{ object.name|markdown }}</a></h3>

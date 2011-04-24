@@ -1,5 +1,0 @@
-{% load thumbnail %}{% load markup %}{% load core %}
-{% if object.photos.all %}<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{{ object.photos.all.0.get_thumbnail100_url }}" /></a>{% else %}{% if object.editorial_cartoons.all %}<a href="{{ object.get_absolute_url }}"><img class="photo left" alt="{{ object }}" src="{% thumbnail object.editorial_cartoons.all.0.image 100x300 %}" /></a>{% endif %}{% endif %}
-<h3 class="headline">{% ifnotequal object.type 'story' %}{{ object.get_type_display }}: {% endifnotequal %}<a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></h3>
-{% ifnotequal object.type 'editorial' %}<p class="byline">By {% if object.byline.all %}{% render_byline object.byline %}{% else %}{% if object.static_byline %}{{ object.static_byline }}{% else %}The Maneater Staff{% endif %}{% endif %}{% if object.updated %}&mdash; <span class="breaking">Last updated {{ object.last_updated|date:"g:i a, N j, Y" }}</span>{% endif %}</p>{% endifnotequal %}
-<p class="cdeck">{% if object.cdeck %}{{ object.cdeck|markdown }}{% else %}{{ object.body|safe|markdown|truncatewords_html:"10" }}{% endif %}</p>

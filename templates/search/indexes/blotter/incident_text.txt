@@ -1,8 +1,0 @@
-{{ object.first_name }}
-{{ object.last_name }}
-{% for charge in object.charges.all %}
-{{ charge.name }}
-{% endfor %}
-{{ object.location.name }}
-{{ object.location.address }}
-{{ object.case_number }}

@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% load core %}
-
-{% block content %}
-{% for tweet in tweet_list %}
-{{ tweet.text|twitterize }}
-{% endfor %}
-{% endblock content %}

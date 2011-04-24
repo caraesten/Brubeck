@@ -91,7 +91,7 @@ def archive(request, year=None, month=None, day=None, page=1):
         'previous_page_url': previous_page_url
     }
     
-    return render_to_response('core/archive.html', page, context_instance=RequestContext(request))
+    return render_to_response('articles/archive.html', page, context_instance=RequestContext(request))
 
 @cache_page(60 * 5)
 def detail(request, year=None, month=None, day=None, slug=None, mode=None):

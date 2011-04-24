@@ -1,5 +1,0 @@
-{{ object.title }}
-{{ object.section.name }}
-{% for byline in object.byline.all %}
-{{ byline }}
-{% endfor %}
