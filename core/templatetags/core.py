@@ -66,7 +66,7 @@ def render_flatpage_with_markdown(url):
     else:
         return markdown.markdown(flatpage.content)
 
-@register.inclusion_tag('core/section_head.html')
+@register.inclusion_tag('templatetags/section_head.html')
 def render_sections():
     try:
         sections = Section.objects.all().order_by('-priority')[:5]
@@ -77,7 +77,7 @@ def render_sections():
     }
     
 
-@register.inclusion_tag('core/ticker.html')
+@register.inclusion_tag('templatetags/ticker.html')
 def render_ticker():
     """
     This pulls the latest 10 articles from the current site that have been
@@ -286,7 +286,7 @@ def columns(thelist, n):
         split += 1
     return [thelist[i::split] for i in range(split)]
 
-@register.inclusion_tag('core/sidebar_object_list.html')
+@register.inclusion_tag('templatetags/sidebar_object_list.html')
 def show_related_articles(object):
     try:
         list_name = "Related articles"
@@ -301,7 +301,7 @@ def show_related_articles(object):
     except:
         return ''
 
-@register.inclusion_tag('core/sidebar_object_list.html')
+@register.inclusion_tag('templatetags/sidebar_object_list.html')
 def show_related_blog_posts(object):
     try:
         list_name = "Related blog posts"
@@ -316,7 +316,7 @@ def show_related_blog_posts(object):
     except:
         return ''
 
-@register.inclusion_tag('core/disclaimer.html')
+@register.inclusion_tag('templatetags/disclaimer.html')
 def show_disclaimer(article):
     try:
         type = article.type
@@ -326,11 +326,11 @@ def show_disclaimer(article):
     except:
         return ''
 
-@register.inclusion_tag('core/disclaimer_archive.html')
+@register.inclusion_tag('templatetags/disclaimer_archive.html')
 def show_disclaimer_archive():
     return ''
 
-@register.inclusion_tag('core/top_editorial_cartoon.html')
+@register.inclusion_tag('templatetags/top_editorial_cartoon.html')
 def render_top_editorial_cartoon():
 
     site = Site.objects.get_current()
@@ -356,7 +356,7 @@ def render_top_editorial_cartoon():
     except:
         return ''
 
-@register.inclusion_tag('core/editorial_cartoon_sidebar.html')
+@register.inclusion_tag('templatetags/editorial_cartoon_sidebar.html')
 def render_editorial_cartoon_sidebar():
 
     site = Site.objects.get_current()
@@ -382,7 +382,7 @@ def render_editorial_cartoon_sidebar():
     except:
         return ''
 
-@register.inclusion_tag('core/gallery_setup.html')
+@register.inclusion_tag('templatetags/gallery_setup.html')
 def gallery_setup(gallery_id, size="large"):
     try:
         return {
@@ -392,7 +392,7 @@ def gallery_setup(gallery_id, size="large"):
     except:
         return ''
 
-@register.inclusion_tag('core/render_byline.html')
+@register.inclusion_tag('templatetags/render_byline.html')
 def render_byline(byline_field):
     try:
         return {
@@ -402,7 +402,7 @@ def render_byline(byline_field):
         return ''
 
 
-@register.inclusion_tag('core/render_photos_by_tag.html')
+@register.inclusion_tag('templatetags/render_photos_by_tag.html')
 def render_photos_by_tag(tag_id, num_photos):
 
     try:
@@ -428,7 +428,7 @@ def render_photos_by_tag(tag_id, num_photos):
         'photo_subset': photo_subset,
     }
 
-@register.inclusion_tag('core/question_form.html')
+@register.inclusion_tag('templatetags/question_form.html')
 def render_latest_question():
     """
     Retrieves the latest question. Used to render a
@@ -440,7 +440,7 @@ def render_latest_question():
         'question': question,
     }
 
-@register.inclusion_tag('core/articles/render_article.html')
+@register.inclusion_tag('templatetags/articles/render_article.html')
 def render_article(article_id):
     """
     Shows a particular article or its associated photos and graphics.
