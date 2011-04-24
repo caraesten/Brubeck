@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load markup %}{% load core %}{% load scoreboard %}
+
+{% block title %}{{ block.super }} &ndash; {{ article|striptags }} &ndash; Images{% endblock title %}
+
+{% block head_extras %}
+{% if images %}{% gallery_setup "gallery" %}{% endif %}
+<link rel="alternate" type="application/rss+xml" title="{{ article.section.name }} RSS Feed" href="/feeds/sections/{{ article.section.slug }}/" />
+{% endblock head_extras %}
+
+{% block content %}
+<h1 class="headline"><a href="{{ article.get_absolute_url }}">{{ article|markdown }}</a></h1>
+<p class="byline"><!--byline code goes here--></p>
+{% if images %}
+<div id="gallery">
+    <ul>
+        {% for image in images %}
+            <li class="photo_container">
+                <img class="photo" alt="{{ entry }}" src="{{ image.image.url }}" />
+                <p class="byline">{% if image.illustration %}Photo illustration by {% endif %}{% if image.byline %}<a href="{{ image.byline.get_absolute_url }}">{{ image.byline }}</a>/{{ image.byline.photographer_position }}</span>{% else %}{% if image.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+                {{ image.cutline|markdown }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<p>There are no images to display.</p>
+{% endif %}
+{% endblock content %}
+
+{% block sidebar %}
+    <div class="related_sidebar">
+        <p><script>function fbs_click() {u=location.href;t=document.title;window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;}</script><style> html .fb_share_link { padding:2px 0 0 20px; height:16px; background:url(http://static.ak.fbcdn.net/images/share/facebook_share_icon.gif?0:26981) no-repeat top left; }</style><a href="http://www.facebook.com/share.php?u=<url>" onclick="return fbs_click()" target="_blank" class="fb_share_link">Share on Facebook</a></p>
+        <p><a href="http://www.themaneater.com/section/forum/send-letter/">Send a letter to the editor</a></p>
+        <p><a href="/email/article/{{ article.id }}/">E-mail this article</a></p>
+    </div>
+    {% if multimedia %}
+    <div class="related_sidebar" id="multimedia_list">
+        <h2>Multimedia</h2>
+        <ul>
+            {% for item in multimedia %}
+            <li style="list-style: none; font-size: 8pt;>
+                {% ifequal item.mediatype "podcast" %}<a href="{{ item.file.url }}"></a>{% else %}<a href="{{ item.get_absolute_url }}">{% ifnotequal item.mediatype "audioclip" %}<img class="photo" src="{% ifequal item.mediatype "video" %}{{ item.thumbnail }}{% else %}{{ item.get_thumbnail200_url }}{% endifequal %}" alt="{{ item.description|markdown }}" />{% else %}<h3>{{ item.title }}</h3>{% endifnotequal %}</a>{% endifequal %}
+                {{ item.description|markdown }}
+                {% ifequal item.mediatype "audioclip" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+                {% ifequal item.mediatype "podcast" %}
+                <embed src='http://webjay.org/flash/xspf_player' width='210' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
+                {% endifequal %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.sidebar %}
+    <div class="related_sidebar" id="article_sidebar">
+        {{ article.sidebar|markdown }}
+    </div>
+    {% endif %}
+    {% if article.calendar %}
+    <div id="fp_calendar">
+        <h2><a href="/calendar/">Calendar</a></h2>
+        <ul>
+            {% for event in article.calendar.event_set.all %}
+            {% ifchanged %}<li class="calendar_date">
+                <h3>{{ event.start|date:"N j" }}{% ifnotequal event.start.date event.end.date %} &ndash; {{ event.end|date:"N j" }}{% endifnotequal %}</h3>
+                <ul>{% endifchanged %}
+                    <li class="calendar_event">
+                        <h4><a href="{{ event.get_absolute_url }}">{{ event }}</a></h4>
+                        <p class="calendar_time_place">{% if not event.all_day %}{% ifequal event.start.date event.end.date %}{{ event.start|time:"g:i a" }} &ndash; {{ event.end|time:"g:i a" }}{% else %}{{ event.start|date:"g:i a, N j" }} &ndash; {{ event.end|date:"g:i a, N j" }}{% endifequal %}, {% endif %}{{ event.location }}</p>
+                        <p class="calendar_description">{% if event.summary %}{{ event.summary|markdown }}{% endif %}</p>
+                    </li>
+                {% ifchanged event.start.date %}</ul>
+            </li>{% endifchanged %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.attached_files.all %}
+    <div class="related_sidebar" id="attached_files">
+        <h2>Attached files</h2>
+        <ul>
+            {% for file in article.attached_files.all %}
+            <li>
+                <a href="{{ file.get_absolute_url }}">{{ file.title }}</a>
+                {{ file.description|markdown }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if article.incident_set.all %}
+    <div class="related_sidebar">
+        <h2>Related blotter entr{{ article.incident_set.all.count|pluralize:"y,ies" }}</h2>
+        <ul>
+            {% for incident in article.incident_set.all %}
+            <li><a href="{{ incident.get_absolute_url }}">{{ incident }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% ifequal article.section.slug "sports" %}{% show_scores_sidebar %}{% endifequal %}
+{% comment %}{% ifequal article.section.slug "outlook" %}{% show_cclips %}{% endifequal %}{% endcomment %}
+{% show_related_articles article %}
+{% show_related_blog_posts article %}
+{% endblock %}

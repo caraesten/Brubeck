@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load mapping %}{% load markup %}{% load core %}{% load scoreboard %}{% load thumbnail %}
+
+{% block title %}{{ block.super }} &mdash; {{ archive_name }}{% endblock title %}
+
+{% block head_extras %}
+{% if section %}
+<link rel="alternate" type="application/rss+xml" title="{{ section.name }} RSS Feed" href="/feeds/sections/{{ section.slug }}/" />
+{% endif %}
+{% if blotter_map %}
+<meta name="robots" content="noindex, nofollow" />
+{% add_gmap_api %}
+<script type="text/javascript" src="/media/style/2009-01/js/mapstraction.js"></script>
+<script type="text/javascript">
+$(function() {
+    // First create a div to host the map
+    var themap = $('<div id="map_box"></div>').css({
+        'width': '296px',
+        'height': '296px',
+        'border': '1px solid #000'
+    }).insertBefore('ul#place_list');
+
+    // Now initialize the map
+    var mapstraction = new Mapstraction('map_box', 'google');
+    mapstraction.addControls({
+        zoom: 'large',
+        map_type: true
+    });
+
+    bounds = new BoundingBox({{ blotter_map.extents.min_lat }}, {{ blotter_map.extents.min_lng }}, {{ blotter_map.extents.max_lat }}, {{ blotter_map.extents.max_lng }});
+
+    // Set center and zoom
+    mapstraction.setBounds(bounds);
+
+    // Extract the coordinates and add a marker
+    $('.vcard').each(function() {
+        var hcard = $(this);
+        var latitude = hcard.find('.geo .latitude').text();
+        var longitude = hcard.find('.geo .longitude').text();
+        var marker = new Marker(new LatLonPoint(latitude, longitude));
+        marker.setInfoBubble(
+            '<div class="bubble">' + hcard.html() + '</div>'
+        );
+        var marker_icon = hcard.find('.note .marker_url').text();
+        marker.setIcon(marker_icon);
+        mapstraction.addMarker(marker);
+    });
+});
+</script>
+<style>
+.marker_url {
+    display: none;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    $('.vcard .info').hide();
+    $('.vcard h3').click(function() {
+        $(this).next().toggle();
+    });
+});
+</script>
+{% endif %}
+<link rel="stylesheet" type="text/css" href="/media/style/2010-09/style/sectionheads.css" />
+<link rel="stylesheet" type="text/css" href="/media/style/2010-09/style/tagcloud.css" />
+{% endblock head_extras %}
+
+{% block content_wide %}
+<div class="section_head">
+<div id="content" class="grid_8 alpha">
+<h1 class="archive_name">{{ archive_name }}<span>{% now "l, F j, Y" %}</span></h1>
+
+<div id="primary_content" class="grid_8 alpha omega">
+
+{% if lead_item %}
+<div class="object_list sectionhead_row">
+    {% with lead_item.linked_object as item %}
+    <div class="item">
+        {% include "core/lead_section_item.html" %}
+    </div>
+    {% endwith %}
+</div>
+{% endif %}
+
+</div>
+
+<div id="secondary_content" class="grid_8 alpha omega">
+
+<div id="priority_content" class="grid_5 alpha">
+{% if priority_items %}
+<div class="object_list sectionhead_row">
+    {% for object in priority_items %}
+        {% with object.linked_object as item %}
+        <div class="item{% if forloop.last %} no_line{% endif %}">
+            {% include "core/priority_section_item.html" %}
+        </div>
+        {% endwith %}
+    {% endfor %}
+</div>
+{% endif %}
+</div>
+
+<div id="latest_blog_posts" class="grid_3 omega">
+<h2 class="sectiongrey">From our blogs</h2>
+<div class="object_list">
+{% for post in blog_posts %}
+    <div class="item{% if forloop.last %} no_line{% endif %}">
+        <h3 class="blog_post"><a href="{{ post.get_absolute_url }}">{{ post|markdown }}</a></h3>
+        <p>(from <a href="{{ post.blog.get_absolute_url }}">{{ post.blog }}</a>)</p>
+    </div>
+{% endfor %}
+</div>
+</div>
+
+</div>
+
+<div id="recent_headlines" class="object_list">
+<h2 class="sectiongrey">Recent {{ archive_name|lower }} headlines</h2>
+{% if articles %}
+    <div class="grid_4 alpha">
+    {% with articles|slice:":5" as articles %}
+    {% for object in articles %}
+        <h3 class="headline">{% ifnotequal object.type 'story' %}{{ object.get_type_display }}: {% endifnotequal %}<a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></h3>
+        {% if forloop.counter|divisibleby:2 %}<div style="clear: both;"></div>{% endif %}
+    {% endfor %}
+    {% endwith %}
+    </div>
+    <div class="grid_4 omega">
+    {% with articles|slice:"5:10" as articles %}
+    {% for object in articles %}
+        <h3 class="headline">{% ifnotequal object.type 'story' %}{{ object.get_type_display }}: {% endifnotequal %}<a href="{{ object.get_absolute_url }}">{{ object|markdown }}</a></h3>
+        {% if forloop.counter|divisibleby:2 %}<div style="clear: both;"></div>{% endif %}
+    {% endfor %}
+    {% endwith %}
+    </div>
+    <div style="clear: both;"></div>
+    <p class="fp_section_refer"><a href="/section/{{ archive_name|lower }}/archives/">See more articles in {{ archive_name }}...</a></p>
+{% else %}
+    <p>For some reason, there aren't any stories in this section.
+{% endif %}
+</div>
+
+</div>
+
+<div id="sidebar" class="grid_4 omega">
+{% if blotter_map %}
+    <h2 class="sectiongrey">Police blotter</h2>
+    <p>Currently showing incidents from the past 30 days.</p>
+    <ul id="place_list" class="grid_4 alpha">
+        {% for incident in blotter_map.incidents %}
+        <li class="vcard charge_{{ blotter_map.charge_type.id }}">
+            <h3><a href="javascript:void(0);">{{ incident.incident_date|date:"P, N j, Y" }}</a></h3>
+            <div class="info">
+                <p><span class="fn org">{{ incident.location.name }}</span> {% if incident.location.address %}{% ifnotequal incident.location.address incident.location.name %}<p class="adr post-office-box">{{ incident.location.address }}</p>{% endifnotequal %}{% endif %}</p>
+                <div class="note">
+                    <p>{% if incident.last_name %}<strong>Suspect:</strong> {{ incident.first_name }} {% if incident.middle_initial %}{{ incident.middle_initial }}. {% endif %}{{ incident.last_name }}<br />{% endif %}
+                    {% if incident.birth_date %}<strong>Date of birth:</strong> {{ incident.birth_date|date:"N j, Y" }}<br />{% endif %}
+                    {% if incident.age %}<strong>Age:</strong> {{ incident.age }}<br />{% endif %}
+                    {% if incident.home_address %}<strong>Home address:</strong> {{ incident.home_address }}<br />{% endif %}
+                    {% if incident.arrest_date %}<strong>Arrested:</strong> {{ incident.arrest_date|date:"P, N j, Y" }}<br />{% endif %}</p>
+
+                    <p><strong>Charges:</strong>
+                    <ul style="list-style: disc inside;">
+                        {% for charge in incident.charges.all %}
+                        <li><a href="{{ charge.get_absolute_url }}">{{ charge }}</a> ({{ charge.incident_type }})</li>
+                        {% endfor %}
+                    </ul></p>
+
+                    <p><strong>Police department:</strong> {{ incident.get_police_department_display }}<br />
+                    <strong>Case number:</strong> {{ incident.case_number }}</p>
+
+                    <p class="marker_url">{{ incident.charges.all.0.incident_type.marker.url }}</p>
+                </div>
+                <p class="geo">Coordinates: <span class="latitude">{{ incident.location.point.get_y }}</span>, <span class="longitude">{{ incident.location.point.get_x }}</span></p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <p>See more about the latest crimes around campus on our <a href="/blotter/">police blotter</a>.</p>
+{% endif %}
+{% ifequal section.slug "forum" %}
+<h2 class="sectiongrey">Question of the week</h2>
+{% render_latest_question %}
+{% endifequal %}
+{% ifequal section.slug "sports" %}{% render_scoreboard %}{% endifequal %}
+{% comment %}<h2 class="sectiongrey">Connect to {{ archive_name }}</h2>{% endcomment %}
+<h2 class="sectiongrey">Popular tags</h2>
+<div class="cloud">
+<ul class="tag_cloud">
+{% for tag, priority in tag_cloud %}
+    <li>{% include "core/tag_cloud.html" %}</li>
+{% endfor %}
+<div style="clear: both;"></div>
+</ul>
+<div style="clear: both;"></div>
+</div>
+<div style="clear: both;"></div>
+{% ifnotequal archive_name "Forum" %}
+<h2 class="sectiongrey">Recent podcast episodes</h2>
+<div id="latest_podcast_episodes" class="object_list">
+{% for episode in related_podcasts %}
+    <div class="item{% if forloop.last %} no_line{% endif %}">
+    <h3><a href="{{ episode.get_absolute_url }}">{{ episode }}</a></h3>
+    </div>
+{% endfor %}
+</div>
+<h2 class="sectiongrey">Related blogs</h2>
+<div id="related_blogs" class="object_list">
+{% for blog in related_blogs %}
+    <div class="item{% if forloop.last %} no_line{% endif %}">
+    <h3><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></h3>
+    {{ blog.description|markdown }}
+    </div>
+{% endfor %}
+</div>
+{% else %}
+{% show_disclaimer_archive %}
+{% endifnotequal %}
+</div>
+</div>
+{% endblock content_wide %}

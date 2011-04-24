@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ block.super }} &ndash; Issues &ndash; {{ issue }}{% endblock title %}
+
+{% block content %}
+<h1>{{ issue }}</h1>
+<div class="object_list">
+{% if issue.article_set.all %}    
+    <h2 class="header">Articles</h2>
+    {% for article in issue.article_set.all %}
+    <div class="item">
+        {% if article.photos.all %}<a href="{{ article.get_absolute_url }}"><img class="photo left" alt="{{ article }}" src="{{ article.photos.all.0.get_thumbnail100_url }}" /></a>{% endif %}
+        <h3 class="headline"><a href="{{ article.get_absolute_url }}">{{ article|markdown }}</a></h3>
+        <p class="cdeck">{% if article.cdeck %}{{ article.cdeck|markdown }}{% else %}{{ article.body|safe|markdown|truncatewords_html:"10" }}{% endif %}</p>
+    </div>
+    {% endfor %}
+{% endif %}
+{% if images %}
+    <h2 class="header">Photos and graphics</h2>
+    {% for image in images %}
+    <div class="item">
+        {% if image.is_horizontal %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail200_url }}" /></a>{% else %}<a href="{{ image.get_absolute_url }}"><img class="photo left" alt="{{ image }}" src="{{ image.get_thumbnail100_url }}" /></a>{% endif %}
+        {{ image.cutline|markdown }}
+    </div>
+    {% endfor %}
+{% endif %}
+{% if games %}
+    <h2 class="header">Game answers</h2>
+    {% for answer in games %}
+    <div class="item">
+        {{ answer.get_thumbnail_url }}
+    </div>
+    {% endfor %}
+{% endif %}
+{% if comics %}
+    <h2 class="header">Comics</h2>
+    {% for episode in comics %}
+    <div class="item">
+        <a href="{{ episode.get_absolute_url }}">{{ episode.get_thumbnail200_url }}</a>
+    </div>
+    {% endfor %}
+{% endif %}
+{% if special_section.displayed_with_issue %}
+    <h2 class="header">Special section: {{ special_section }}</h2>
+    {% for episode in comics %}
+    <div class="item">
+        <a href="{{ special_section.get_absolute_url }}">{{ special_section.get_thumbnail200_url }}</a>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock content %}

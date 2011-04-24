@@ -1,0 +1,22 @@
+{% load markup %}{% load core %}
+
+{% if obj.photos.all %}
+    {% with obj.photos.all.0 as photo %}
+    <img class="photo" alt="{{ entry }}" src="{% if photo.is_vertical %}{{ photo.get_thumbnail200_url }}{% else %}{{ photo.get_thumbnail300_url }}{% endif %}" />
+    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span> | {% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+    {{ photo.cutline|markdown }}
+    {% endwith %}
+{% endif %}
+
+{{ obj.body|markdown }}
+
+{% if obj.photos.all %}
+{% ifnotequal obj.photos.all.count 1 %}<p><a href="images/">(View large image browser)</a></p>{% endifnotequal %}
+{% for photo in obj.photos.all %}
+    {% if not forloop.first %}
+    <img class="photo" alt="{{ entry }}" src="{% if photo.is_vertical %}{{ photo.get_thumbnail200_url }}{% else %}{{ photo.get_thumbnail300_url }}{% endif %}" />
+    <p class="byline">{% if photo.byline %}<a href="{{ photo.byline.get_absolute_url }}">{{ photo.byline }}</a>/{{ photo.byline.photographer_position }}</span> | {% else %}{% if photo.static_byline %}{{ photo.static_byline }}{% endif %}{% endif %}</p>
+    {{ photo.cutline|markdown }}
+    {% endif %}
+{% endfor %}
+{% endif %}
