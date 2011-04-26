@@ -74,7 +74,7 @@ def archive(request, year=None, month=None, day=None, page=1, mediatype=None):
     
     if not year:
         images = images
-        archive_name = "%s archive" % mediatype
+        archive_name = "%s " % mediatype
     elif not month:
         images = images.filter(pub_date__year=year)
         archive_name = "%ss from %s" % (mediatype, year)

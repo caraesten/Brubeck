@@ -24,7 +24,7 @@ def detail(request, year=None, month=None, day=None, id=None, mediatype=None):
     # happen once anyway.
     try:
         if mediatype == 'video':
-            object = Video.objects.filter(pub_date=date(int(year),int(month),int(day))).get(id=id)
+            object = Video.objects.filter(pub_date__year=int(year),pub_date__month=int(month), pub_date__day=int(day))).get(id=id)
         elif mediatype == 'slideshow':
             object = Slideshow.objects.filter(pub_date=date(int(year),int(month),int(day))).get(id=id)
         elif mediatype == 'audioclip':
