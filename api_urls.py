@@ -7,6 +7,7 @@ from brubeck.tagging.api import TagResource
 from brubeck.events.api import EventResource
 from brubeck.podcasts.api import PodcastResource,ChannelResource
 from brubeck.multimedia.api import AudioResource,VideoResource,SlideshowResource
+from brubec.publishing.api import SectionResource,IssueResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(SectionResource())
