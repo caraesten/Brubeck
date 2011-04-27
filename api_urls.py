@@ -1,3 +1,5 @@
+from django.conf.urls.defaults import *
+
 from tastypie.api import Api
 from brubeck.articles.api import ArticleResource
 from brubeck.blogs.api import EntryResource,BlogResource
