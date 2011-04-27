@@ -1,5 +1,6 @@
 from tastypie.resources import ModelResource
 from brubeck.photography.models import Photo
+from tastypie import fields
 from brubeck.publishing.api import IssueResource,SectionResource
 
 class PhotoResource(ModelResource):
