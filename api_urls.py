@@ -30,5 +30,5 @@ v1_api.register(TagResource())
 
 
 urlpatterns = patterns('',
-    (r'^api/', include(v1_api.urls)),
+    (r'^$', include(v1_api.urls)),
 )
