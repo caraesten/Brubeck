@@ -6,7 +6,7 @@ from brubeck.publishing.api import SectionResource,IssueResource
 class ArticleResource(ModelResource):
 	issue = fields.ForeignKey(IssueResource, 'issue')
 	section = fields.ForeignKey(SectionResource, 'section')
-	tag = fields.ToManyField('brubeck.tagging.api.TagResource', 'tag')
+	tags = fields.ToManyField('brubeck.tagging.api.TagResource', 'tag')
 	photos = fields.ToManyField('brubeck.photography.api.PhotoResource', 'photos')
 	videos = fields.ToManyField('brubeck.multimedia.api.VideoResource', 'videos')
 	audio_clips = fields.ToManyField('brubeck.multimedia.api.AudioResource', 'audio_clips')
