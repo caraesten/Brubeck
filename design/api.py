@@ -1,5 +1,6 @@
 from tastypie.resources import ModelResource
 from brubeck.design.models import Graphic
+from tastypie import fields
 from brubeck.publishing.api import IssueResource,SectionResource
 
 class GraphicResource(ModelResource):
