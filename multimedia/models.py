@@ -269,7 +269,7 @@ class AudioClip(Content):
     """
     title = models.CharField(max_length=100)
     description = models.TextField()
-    length = models.PositiveSmallIntegerField(blank=True, help_text="This will be automatically determined if you don't specify it. Takes a number of seconds.", null=True)
+    length = models.PositiveSmallIntegerField(help_text="This will be automatically determined if you don't specify it. Takes a number of seconds.")
     audio_file = models.FileField(upload_to='%Y/%m%d/audio', help_text="Only upload MP3 files.")
     image = models.ImageField('preview photo', upload_to='%Y/%m%d/audio', help_text="Upload a photo to represent this clip on the site. It will automatically be resized for you.")
     publication = models.ForeignKey('publishing.Publication', db_index=True, null=True, help_text="The publication to which this audio clip is linked.")

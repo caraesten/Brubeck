@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from brubeck.blogs.models import Entry
+from brubeck.blogs.models import Entry,Blog
 from tastypie import fields
 from brubeck.publishing.api import SectionResource
 
