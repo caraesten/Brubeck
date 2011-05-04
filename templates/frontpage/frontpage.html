@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% load core %}{% load markup %}{% load advertising %}{% load thumbnail %}
 
-{% block head_extras %}	<link rel="stylesheet" type="text/css" href="/media/style/2010-06/style/frontpage.css" />
+{% block head_extras %}	<link rel="stylesheet" type="text/css" href="/media/style/frontpage.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" ></script>
-    <script type="text/javascript" src="/media/style/2010-02/js/curvycorners.js" ></script>
-	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/js/calendaring.css" />
-	<link rel="stylesheet" type="text/css" href="/media/style/2009-07/style/generalstylechanges.css" />
+    <script type="text/javascript" src="/media/js/curvycorners.js" ></script>
+	<link rel="stylesheet" type="text/css" href="/media/js/calendaring.css" />
     <script type="text/javascript">
         $(document).ready(function(){  
             $("#top-stories{% if news_bursts %}-newsburst-fix{% endif %}").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true);  

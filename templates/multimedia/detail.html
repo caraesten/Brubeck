@@ -3,25 +3,32 @@
 
 {% block head_extras %}
 {% ifequal object.mediatype "audioclip" %}
-<script src="/media/style/2009-09/js/jPlayer/jplayer.js" type="text/javascript"></script>
-<script>
+<script src="/media/js/jPlayer/jplayer.min.js" type="text/javascript"></script>
+<script type="text/javascript">
 $(document).ready(function() {
-    $("#jPlayer").jPlayer( {
+    $("#jPlayer_interface").jPlayer( {
         ready: function () {
-            $(this).setFile("{{ object.audio_file.url }}");
+            $(this).jPlayer("setMedia",{mp3: "{{ object.audio_file.url }}"});
         },
-        swfPath: "/media/style/2009-09/js/jPlayer",
-    });
-    $("#jPlayer").jPlayerId("play", "play")
-    $("#jPlayer").jPlayerId("pause", "pause")
-    $("#jPlayer").jPlayerId("stop", "stop")
-	$("#jPlayer").jPlayerId("loadBar", "progress_load_bar")
-	$("#jPlayer").jPlayerId("playBar", "progress_play_bar")
-	$("#jPlayer").jPlayerId("volumeMin", "volume_min")
-	$("#jPlayer").jPlayerId("volumeMax", "volume_max")
-	$("#jPlayer").jPlayerId("volumeBar", "volume_bar")
-	$("#jPlayer").jPlayerId("volumeBarValue", "volume_bar_value")
-	.onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+        swfPath: "/media/js/jPlayer",
+        preload: "auto",
+        supplied: "mp3",
+        cssSelector: {
+            play: "#play",
+            pause: "#pause",
+            stop: "#stop",
+            seekBar: "#progress_load_bar",
+            playBar: "#progress_play_bar",
+            volumeBar: "#volume_bar",
+            volumeBarValue: "#volume_bar_value"
+        }
+    })
+	.bind($.jPlayer.event.progress, function(event){
+	    var loadPercent = event.jPlayer.status.seekPercent;
+	    var playedPercentRelative = event.jPlayer.status.currentPercentRelative; 
+	    var playedPercentAbsolute = event.jPlayer.status.currentPercentAbsolute;
+	    var playedTime = event.jPlayer.status.currentTime;
+	    var totalTime = event.jPlayer.status.duration;
 		var myPlayedTime = new Date(playedTime);
 		var ptMin = (myPlayedTime.getUTCMinutes() < 10) ? "0" + myPlayedTime.getUTCMinutes() : myPlayedTime.getUTCMinutes();
 		var ptSec = (myPlayedTime.getUTCSeconds() < 10) ? "0" + myPlayedTime.getUTCSeconds() : myPlayedTime.getUTCSeconds();
@@ -32,8 +39,8 @@ $(document).ready(function() {
 		var ttSec = (myTotalTime.getUTCSeconds() < 10) ? "0" + myTotalTime.getUTCSeconds() : myTotalTime.getUTCSeconds();
 		$("#total_time").text(ttMin+":"+ttSec);
 	});
-    $("#jPlayer").onSoundComplete( function() {
-		$(this).play();
+    $("#jPlayer_interface").bind($.jPlayer.event.loadeddata, function() {
+		$(this).jPlayer("play");
 	});
 });
 </script>
@@ -68,31 +75,36 @@ $(document).ready(function() {
 		<br />
         <h2 class="header">Listen</h2>
         {% comment %}{% endcomment %}
-        <div id="jPlayer"></div>
+        <div id="jPlayer_interface"></div>
         <div id="titlebar" style="margin-bottom:10px;">
             <h3 id="song_title" style="display:inline;">{{ object }}</h3>
             <div id="time_amounts" style="display:inline;font-style:italic;">(<div id="play_time" style="display:inline;"></div> / <div id="total_time" style="display:inline;"></div>)</div>
         </div>
-        <ul id="player-controls" style="float:left;margin-left:0px;">
-            <li id="play" style="background:transparent url(/media/style/2009-09/images/play.png) no-repeat scroll 0 -12px;float:left;height:62px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:5px;width:60px;"></li>
-            <li id="pause" style="background:transparent url(/media/style/2009-09/images/pause.png) no-repeat scroll 0 -12px;float:left;height:62px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:5px;width:60px;"></li>
-            <li id="stop" style="background:transparent url(/media/style/2009-09/images/stop.png) no-repeat;float:left;height:50px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:10px;width:40px;"></li>
-        </ul>
-		<div id="progress" style="float:left;margin-right:10px;margin-top:17px;width:250px;">
-			<div id="progress_load_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;height:15px;">
-				<div id="progress_play_bar" style="-moz-border-radius: 5px;-webkit-border-radius:5px;background-color:#336633;height:15px;"></div>
-			</div>
-		</div>
-		<div id="volume_bar" style="float:left;">
-            <div id="volume_min" style="-moz-border-radius:5px;-webkit-border-radius:5px;background:transparent url(/media/style/2009-09/images/mute.png) no-repeat;float:left;height:50px;width:40px;"></div>
-		    <div id="volume_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;float:left;height:5px;margin-top:21px;width:100px;">
-			    <div id="volume_bar_value" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#336633;height:5px;"></div>
-    		</div>
-			<div id="volume_max" style="background:transparent url(/media/style/2009-09/images/max.png) no-repeat;float:left;height:50px;width:40px;"></div>
-    	</div>
+        <div class="jp-audio">
+            <div class="jp-type-single">
+                <div class="jp_interface" id="jp_interface_1">
+                    <ul class="jp-controls" style="float:left;margin-left:0px;">
+                        <li id="play" class="jp-play" style="background:transparent url(/media/js/img/player_images/play.png) no-repeat scroll 0 -12px;float:left;height:62px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:5px;width:60px;"></li>
+                        <li id="pause" class="jp-pause" style="background:transparent url(/media/js/img/player_images/pause.png) no-repeat scroll 0 -12px;float:left;height:62px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:5px;width:60px;"></li>
+                        <li id="stop" class="jp-stop" style="background:transparent url(/media/js/img/player_images/stop.png) no-repeat;float:left;height:50px;list-style-image:none;list-style-position:inside;list-style-type:none;margin-right:10px;width:40px;"></li>
+                    </ul>
+                    <div id="progress" style="float:left;margin-right:10px;margin-top:17px;width:250px;">
+                        <div id="progress_load_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;height:15px;">
+                            <div id="progress_play_bar" style="-moz-border-radius: 5px;-webkit-border-radius:5px;background-color:#336633;height:15px;"></div>
+                        </div>
+                    </div>
+                    <div id="volume_bar" style="float:left;">
+                        <div id="volume_min" style="-moz-border-radius:5px;-webkit-border-radius:5px;background:transparent url(/media/js/img/player_images/mute.png) no-repeat;float:left;height:50px;width:40px;"></div>
+                        <div id="volume_bar" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#BBBBBB;float:left;height:5px;margin-top:21px;width:100px;">
+                            <div id="volume_bar_value" style="-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#336633;height:5px;"></div>
+                        </div>
+                        <div id="volume_max" style="background:transparent url(/media/js/img/player_images/max.png) no-repeat;float:left;height:50px;width:40px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <p style="clear:both;"><a href="{{ object.audio_file.url }}">Download file</a> ({{ object.audio_file.size|filesizeformat }})</p>
-    <embed src='http://webjay.org/flash/xspf_player' width='500' height='40' wmode='transparent' flashVars='playlist_url=&rounded_corner=1&skin_color_1=-116,-20,-38,0&skin_color_2=-103,100,0,0' type='application/x-shockwave-flash' pluginspage='http://www.adobe.com/go/getflashplayer'/>
 {% endifequal %}
 {% if articles %}
 <div class="object_list">
