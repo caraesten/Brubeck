@@ -2,8 +2,8 @@
 from django.conf.urls.defaults import *
 
 #urlpatterns = patterns('brubeck.voxpopuli.views',
-#    (r'^(?P<slug>[-\w]+)/results/$', 'survey_results'),
-#    url(r'^(?P<slug>[-\w]+)/$', 'survey_detail', name='polls-survey-detail'),
+#    url(r'^(?P<slug>[-\w]+)/results/$', 'survey_results', name='voxpopuli-survey-results'),
+#    url(r'^(?P<slug>[-\w]+)/$', 'survey_detail', name='voxpopuli-survey-detail'),
 #)
 
 #from brubeck.voxpopuli.models import Survey

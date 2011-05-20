@@ -126,8 +126,8 @@ urlpatterns += patterns('',
     (r'^maps/', include('brubeck.mapping.urls')),
     # Podcasts
     (r'^podcasts/', include('brubeck.podcasts.urls')),
-    # Polls - VIEWS NOT ADDED. COMMENT BACK IN WHEN THEY ARE.
-    #(r'^polls/', include('brubeck.voxpopuli.urls_polls')),
+    # Polls
+    (r'^polls/', include('brubeck.voxpopuli.urls_polls')),
     # Reporters' database
     (r'^reporters/', include('brubeck.reporters.urls')),
     # Surveys SEE ABOVE

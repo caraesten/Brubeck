@@ -1,3 +1,5 @@
+from datetime import datetime, time
+
 # Imports from Django
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -11,8 +13,11 @@ class Survey(models.Model):
     def __unicode__(self):
         return self.title
 
+    @models.permalink
     def get_absolute_url(self):
-        return '/surveys/%s/' % self.slug
+        return ('voxpopuli-survey-results', (), {
+            'slug': self.slug
+        })
 
 class Poll(models.Model):
     """Provide the basis of the poll framework. Should be pretty simple."""
@@ -26,8 +31,21 @@ class Poll(models.Model):
     
     def __unicode__(self):
         return self.question
+    
+    @models.permalink
     def get_absolute_url(self):
-        return '/polls/%s/' % self.id
+        return ('voxpopuli-poll-results', (), {
+            'id': self.id
+        })
+    
+    def voting_open(self):
+        voting_starts = datetime.combine(self.pub_date, time.min)
+        if self.voting_ends:
+            voting_ends = self.voting_ends
+        else:
+            voting_ends = datetime.max
+        now = datetime.now()
+        return voting_starts < now < voting_ends
     
     class Meta:
         get_latest_by = 'pub_date'
