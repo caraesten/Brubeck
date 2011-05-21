@@ -130,8 +130,8 @@ urlpatterns += patterns('',
     (r'^polls/', include('brubeck.voxpopuli.urls_polls')),
     # Reporters' database
     (r'^reporters/', include('brubeck.reporters.urls')),
-    # Surveys SEE ABOVE
-    #(r'^surveys/', include('brubeck.voxpopuli.urls_surveys')),
+    # Surveys
+    (r'^surveys/', include('brubeck.voxpopuli.urls_surveys')),
 )
 
 # Feeds
