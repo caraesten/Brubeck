@@ -1,5 +1,6 @@
-# Imports from Django
 from django.conf.urls.defaults import *
+
+from brubeck.voxpopuli.models import Poll
 
 urlpatterns = patterns('brubeck.voxpopuli.views',
     url(r'^(?P<id>\d+)/results/$', 'poll_results', name='voxpopuli-poll-results'),

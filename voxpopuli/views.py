@@ -62,3 +62,58 @@ def poll_results(request, id=None):
     
     return render_to_response('voxpopuli/poll_results.html', page, context_instance=RequestContext(request))
 
+def survey_vote(request, slug=None):
+    show_results = False
+    
+    survey = get_object_or_404(Survey, slug=slug)
+    
+    unique_id = vote_id(request)
+    
+    questions = []
+    for question in survey.questions.all():
+        already_voted = Vote.objects.filter(poll=question, unique_id=unique_id).count()
+        if not already_voted:
+            if request.method == 'POST':
+                form = PollForm(poll_id=question.id, prefix=question.slug, data=request.POST)
+                if form.is_valid():
+                    choice = Choice.objects.get(id=int(form.cleaned_data['choice']))
+                    new_vote = Vote(poll=question, vote=choice, unique_id=unique_id)
+                    new_vote.save()
+                    show_results = True
+            else:
+                form = PollForm(poll_id=question.id, prefix=question.slug)
+                questions.append((question, form))
+    if not questions:
+        show_results = True
+    
+    if show_results:
+        return HttpResponseRedirect(reverse('voxpopuli-survey-results', kwargs={'slug': slug}))
+    
+    page = {
+        'questions': questions,
+        'survey': survey,
+    }
+    
+    return render_to_response('voxpopuli/survey_vote.html', page, context_instance=RequestContext(request))
+
+def survey_results(request, slug=None):
+    survey = get_object_or_404(Survey, slug=slug)
+    unique_id = vote_id(request)
+    
+    results = []
+    votes = []
+    for question in survey.questions.all():
+        results.append((question, Choice.objects.filter(poll=question).annotate(num_votes=Count('vote')).order_by('-num_votes')))
+        votes.append(0 != Vote.objects.filter(poll=question, unique_id=unique_id).count())
+    
+    already_voted = False
+    if True in votes:
+        already_voted = True
+    
+    page = {
+        'already_voted': already_voted,
+        'results': results,
+        'survey': survey,
+    }
+    
+    return render_to_response('voxpopuli/survey_results.html', page, context_instance=RequestContext(request))
